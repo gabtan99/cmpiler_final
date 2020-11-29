@@ -1,23 +1,22 @@
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.TokenStream;
 
+import parser.CLexer;
+import parser.CParser;
+
+
 class Main {
    public static void main(String[] args) {
       System.out.println("Antlr4 Example");
       try {
          /*
-          * get the input file as an InputStream
-          */
-         InputStream inputStream = Main.class.getResourceAsStream("/example1.txt");
-         /*
           * make Lexer
           */
-         Lexer lexer = new CLexer(CharStreams.fromStream(inputStream));
+         Lexer lexer = new CLexer(CharStreams.fromFileName("./resources/example1.txt"));
          /*
           * get a TokenStream on the Lexer
           */
