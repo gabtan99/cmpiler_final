@@ -9,7 +9,7 @@ java -jar lib/antlr-4.9-complete.jar -package parser -o parser grammar/C.g4
 HOW TO COMPILE ANTLR GENERATED FILES
 
 ```
-javac -cp "lib/_.jar" parser/_.java
+javac -cp "lib/*.jar" parser/*.java
 ```
 
 HOW TO COMPILE MAIN

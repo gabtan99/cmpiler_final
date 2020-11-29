@@ -16,11 +16,13 @@ class Main {
          /*
           * make Lexer
           */
-         Lexer lexer = new CLexer(CharStreams.fromFileName("./resources/example1.txt"));
+         Lexer lexer = new CLexer(CharStreams.fromFileName("./resources/example1.c"));
          /*
           * get a TokenStream on the Lexer
           */
          TokenStream tokenStream = new CommonTokenStream(lexer);
+
+         
          /*
           * make a Parser on the token stream
           */
@@ -32,7 +34,5 @@ class Main {
       } catch (IOException e) {
          e.printStackTrace();
       }
-
-      System.out.println("HELLO");
    }
 }
