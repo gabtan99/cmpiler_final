@@ -1,14 +1,31 @@
 #include <stdio.h>
-int main() {
-    double a, b, product;
-    printf("Enter two numbers: ");awdawd
-    scanf("%lf %lf", &a, &b);  
- 
-    // Calculating product
-    product = a * b;;;;
+int main()
+{
+  int x;
 
-    // Result up to 2 decimal point is displayed using %.2lf
-    printf("Product = %.2lf", product);
-    
-    return 0;
+  printf("Input an integer\n");
+  scanf("%d", &x); // %d is used for an integer
+
+  printf("The integer is: %d\n", x);
+
+  return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
