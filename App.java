@@ -69,7 +69,7 @@ public class App extends Application {
         textArea.setMinHeight(268);
 
         VBox vBox = new VBox(menuBar,codeArea, textArea);
-        Scene scene = new Scene(vBox, 1024, 768);
+        Scene scene = new Scene(vBox, 800, 600);
 
 
         stage.setScene(scene);
