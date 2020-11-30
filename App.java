@@ -60,13 +60,13 @@ public class App extends Application {
         // TEXT EDITOR
         CodeArea codeArea = new CodeArea();
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-        codeArea.setMinHeight(500);
+        codeArea.setMinHeight(370);
         
 
         // CONSOLE
         TextArea textArea = new TextArea("Output");
         textArea.setDisable(true);
-        textArea.setMinHeight(268);
+        textArea.setMinHeight(230);
 
         VBox vBox = new VBox(menuBar,codeArea, textArea);
         Scene scene = new Scene(vBox, 800, 600);
@@ -74,7 +74,7 @@ public class App extends Application {
 
         stage.setScene(scene);
         stage.getIcons().add(new Image("assets/code.png"));
-        stage.setTitle("Psuedocode IDE by Tan & Ty");
+        stage.setTitle("Psuedocode Compiler by Tan & Ty");
         stage.show();
     }
 
