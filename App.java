@@ -56,13 +56,11 @@ public class App extends Application {
 
         MenuBar menuBar = new MenuBar(fileMenu, runMenu);
 
-
         // TEXT EDITOR
         CodeArea codeArea = new CodeArea();
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.setMinHeight(370);
         
-
         // CONSOLE
         TextArea textArea = new TextArea("Output");
         textArea.setDisable(true);
@@ -70,7 +68,6 @@ public class App extends Application {
 
         VBox vBox = new VBox(menuBar,codeArea, textArea);
         Scene scene = new Scene(vBox, 800, 600);
-
 
         stage.setScene(scene);
         stage.getIcons().add(new Image("assets/code.png"));

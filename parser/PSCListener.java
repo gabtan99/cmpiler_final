@@ -17,4 +17,24 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitR(PSCParser.RContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PSCParser#declr}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclr(PSCParser.DeclrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#declr}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclr(PSCParser.DeclrContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PSCParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr(PSCParser.ExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr(PSCParser.ExprContext ctx);
 }
