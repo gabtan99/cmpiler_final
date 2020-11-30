@@ -13,9 +13,6 @@ class Main {
    public static void main(String[] args) {
 
       try {
-         /*
-          * make Lexer
-          */
          Lexer lexer = new PSCLexer(CharStreams.fromFileName("./resources/example1.c"));
 
          MyErrorListener errorListener = new MyErrorListener();
@@ -28,16 +25,15 @@ class Main {
          
          TokenStream tokenStream = new CommonTokenStream(lexer);
          PSCParser parser = new PSCParser(tokenStream);
+         parser.reset();
 
          // parser.removeErrorListeners();
          // parser.addErrorListener( errorListener );
-
          ParseTree tree = parser.primaryExpression();
-         ParseTreeWalker walker = new ParseTreeWalker();
-         PSCBaseListener listener = new PSCBaseListener();
-         walker.walk(listener, tree);
+         // ParseTreeWalker walker = new ParseTreeWalker();
+         // PSCBaseListener listener = new PSCBaseListener();
+         // walker.walk(listener, tree);
 
-         System.out.println(tree.toString());
          System.out.println("PARSER TAPOS");
 
      
