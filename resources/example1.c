@@ -1,6 +1,1 @@
-/* Hello World program */
-@@@
-void bad()
-{
-    foo(a);
-}
+world hello world
