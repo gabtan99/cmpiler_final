@@ -25,7 +25,8 @@
 */
 
 /** C 2011 grammar built from the C11 Spec */
-grammar C;
+grammar PSC;
+
 
 primaryExpression
     :   Identifier
@@ -35,7 +36,7 @@ primaryExpression
     |   genericSelection
     |   '__extension__'? '(' compoundStatement ')' // Blocks (GCC extension)
     |   '__builtin_va_arg' '(' unaryExpression ',' typeName ')'
-    |   '__builtin_offsetof' '(' typeName ',' unaryExpression ')'
+    |   '__builtin_offsetof' '(' typeName ',' unaryExpression ')' EOF
     ;
 
 genericSelection

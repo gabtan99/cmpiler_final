@@ -8,6 +8,6 @@ public class MyErrorListener extends BaseErrorListener {
                            String msg, RecognitionException e ) {
     // method arguments should be used for more detailed report
     System.out.println("LMAO MALI KA AT LINE " + line + ":" + charPositionInLine);
-    throw new RuntimeException("syntax error occurred");
+    // throw new RuntimeException("syntax error occurred");
   }
 }
