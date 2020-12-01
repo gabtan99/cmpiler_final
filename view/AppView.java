@@ -1,5 +1,7 @@
 package view;
 
+import java.util.*;
+
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -24,11 +26,14 @@ import controller.AppController;
 
 public class AppView {
     private AppController controller;
+    TextArea textArea;
 
     public AppView (Stage stage) {
         // MENU GUI
         Menu fileMenu = new Menu("File");
 
+
+        // New
         MenuItem fileMenuItem1 = new MenuItem("New");
         Image plusIcon = new Image(getClass().getResourceAsStream("/assets/plus.png"));
         ImageView plusIconView = new ImageView(plusIcon);
@@ -36,6 +41,8 @@ public class AppView {
         plusIconView.setFitHeight(17);
         fileMenuItem1.setGraphic(plusIconView);
 
+
+        // Open
         Image folderIcon = new Image(getClass().getResourceAsStream("/assets/folder.png"));
         ImageView folderIconView = new ImageView(folderIcon);
         folderIconView.setFitWidth(17);
@@ -43,6 +50,7 @@ public class AppView {
         MenuItem fileMenuItem2 = new MenuItem("Open");
         fileMenuItem2.setGraphic(folderIconView);
 
+        // Exit 
         Image exitIcon = new Image(getClass().getResourceAsStream("/assets/exit.png"));
         ImageView exitIconView = new ImageView(exitIcon);
         exitIconView.setFitWidth(17);
@@ -58,11 +66,16 @@ public class AppView {
         fileMenu.getItems().add(fileMenuItem3);
 
         Menu runMenu = new Menu("Run");
+        
+        // Parse
+        MenuItem runMenuItem1 = new MenuItem("Parse");
         Image playIcon = new Image(getClass().getResourceAsStream("/assets/play.png"));
         ImageView playIconView = new ImageView(playIcon);
         playIconView.setFitWidth(17);
         playIconView.setFitHeight(17);
-        runMenu.setGraphic(playIconView);
+        runMenuItem1.setGraphic(playIconView);
+
+        runMenu.getItems().add(runMenuItem1);
 
         MenuBar menuBar = new MenuBar(fileMenu, runMenu);
 
@@ -70,10 +83,14 @@ public class AppView {
         CodeArea codeArea = new CodeArea();
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.setMinHeight(370);
+
+        runMenuItem1.addEventHandler(ActionEvent.ACTION,event -> { 
+            runCode(codeArea.getText());
+        });
         
         // CONSOLE
-        TextArea textArea = new TextArea("Output");
-        textArea.setDisable(true);
+        textArea = new TextArea("Output");
+        textArea.setEditable(false);
         textArea.setMinHeight(230);
 
         VBox vBox = new VBox(menuBar,codeArea, textArea);
@@ -84,14 +101,19 @@ public class AppView {
         stage.getIcons().add(new Image("/assets/code.png"));
         stage.setTitle("Psuedocode Compiler by Tan & Ty");
         stage.show();
+
     }
 
-    private void runCode() {
-        // controller runs the input with model then updates view
+    private void runCode(String input) {
+        controller.parse(input);
     }
 
-    public void updateConsole() {
-        // controller calls this and updates console
+    public void updateLogs(List<String> output) {
+        StringBuilder logs = new StringBuilder(""); 
+        output.forEach((li) -> {
+            logs.append(li + "\n");
+        });
+        textArea.setText(logs.toString());
     }
 
     public void setController(AppController controller) {
