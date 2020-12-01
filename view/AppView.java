@@ -20,7 +20,11 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CharStream;
 import org.fxmisc.richtext.*;
 
+import controller.AppController;
+
 public class AppView {
+    private AppController controller;
+
     public AppView (Stage stage) {
         // MENU GUI
         Menu fileMenu = new Menu("File");
@@ -80,5 +84,17 @@ public class AppView {
         stage.getIcons().add(new Image("/assets/code.png"));
         stage.setTitle("Psuedocode Compiler by Tan & Ty");
         stage.show();
+    }
+
+    private void runCode() {
+        // controller runs the input with model then updates view
+    }
+
+    public void updateConsole() {
+        // controller calls this and updates console
+    }
+
+    public void setController(AppController controller) {
+        this.controller = controller;
     }
 }
