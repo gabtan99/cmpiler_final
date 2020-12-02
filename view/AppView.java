@@ -1,9 +1,7 @@
 package view;
 
 import java.util.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import javafx.stage.Stage;
 import javafx.application.Application;
@@ -22,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.event.ActionEvent; 
+import javafx.stage.FileChooser;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CharStream;
@@ -31,9 +30,12 @@ import controller.AppController;
 
 public class AppView {
     private AppController controller;
-    TextArea textArea;
+    private TextArea textArea;
+    private Stage stage;
+    private CodeArea codeArea;
 
     public AppView (Stage stage) {
+        this.stage = stage;
         // MENU GUI
         Menu fileMenu = new Menu("File");
 
@@ -55,7 +57,7 @@ public class AppView {
         MenuItem fileMenuItem2 = new MenuItem("Open");
         fileMenuItem2.setGraphic(folderIconView);
         fileMenuItem2.addEventHandler(ActionEvent.ACTION,event ->{ 
-            readFile();
+            chooseFile();
         });
 
         // Exit 
@@ -97,7 +99,7 @@ public class AppView {
         MenuBar menuBar = new MenuBar(fileMenu, runMenu);
 
         // TEXT EDITOR
-        CodeArea codeArea = new CodeArea();
+        codeArea = new CodeArea();
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.setMinHeight(370);
 
@@ -139,10 +141,7 @@ public class AppView {
 
     }
 
-    private void readFile() {
-
-         System.out.println("Try read file");
-    }
+    
 
     public void updateLogs(List<String> output) {
         StringBuilder logs = new StringBuilder(""); 
@@ -156,6 +155,50 @@ public class AppView {
         });
 
         textArea.setText(logs.toString());
+    }
+
+    private String readFile(File file){
+        StringBuilder stringBuffer = new StringBuilder();
+        BufferedReader bufferedReader = null;
+        
+        try {
+
+            bufferedReader = new BufferedReader(new FileReader(file));
+            
+            String text = bufferedReader.readLine();
+            while (text != null) {
+                stringBuffer.append(text);
+                text = bufferedReader.readLine();
+                if (text != null) {
+                    stringBuffer.append("\n");
+                }
+            }
+
+        }  catch (IOException e) {
+           
+        } finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException ex) { }
+        } 
+        
+        return stringBuffer.toString();
+    }
+
+    private void chooseFile() {
+
+        FileChooser fileChooser = new FileChooser();
+                
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PSC files", "*.psc");
+        fileChooser.getExtensionFilters().add(extFilter);
+        
+        //Show save file dialog
+        File file = fileChooser.showOpenDialog(stage);
+        if(file != null){
+            codeArea.clear();
+            codeArea.appendText(readFile(file));
+        }
     }
 
     public void setController(AppController controller) {
