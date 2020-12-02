@@ -19,8 +19,9 @@ public class MyErrorListener extends BaseErrorListener {
   public void syntaxError( Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
                            String msg, RecognitionException e ) {
     // method arguments should be used for more detailed report
-    errorList.add("LMAO MALI KA AT LINE " + line + ":" + charPositionInLine);
-    System.out.println("LMAO MALI KA AT LINE " + line + ":" + charPositionInLine);
+    String log = "line " + line + ":" + charPositionInLine + " " + msg;
+    errorList.add(log);
+    System.out.println(log);
     // throw new RuntimeException("syntax error occurred");
   }
 }

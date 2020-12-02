@@ -1,6 +1,9 @@
 package view;
 
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javafx.stage.Stage;
 import javafx.application.Application;
@@ -16,6 +19,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.event.ActionEvent; 
 
 import org.antlr.v4.runtime.CharStreams;
@@ -40,7 +45,7 @@ public class AppView {
         plusIconView.setFitWidth(17);
         plusIconView.setFitHeight(17);
         fileMenuItem1.setGraphic(plusIconView);
-
+        
 
         // Open
         Image folderIcon = new Image(getClass().getResourceAsStream("/assets/folder.png"));
@@ -49,6 +54,9 @@ public class AppView {
         folderIconView.setFitHeight(17);
         MenuItem fileMenuItem2 = new MenuItem("Open");
         fileMenuItem2.setGraphic(folderIconView);
+        fileMenuItem2.addEventHandler(ActionEvent.ACTION,event ->{ 
+            readFile();
+        });
 
         // Exit 
         Image exitIcon = new Image(getClass().getResourceAsStream("/assets/exit.png"));
@@ -75,7 +83,16 @@ public class AppView {
         playIconView.setFitHeight(17);
         runMenuItem1.setGraphic(playIconView);
 
+        // Show Parse Tree
+        MenuItem runMenuItem2 = new MenuItem("Show Parse Tree");
+        Image treeIcon = new Image(getClass().getResourceAsStream("/assets/tree.png"));
+        ImageView treeIconView = new ImageView(treeIcon);
+        treeIconView.setFitWidth(17);
+        treeIconView.setFitHeight(17);
+        runMenuItem2.setGraphic(treeIconView);
+
         runMenu.getItems().add(runMenuItem1);
+        runMenu.getItems().add(runMenuItem2);
 
         MenuBar menuBar = new MenuBar(fileMenu, runMenu);
 
@@ -85,7 +102,25 @@ public class AppView {
         codeArea.setMinHeight(370);
 
         runMenuItem1.addEventHandler(ActionEvent.ACTION,event -> { 
-            runCode(codeArea.getText());
+            controller.parse(codeArea.getText());
+        });
+
+        runMenuItem2.addEventHandler(ActionEvent.ACTION,event -> { 
+            controller.showTree(codeArea.getText());
+        });
+
+        fileMenuItem1.addEventHandler(ActionEvent.ACTION,event ->{ 
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("New project");
+            alert.setHeaderText("Changes in the text editor will not be saved.");
+            alert.setContentText("Are you sure?");
+
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    codeArea.clear();
+                }
+            });
+            
         });
         
         // CONSOLE
@@ -104,15 +139,22 @@ public class AppView {
 
     }
 
-    private void runCode(String input) {
-        controller.parse(input);
+    private void readFile() {
+
+         System.out.println("Try read file");
     }
 
     public void updateLogs(List<String> output) {
         StringBuilder logs = new StringBuilder(""); 
+
+        if (output.isEmpty()) {
+            logs.append("Parsing Complete. No errors found.");
+        }
+
         output.forEach((li) -> {
             logs.append(li + "\n");
         });
+
         textArea.setText(logs.toString());
     }
 

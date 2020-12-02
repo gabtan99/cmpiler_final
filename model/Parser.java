@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.gui.TreeViewer;
 
 import parser.PSCLexer;
 import parser.PSCParser;
@@ -18,6 +19,7 @@ public class Parser {
 
     private CharStream input;
     private List<String> errorList;
+
 
     public Parser() {
         errorList = new ArrayList<>();
@@ -54,7 +56,17 @@ public class Parser {
         ParseTreeWalker walker = new ParseTreeWalker();
         PSCBaseListener listener = new PSCBaseListener();
         walker.walk(listener, tree);
-      
+   }
+
+   public void showTree() {
+       Lexer lexer = new PSCLexer(this.input);
+       TokenStream tokenStream = new CommonTokenStream(lexer);
+       PSCParser parser = new PSCParser(tokenStream);
+       ParseTree tree = parser.r();
+
+       // Tree inspector
+        TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()),tree);
+        viewer.open();
    }
 
 

@@ -27,6 +27,12 @@ public class AppController {
         parser.parse();
 
         view.updateLogs(parser.getErrorList());
-        System.out.println(parser.getErrorList().toString());
+    }
+
+    public void showTree(String input) {
+        System.out.println("----------- SHOW TREE ----------");
+        CharStream stream = CharStreams.fromString(input);
+        parser.setInput(stream);
+        parser.showTree();
     }
 }
