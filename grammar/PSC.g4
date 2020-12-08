@@ -7,6 +7,7 @@ Float : 'float';
 String : 'String';
 Bool : 'bool';
 
+Main: 'main';
 Do : 'do';
 Else : 'else';
 For : 'for';
@@ -66,9 +67,12 @@ DoubleQuotation: '"';
 /* main program */
 
 program
-    : declarationList
+    : mainProgram functionDeclarationList
     ;
 
+mainProgram
+    : Main LeftParen RightParen LeftBrace declarationList RightBrace 
+    ;
 declarationList
     : declaration
     | declarationList declaration 
@@ -77,7 +81,11 @@ declarationList
 declaration
     : variableDeclaration 
     | arrayVariableDeclaration 
-    | functionDeclaration
+    ;
+
+functionDeclarationList
+    : functionDeclaration
+    | functionDeclarationList functionDeclaration
     ;
 
 /* ------- */
