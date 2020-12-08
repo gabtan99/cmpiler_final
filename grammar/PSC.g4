@@ -75,20 +75,20 @@ declarationList
     ;
 
 declaration
-    : variableDeclaration
-    | arrayVariableDeclaration
+    : variableDeclaration 
+    | arrayVariableDeclaration 
     | functionDeclaration
     ;
 
 /* ------- */
 variableDeclaration
-    : typeSpecifier variableDeclarationList
-    | ConstantKey typeSpecifier variableDeclarationList
+    : typeSpecifier variableDeclarationList Semi
+    | ConstantKey typeSpecifier variableDeclarationList Semi
     ;
 
 scopedVariableDeclaration
-    : variableDeclaration
-    | arrayVariableDeclaration
+    : variableDeclaration 
+    | arrayVariableDeclaration 
     ;
 
 variableDeclarationList
@@ -119,8 +119,8 @@ arrayTypeSpecifier
     ;
 
 arrayVariableDeclaration
-    : arrayTypeSpecifier arrayVariableDeclarationList
-    | ConstantKey arrayTypeSpecifier arrayVariableDeclarationList
+    : arrayTypeSpecifier arrayVariableDeclarationList Semi
+    | ConstantKey arrayTypeSpecifier arrayVariableDeclarationList Semi
     ;
 
 arrayVariableDeclarationList
