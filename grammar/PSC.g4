@@ -15,6 +15,10 @@ Then: 'then';
 Return : 'return';
 Void : 'void';
 While : 'while';
+Func : 'func';
+Create : 'create';
+Print : 'print';
+Scan: 'scan';
 
 LeftParen : '(';
 RightParen : ')';
@@ -72,16 +76,19 @@ declarationList
 
 declaration
     : variableDeclaration
+    | arrayVariableDeclaration
     | functionDeclaration
     ;
 
 /* ------- */
 variableDeclaration
     : typeSpecifier variableDeclarationList
+    | ConstantKey typeSpecifier variableDeclarationList
     ;
 
 scopedVariableDeclaration
-    : typeSpecifier variableDeclarationList
+    : variableDeclaration
+    | arrayVariableDeclaration
     ;
 
 variableDeclarationList
@@ -96,7 +103,6 @@ variableDeclarationInitialize
 
 variableDeclarationIdentifier
     : IDENTIFIER
-    | IDENTIFIER LeftBracket INTEGERCONSTANT RightBracket
     ;
 
 typeSpecifier
@@ -107,9 +113,39 @@ typeSpecifier
     ;
 
 /* ------- */
+
+arrayTypeSpecifier
+    : typeSpecifier LeftBracket RightBracket
+    ;
+
+arrayVariableDeclaration
+    : arrayTypeSpecifier arrayVariableDeclarationList
+    | ConstantKey arrayTypeSpecifier arrayVariableDeclarationList
+    ;
+
+arrayVariableDeclarationList
+    : arrayVariableDeclarationList Comma arrayVariableDeclarationInitialize
+    | arrayVariableDeclarationInitialize
+    ;
+
+arrayVariableDeclarationInitialize
+    : arrayVariableDeclarationIdentifier
+    | arrayVariableDeclarationIdentifier Assign createArrayExpression
+    ;
+
+arrayVariableDeclarationIdentifier
+    : IDENTIFIER
+    ;
+
+/* ------- */
+
+typeSpecifierSelector
+    : typeSpecifier
+    | arrayTypeSpecifier
+    ;
+
 functionDeclaration
-    : typeSpecifier IDENTIFIER LeftParen params RightParen statement
-    | Void IDENTIFIER LeftParen params RightParen statement
+    : Func (typeSpecifier | arrayTypeSpecifier | Void) IDENTIFIER LeftParen params RightParen statement
     ;
 
 params
@@ -123,21 +159,27 @@ paramList
     ;
 
 paramTypeList
-    : typeSpecifier paramDeclarationIdentifier
+    : typeSpecifierSelector paramDeclarationIdentifier
     ;
 
 paramDeclarationIdentifier
     : IDENTIFIER
-    | IDENTIFIER LeftBracket RightBracket
     ;
 
 /* statements */
 statement
     : expressionStmt
     | compoundStmt
+    | scanStmt
+    | printStmt
     | selectionStmt
     | iterationStmt
     | returnStmt
+    ;
+   
+statementList
+    : statementList statement
+    | /*epsilon */
     ;
 
 expressionStmt
@@ -153,14 +195,31 @@ localDeclarations
     : localDeclarations scopedVariableDeclaration
     | /*epsilon */
     ;
+    
+scanStmt
+    : Scan LeftParen StringLiteral Comma IDENTIFIER RightParen
+    ;
+
+printStmt
+    : Print LeftParen printParams RightParen
+    ;
+
+printParams
+    : printParamsList
+    ;
+
+printParamsList
+    : printParamsList Plus printParamsSelector
+    | printParamsSelector
+    ;
+
+printParamsSelector
+    : StringLiteral
+    | simpleExpression
+    ;
 
 selectionStmt
     : If LeftParen expression RightParen Then statement (Else statement)?
-    ;
-
-statementList
-    : statementList statement
-    | /*epsilon */
     ;
 
 iterationStmt
@@ -169,13 +228,13 @@ iterationStmt
     ;
 
 whileStatement
-    : While IDENTIFIER Upto loopExpression compoundStmt
-    | While IDENTIFIER Downto loopExpression compoundStmt
+    : While IDENTIFIER Upto relExpression compoundStmt
+    | While IDENTIFIER Downto relExpression compoundStmt
     ;
 
 forStatement
-    : For loopDeclaration Upto loopExpression compoundStmt
-    | For loopDeclaration Downto loopExpression compoundStmt
+    : For loopDeclaration Upto simpleExpression compoundStmt
+    | For loopDeclaration Downto simpleExpression compoundStmt
     ;
 
 loopDeclaration
@@ -184,19 +243,24 @@ loopDeclaration
     | IDENTIFIER
     ;
 
-loopExpression
-    : 
-    ;
-
 returnStmt
     : Return Semi
-    | Return expression
+    | Return expression Semi
     ;
 
 /* expressions */
 expression
     : mutable Assign expression
     | simpleExpression
+    | createArrayExpression
+    ;
+
+createArrayExpression
+    : Create arrayInitExpression
+    ;
+
+arrayInitExpression
+    : typeSpecifier LeftBrace relExpression RightBrace
     ;
 
 simpleExpression
