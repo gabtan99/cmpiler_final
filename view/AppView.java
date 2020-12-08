@@ -21,6 +21,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.event.ActionEvent; 
 import javafx.stage.FileChooser;
+import javafx.scene.input.Mnemonic;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyCodeCombination;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CharStream;
@@ -107,6 +111,10 @@ public class AppView {
             controller.parse(codeArea.getText());
         });
 
+        // Keyboard Shortcut for Parse
+        KeyCombination kc = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
+        Runnable rn = ()-> controller.parse(codeArea.getText());;
+
         runMenuItem2.addEventHandler(ActionEvent.ACTION,event -> { 
             controller.showTree(codeArea.getText());
         });
@@ -124,7 +132,7 @@ public class AppView {
             });
             
         });
-        
+
         // CONSOLE
         textArea = new TextArea("Output");
         textArea.setEditable(false);
@@ -132,6 +140,7 @@ public class AppView {
 
         VBox vBox = new VBox(menuBar,codeArea, textArea);
         Scene scene = new Scene(vBox, 800, 600);
+        scene.getAccelerators().put(kc, rn);
 
         stage.setScene(scene);
         stage.setResizable(false);
