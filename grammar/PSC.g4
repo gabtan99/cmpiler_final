@@ -57,8 +57,6 @@ Ellipsis : '...';
 Up : 'up';
 Down : 'down';
 To : 'to';
-True: 'T';
-False: 'F';
 
 DoubleQuotation: '"';
 
@@ -220,14 +218,19 @@ printParamsList
     : printParamsList Plus printParamsSelector
     | printParamsSelector
     ;
-
+    
 printParamsSelector
     : StringLiteral
     | simpleExpression
     ;
 
 selectionStmt
-    : If LeftParen expression RightParen Then statement (Else statement)?
+    : If LeftParen expression RightParen Then compoundStmt elseSelector?
+    ;
+
+elseSelector
+    : Else Then compoundStmt
+    | Else selectionStmt
     ;
 
 iterationStmt
@@ -252,8 +255,7 @@ loopDeclaration
     ;
 
 returnStmt
-    : Return Semi
-    | Return expression Semi
+    : Return expression Semi
     ;
 
 /* expressions */
@@ -360,8 +362,8 @@ argumentList
     ;
 
 constant
-    : INTEGERCONSTANT
-    | BOOLCONSTANT
+    : BOOLCONSTANT
+    | INTEGERCONSTANT
     | STRINGCONSTANT
     | FLOATCONSTANT
     ;
@@ -435,8 +437,8 @@ FLOATCONSTANT
     ;
 
 BOOLCONSTANT
-    : True
-    | False
+    : 'T'
+    | 'F'
     ;
 
 STRINGCONSTANT

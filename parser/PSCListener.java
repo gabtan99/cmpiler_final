@@ -338,6 +338,16 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitSelectionStmt(PSCParser.SelectionStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PSCParser#elseSelector}.
+	 * @param ctx the parse tree
+	 */
+	void enterElseSelector(PSCParser.ElseSelectorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#elseSelector}.
+	 * @param ctx the parse tree
+	 */
+	void exitElseSelector(PSCParser.ElseSelectorContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PSCParser#iterationStmt}.
 	 * @param ctx the parse tree
 	 */
