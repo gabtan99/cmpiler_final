@@ -57,8 +57,6 @@ Ellipsis : '...';
 Up : 'up';
 Down : 'down';
 To : 'to';
-Upto: Up To;
-Downto: Down To;
 True: 'T';
 False: 'F';
 
@@ -238,13 +236,13 @@ iterationStmt
     ;
 
 whileStatement
-    : While IDENTIFIER Upto relExpression compoundStmt
-    | While IDENTIFIER Downto relExpression compoundStmt
+    : While IDENTIFIER Up To relExpression compoundStmt
+    | While IDENTIFIER Down To relExpression compoundStmt
     ;
 
 forStatement
-    : For loopDeclaration Upto simpleExpression compoundStmt
-    | For loopDeclaration Downto simpleExpression compoundStmt
+    : For loopDeclaration Up To simpleExpression compoundStmt
+    | For loopDeclaration Down To simpleExpression compoundStmt
     ;
 
 loopDeclaration
@@ -270,7 +268,7 @@ createArrayExpression
     ;
 
 arrayInitExpression
-    : typeSpecifier LeftBrace relExpression RightBrace
+    : typeSpecifier LeftBracket relExpression RightBracket
     ;
 
 simpleExpression

@@ -52,7 +52,7 @@ public class Parser {
         parser.removeErrorListeners();
         parser.addErrorListener( errorListener );
 
-        ParseTree tree = parser.r();
+        ParseTree tree = parser.program();
         ParseTreeWalker walker = new ParseTreeWalker();
         PSCBaseListener listener = new PSCBaseListener();
         walker.walk(listener, tree);
@@ -62,7 +62,7 @@ public class Parser {
        Lexer lexer = new PSCLexer(this.input);
        TokenStream tokenStream = new CommonTokenStream(lexer);
        PSCParser parser = new PSCParser(tokenStream);
-       ParseTree tree = parser.r();
+       ParseTree tree = parser.program();
 
        // Tree inspector
         TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()),tree);
