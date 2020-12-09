@@ -203,11 +203,11 @@ localDeclarations
     ;
     
 scanStmt
-    : Scan LeftParen StringLiteral Comma IDENTIFIER RightParen
+    : Scan LeftParen StringLiteral Comma IDENTIFIER RightParen Semi
     ;
 
 printStmt
-    : Print LeftParen printParams RightParen
+    : Print LeftParen printParams RightParen Semi
     ;
 
 printParams
@@ -364,7 +364,7 @@ argumentList
 constant
     : BOOLCONSTANT
     | INTEGERCONSTANT
-    | STRINGCONSTANT
+    | StringLiteral
     | FLOATCONSTANT
     ;
 
@@ -424,7 +424,7 @@ SCharSequence
     ;
 
 StringLiteral
-    :   DoubleQuotation SCharSequence? DoubleQuotation
+    :   DoubleQuotation SCharSequence* DoubleQuotation
     ;
 
 /*tokens*/
@@ -442,7 +442,7 @@ BOOLCONSTANT
     ;
 
 STRINGCONSTANT
-    : StringLiteral
+    : DoubleQuotation SCharSequence? DoubleQuotation
     ;
 
 
