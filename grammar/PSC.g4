@@ -67,12 +67,14 @@ DoubleQuotation: '"';
 /* main program */
 
 program
-    : mainProgram functionDeclarationList
+    : functionDeclarationList? mainProgram EOF
     ;
 
 mainProgram
-    : Main LeftParen RightParen LeftBrace declarationList RightBrace 
+    : Main LeftParen RightParen LeftBrace (declarationList | statementList) * RightBrace 
     ;
+
+
 declarationList
     : declaration
     | declarationList declaration 
@@ -153,7 +155,7 @@ typeSpecifierSelector
     ;
 
 functionDeclaration
-    : Func (typeSpecifier | arrayTypeSpecifier | Void) IDENTIFIER LeftParen params RightParen statement
+    : Func (typeSpecifier | arrayTypeSpecifier | Void) IDENTIFIER LeftParen params RightParen compoundStmt
     ;
 
 params
@@ -186,8 +188,8 @@ statement
     ;
    
 statementList
-    : statementList statement
-    | /*epsilon */
+    : statement
+    | statementList statement
     ;
 
 expressionStmt
@@ -196,12 +198,12 @@ expressionStmt
     ;
 
 compoundStmt
-    : LeftBrace localDeclarations statementList RightBrace
+    : LeftBrace (localDeclarations | statementList)* RightBrace
     ;
 
 localDeclarations
-    : localDeclarations scopedVariableDeclaration
-    | /*epsilon */
+    : scopedVariableDeclaration
+    | localDeclarations scopedVariableDeclaration
     ;
     
 scanStmt
