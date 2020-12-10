@@ -408,6 +408,16 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitExpression(PSCParser.ExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PSCParser#assignmentExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignmentExpression(PSCParser.AssignmentExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#assignmentExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignmentExpression(PSCParser.AssignmentExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PSCParser#createArrayExpression}.
 	 * @param ctx the parse tree
 	 */

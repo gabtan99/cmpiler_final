@@ -64,6 +64,8 @@ DoubleQuotation: '"';
 
 program
     : functionDeclarationList? mainProgram EOF
+    | functionDeclarationList?  EOF {notifyErrorListeners("Missing main() function required to run programs.");}
+    | functionDeclarationList? mainProgram functionDeclarationList?  EOF {notifyErrorListeners("Function declarations should be made before the main() function.");}
     ;
 
 mainProgram
@@ -90,6 +92,8 @@ functionDeclarationList
 variableDeclaration
     : typeSpecifier variableDeclarationList Semi
     | ConstantKey typeSpecifier variableDeclarationList Semi
+    | typeSpecifier variableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
+    | ConstantKey typeSpecifier variableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 scopedVariableDeclaration
@@ -99,6 +103,7 @@ scopedVariableDeclaration
 
 variableDeclarationList
     : variableDeclarationList Comma variableDeclarationInitialize
+    | variableDeclarationList variableDeclarationInitialize {notifyErrorListeners("Multiple declarations should be separated by commas ','.");}
     | variableDeclarationInitialize
     ;
 
@@ -127,16 +132,19 @@ arrayTypeSpecifier
 arrayVariableDeclaration
     : arrayTypeSpecifier arrayVariableDeclarationList Semi
     | ConstantKey arrayTypeSpecifier arrayVariableDeclarationList Semi
+    | arrayTypeSpecifier arrayVariableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
+    | ConstantKey arrayTypeSpecifier arrayVariableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 arrayVariableDeclarationList
     : arrayVariableDeclarationList Comma arrayVariableDeclarationInitialize
     | arrayVariableDeclarationInitialize
+    | arrayVariableDeclarationList arrayVariableDeclarationInitialize {notifyErrorListeners("Multiple declarations should be separated by commas ','.");}
     ;
 
 arrayVariableDeclarationInitialize
     : arrayVariableDeclarationIdentifier
-    | arrayVariableDeclarationIdentifier Assign createArrayExpression
+    | arrayVariableDeclarationIdentifier Assign createArrayExpression 
     ;
 
 arrayVariableDeclarationIdentifier
@@ -152,6 +160,9 @@ typeSpecifierSelector
 
 functionDeclaration
     : Func (typeSpecifier | arrayTypeSpecifier | Void) IDENTIFIER LeftParen params RightParen compoundStmt
+    | Func (typeSpecifier | arrayTypeSpecifier | Void)  LeftParen params RightParen compoundStmt {notifyErrorListeners("Missing function name.");}
+    | Func (typeSpecifier | arrayTypeSpecifier | Void) (typeSpecifier | arrayTypeSpecifier | Void)+ IDENTIFIER*  LeftParen params RightParen compoundStmt {notifyErrorListeners("Function cannot have multiple return types.");}
+    | Func IDENTIFIER LeftParen params RightParen compoundStmt {notifyErrorListeners("Missing function return type.");}
     ;
 
 params
@@ -160,8 +171,9 @@ params
     ;
 
 paramList
-    : paramList Comma paramTypeList
-    | paramTypeList
+    : paramTypeList
+    | paramList Comma paramTypeList
+    | paramList paramTypeList {notifyErrorListeners("Multiple declarations should be separated by commas ','.");}
     ;
 
 paramTypeList
@@ -190,7 +202,7 @@ statementList
 
 expressionStmt
     : expression Semi
-    | Semi
+    | expression {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 compoundStmt
@@ -204,10 +216,12 @@ localDeclarations
     
 scanStmt
     : Scan LeftParen StringLiteral Comma IDENTIFIER RightParen Semi
+    | Scan LeftParen StringLiteral Comma IDENTIFIER RightParen {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 printStmt
     : Print LeftParen printParams RightParen Semi
+    | Print LeftParen printParams RightParen {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 printParams
@@ -217,6 +231,7 @@ printParams
 printParamsList
     : printParamsList Plus printParamsSelector
     | printParamsSelector
+    | printParamsList Plus {notifyErrorListeners("Extraneous '+' found / Expecting another print parameter.");}
     ;
     
 printParamsSelector
@@ -256,13 +271,19 @@ loopDeclaration
 
 returnStmt
     : Return expression Semi
+    | Return (typeSpecifier | arrayTypeSpecifier)*  Semi {notifyErrorListeners("Expecting an expression or identifier in return statement.");}
+    | Return (expression | typeSpecifier | arrayTypeSpecifier)* {notifyErrorListeners("Missing semicolon ';' after return statement.");}
     ;
 
 /* expressions */
 expression
-    : mutable Assign expression
+    : assignmentExpression
     | simpleExpression
     | createArrayExpression
+    ;
+
+assignmentExpression
+    : mutable Assign expression
     ;
 
 createArrayExpression
