@@ -203,6 +203,7 @@ statementList
 expressionStmt
     : expression Semi
     | expression {notifyErrorListeners("Missing semicolon ';'.");}
+    | Semi {notifyErrorListeners("Extraneous semicolon ';' found.");}
     ;
 
 compoundStmt
