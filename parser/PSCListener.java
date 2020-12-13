@@ -28,6 +28,16 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitMainProgram(PSCParser.MainProgramContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PSCParser#mainProgramLeftParen}.
+	 * @param ctx the parse tree
+	 */
+	void enterMainProgramLeftParen(PSCParser.MainProgramLeftParenContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#mainProgramLeftParen}.
+	 * @param ctx the parse tree
+	 */
+	void exitMainProgramLeftParen(PSCParser.MainProgramLeftParenContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PSCParser#declarationList}.
 	 * @param ctx the parse tree
 	 */
@@ -358,6 +368,26 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitSelectionStmt(PSCParser.SelectionStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PSCParser#selectionCondition}.
+	 * @param ctx the parse tree
+	 */
+	void enterSelectionCondition(PSCParser.SelectionConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#selectionCondition}.
+	 * @param ctx the parse tree
+	 */
+	void exitSelectionCondition(PSCParser.SelectionConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PSCParser#selectionLeftParen}.
+	 * @param ctx the parse tree
+	 */
+	void enterSelectionLeftParen(PSCParser.SelectionLeftParenContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#selectionLeftParen}.
+	 * @param ctx the parse tree
+	 */
+	void exitSelectionLeftParen(PSCParser.SelectionLeftParenContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PSCParser#elseSelector}.
 	 * @param ctx the parse tree
 	 */
@@ -468,6 +498,16 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitArrayInitExpression(PSCParser.ArrayInitExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PSCParser#arrayInitLeftBracket}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayInitLeftBracket(PSCParser.ArrayInitLeftBracketContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#arrayInitLeftBracket}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayInitLeftBracket(PSCParser.ArrayInitLeftBracketContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PSCParser#simpleExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -507,16 +547,6 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRelExpression(PSCParser.RelExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PSCParser#relOperator}.
-	 * @param ctx the parse tree
-	 */
-	void enterRelOperator(PSCParser.RelOperatorContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#relOperator}.
-	 * @param ctx the parse tree
-	 */
-	void exitRelOperator(PSCParser.RelOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#sumExpression}.
 	 * @param ctx the parse tree
@@ -598,6 +628,16 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitMutable(PSCParser.MutableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PSCParser#mutableLeftBracket}.
+	 * @param ctx the parse tree
+	 */
+	void enterMutableLeftBracket(PSCParser.MutableLeftBracketContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#mutableLeftBracket}.
+	 * @param ctx the parse tree
+	 */
+	void exitMutableLeftBracket(PSCParser.MutableLeftBracketContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PSCParser#immutable}.
 	 * @param ctx the parse tree
 	 */
@@ -608,6 +648,16 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitImmutable(PSCParser.ImmutableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PSCParser#immutableLeftParen}.
+	 * @param ctx the parse tree
+	 */
+	void enterImmutableLeftParen(PSCParser.ImmutableLeftParenContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#immutableLeftParen}.
+	 * @param ctx the parse tree
+	 */
+	void exitImmutableLeftParen(PSCParser.ImmutableLeftParenContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PSCParser#call}.
 	 * @param ctx the parse tree
 	 */
@@ -617,6 +667,16 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCall(PSCParser.CallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PSCParser#callLeftParen}.
+	 * @param ctx the parse tree
+	 */
+	void enterCallLeftParen(PSCParser.CallLeftParenContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#callLeftParen}.
+	 * @param ctx the parse tree
+	 */
+	void exitCallLeftParen(PSCParser.CallLeftParenContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#arguments}.
 	 * @param ctx the parse tree

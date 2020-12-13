@@ -21,7 +21,8 @@ public class App extends Application {
         view.setController(controller);
     }
 
-    public static void main(String[] args) {
+    public static void main (String[] args) {
+        System.out.println(args);
         launch();
     }
 

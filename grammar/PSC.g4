@@ -67,9 +67,14 @@ program
     ;
 
 mainProgram
-    : Main LeftParen RightParen LeftBrace (declarationList | statementList) * RightBrace 
+    :  mainProgramLeftParen RightParen compoundStmt
+    |  mainProgramLeftParen {notifyErrorListeners("Expecting ')' after '('.");} compoundStmt
     ;
 
+mainProgramLeftParen
+    : Main LeftParen
+    | Main {notifyErrorListeners("Expected '(' after main.");}
+    ;
 
 declarationList
     : declaration
@@ -89,7 +94,7 @@ functionDeclarationList
 /* ------- */
 variableDeclaration
     : ConstantKey? typeSpecifier variableDeclarationItems Semi
-    | ConstantKey? typeSpecifier variableDeclarationItems {notifyErrorListeners("Missing semicolon ';'.");}
+    | {notifyErrorListeners("Missing semicolon ';'.");} ConstantKey? typeSpecifier variableDeclarationItems 
     ;
 
 scopedVariableDeclaration
@@ -131,7 +136,7 @@ arrayTypeSpecifier
 
 arrayVariableDeclaration
     : ConstantKey? arrayTypeSpecifier arrayVariableDeclarationItems Semi
-    | ConstantKey? arrayTypeSpecifier arrayVariableDeclarationItems {notifyErrorListeners("Missing semicolon ';'.");}
+    | {notifyErrorListeners("Missing semicolon ';'.");} ConstantKey? arrayTypeSpecifier arrayVariableDeclarationItems 
     ;
 
 arrayVariableDeclarationItems
@@ -204,7 +209,7 @@ statementList
 
 expressionStmt
     : (assignmentStandaloneExpression|call) Semi
-    | (assignmentStandaloneExpression|call) {notifyErrorListeners("Missing semicolon ';'.");}
+    | {notifyErrorListeners("Missing semicolon ';'.");} (assignmentStandaloneExpression|call) 
     | Semi {notifyErrorListeners("Extraneous semicolon ';' found.");}
     ;
 
@@ -221,12 +226,12 @@ localDeclarations
     
 scanStmt
     : Scan LeftParen StringLiteral Comma IDENTIFIER RightParen Semi
-    | Scan LeftParen StringLiteral Comma IDENTIFIER RightParen {notifyErrorListeners("Missing semicolon ';'.");}
+    | {notifyErrorListeners("Missing semicolon ';'.");} Scan LeftParen StringLiteral Comma IDENTIFIER RightParen 
     ;
 
 printStmt
     : Print LeftParen printParams RightParen Semi
-    | Print LeftParen printParams RightParen {notifyErrorListeners("Missing semicolon ';'.");}
+    | {notifyErrorListeners("Missing semicolon ';'.");} Print LeftParen printParams RightParen 
     ;
 
 printParams
@@ -247,12 +252,25 @@ printParamsSelector
     ;
 
 selectionStmt
-    : If LeftParen simpleExpression RightParen Then compoundStmt elseSelector?
+    :  selectionCondition Then compoundStmt elseSelector?
+    |  selectionCondition {notifyErrorListeners("Missing 'then' keyword.");} compoundStmt elseSelector?
+    ;
+
+selectionCondition
+    : If selectionLeftParen RightParen
+    | If selectionLeftParen RightParen RightParen+ {notifyErrorListeners("Redundant closing parenthesis')'.");}
+    | If selectionLeftParen {notifyErrorListeners("Expecting a closing parenthesis ')'.");}
+    ;
+
+selectionLeftParen
+    : LeftParen simpleExpression
+    | simpleExpression {notifyErrorListeners("Expected '(' after main.");}
     ;
 
 elseSelector
     : Else Then compoundStmt
     | Else selectionStmt
+    | Else {notifyErrorListeners("Missing 'then' keyword after 'else'.");} compoundStmt
     ;
 
 iterationStmt
@@ -269,7 +287,10 @@ forStatement
     ;
 
 iterationToStatement
-    : (Up|Down) To
+    : Upto
+    | Downto
+    | option=(Up | Down) {notifyErrorListeners("Expecting to after '" + $option.text + "' keyword.");}
+    | {notifyErrorListeners("Expecting to 'up' or 'down' keyword.");} To 
     ;
 
 loopDeclaration
@@ -300,8 +321,14 @@ createArrayExpression
     ;
 
 arrayInitExpression
-    : typeSpecifier LeftBracket relExpression RightBracket
-    | typeSpecifier LeftBracket  RightBracket {notifyErrorListeners("Expecting an expression for declaring array sizes.");}
+    : typeSpecifier arrayInitLeftBracket RightBracket
+    | typeSpecifier arrayInitLeftBracket RightBracket RightBracket+ {notifyErrorListeners("Redundant closing bracket ']'.");}
+    | typeSpecifier arrayInitLeftBracket {notifyErrorListeners("Expecting a closing bracket ']'.");}
+    ;
+
+arrayInitLeftBracket
+    : LeftBracket relExpression
+    | LeftBracket {notifyErrorListeners("Expecting an expression for declaring array sizes.");}
     ;
 
 simpleExpression
@@ -320,8 +347,8 @@ unaryRelExpression
     ;
 
 relExpression
-    : sumExpression relOperator sumExpression
-    | sumExpression
+    : sumExpression 
+    | sumExpression relOperator  sumExpression
     ;
 
 relOperator
@@ -369,17 +396,35 @@ factor
 
 mutable
     : IDENTIFIER
-    | IDENTIFIER LeftBracket simpleExpression RightBracket
+    | IDENTIFIER  mutableLeftBracket RightBracket
+    | IDENTIFIER  mutableLeftBracket RightBracket RightBracket+ {notifyErrorListeners("Redundant closing bracket ']'.");}
+    | IDENTIFIER  mutableLeftBracket {notifyErrorListeners("Expecting a closing bracket ']'.");}
+    ;
+
+mutableLeftBracket
+    : LeftBracket simpleExpression
     ;
 
 immutable
-    : LeftParen simpleExpression RightParen
-    | call
+    : call
     | constant
+    | immutableLeftParen RightParen
+    | immutableLeftParen RightParen RightParen+ {notifyErrorListeners("Redundant closing parenthesis')'.");}
+    | immutableLeftParen {notifyErrorListeners("Expecting a closing parenthesis ')'.");}
+    ;
+
+immutableLeftParen
+    : LeftParen simpleExpression
     ;
 
 call
-    : IDENTIFIER LeftParen arguments RightParen
+    : IDENTIFIER callLeftParen RightParen
+    | IDENTIFIER callLeftParen RightParen (callLeftParen RightParen)+ {notifyErrorListeners("Redundant parenthesis.");}
+    ;
+
+callLeftParen
+    : LeftParen arguments
+    | {notifyErrorListeners("Expecting an opening parenthesis '(' after function identifier.");} arguments
     ;
 
 arguments
@@ -458,6 +503,19 @@ SChar
 fragment
 SCharSequence
     :   SChar+
+    ;
+
+fragment
+Space
+    : [ ]
+    ;
+
+Upto
+    : Up Space+ To
+    ;
+
+Downto
+    : Down Space+ To
     ;
 
 StringLiteral

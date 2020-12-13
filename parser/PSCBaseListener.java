@@ -40,6 +40,18 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMainProgramLeftParen(PSCParser.MainProgramLeftParenContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMainProgramLeftParen(PSCParser.MainProgramLeftParenContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDeclarationList(PSCParser.DeclarationListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -436,6 +448,30 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSelectionCondition(PSCParser.SelectionConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSelectionCondition(PSCParser.SelectionConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSelectionLeftParen(PSCParser.SelectionLeftParenContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSelectionLeftParen(PSCParser.SelectionLeftParenContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterElseSelector(PSCParser.ElseSelectorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -568,6 +604,18 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArrayInitLeftBracket(PSCParser.ArrayInitLeftBracketContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayInitLeftBracket(PSCParser.ArrayInitLeftBracketContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSimpleExpression(PSCParser.SimpleExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -611,18 +659,6 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRelExpression(PSCParser.RelExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRelOperator(PSCParser.RelOperatorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRelOperator(PSCParser.RelOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -724,6 +760,18 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMutableLeftBracket(PSCParser.MutableLeftBracketContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMutableLeftBracket(PSCParser.MutableLeftBracketContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterImmutable(PSCParser.ImmutableContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -736,6 +784,18 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterImmutableLeftParen(PSCParser.ImmutableLeftParenContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitImmutableLeftParen(PSCParser.ImmutableLeftParenContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCall(PSCParser.CallContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -743,6 +803,18 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCall(PSCParser.CallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCallLeftParen(PSCParser.CallLeftParenContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCallLeftParen(PSCParser.CallLeftParenContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
