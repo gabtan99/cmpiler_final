@@ -63,7 +63,7 @@ Int
 Float
 String
 Bool
-MAIN
+Main
 Do
 Else
 For
@@ -120,7 +120,7 @@ Int
 Float
 String
 Bool
-MAIN
+Main
 Do
 Else
 For

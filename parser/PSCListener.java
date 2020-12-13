@@ -398,6 +398,16 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitForStatement(PSCParser.ForStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PSCParser#iterationToStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIterationToStatement(PSCParser.IterationToStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#iterationToStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIterationToStatement(PSCParser.IterationToStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PSCParser#loopDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -407,6 +417,16 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLoopDeclaration(PSCParser.LoopDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PSCParser#simpleAssignExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimpleAssignExpression(PSCParser.SimpleAssignExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#simpleAssignExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimpleAssignExpression(PSCParser.SimpleAssignExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#returnStmt}.
 	 * @param ctx the parse tree
@@ -418,25 +438,15 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitReturnStmt(PSCParser.ReturnStmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#expression}.
+	 * Enter a parse tree produced by {@link PSCParser#assignmentStandaloneExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(PSCParser.ExpressionContext ctx);
+	void enterAssignmentStandaloneExpression(PSCParser.AssignmentStandaloneExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link PSCParser#expression}.
+	 * Exit a parse tree produced by {@link PSCParser#assignmentStandaloneExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(PSCParser.ExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PSCParser#assignmentExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignmentExpression(PSCParser.AssignmentExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#assignmentExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignmentExpression(PSCParser.AssignmentExpressionContext ctx);
+	void exitAssignmentStandaloneExpression(PSCParser.AssignmentStandaloneExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#createArrayExpression}.
 	 * @param ctx the parse tree

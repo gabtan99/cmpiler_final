@@ -17,7 +17,7 @@ public class PSCLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		ConstantKey=1, Int=2, Float=3, String=4, Bool=5, MAIN=6, Do=7, Else=8, 
+		ConstantKey=1, Int=2, Float=3, String=4, Bool=5, Main=6, Do=7, Else=8, 
 		For=9, If=10, Then=11, Return=12, Void=13, While=14, Func=15, Create=16, 
 		Print=17, Scan=18, LeftParen=19, RightParen=20, LeftBracket=21, RightBracket=22, 
 		LeftBrace=23, RightBrace=24, Less=25, LessEqual=26, Greater=27, GreaterEqual=28, 
@@ -36,7 +36,7 @@ public class PSCLexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"ConstantKey", "Int", "Float", "String", "Bool", "MAIN", "Do", "Else", 
+			"ConstantKey", "Int", "Float", "String", "Bool", "Main", "Do", "Else", 
 			"For", "If", "Then", "Return", "Void", "While", "Func", "Create", "Print", 
 			"Scan", "LeftParen", "RightParen", "LeftBracket", "RightBracket", "LeftBrace", 
 			"RightBrace", "Less", "LessEqual", "Greater", "GreaterEqual", "Plus", 
@@ -64,7 +64,7 @@ public class PSCLexer extends Lexer {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "ConstantKey", "Int", "Float", "String", "Bool", "MAIN", "Do", 
+			null, "ConstantKey", "Int", "Float", "String", "Bool", "Main", "Do", 
 			"Else", "For", "If", "Then", "Return", "Void", "While", "Func", "Create", 
 			"Print", "Scan", "LeftParen", "RightParen", "LeftBracket", "RightBracket", 
 			"LeftBrace", "RightBrace", "Less", "LessEqual", "Greater", "GreaterEqual", 

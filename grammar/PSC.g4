@@ -88,10 +88,8 @@ functionDeclarationList
 
 /* ------- */
 variableDeclaration
-    : typeSpecifier  variableDeclarationItems Semi
-    | ConstantKey typeSpecifier variableDeclarationItems Semi
-    | typeSpecifier variableDeclarationItems {notifyErrorListeners("Missing semicolon ';'.");}
-    | ConstantKey typeSpecifier variableDeclarationItems {notifyErrorListeners("Missing semicolon ';'.");}
+    : ConstantKey? typeSpecifier variableDeclarationItems Semi
+    | ConstantKey? typeSpecifier variableDeclarationItems {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 scopedVariableDeclaration
@@ -132,10 +130,8 @@ arrayTypeSpecifier
     ;
 
 arrayVariableDeclaration
-    : arrayTypeSpecifier arrayVariableDeclarationItems Semi
-    | ConstantKey arrayTypeSpecifier arrayVariableDeclarationItems Semi
-    | arrayTypeSpecifier arrayVariableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
-    | ConstantKey arrayTypeSpecifier arrayVariableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
+    : ConstantKey? arrayTypeSpecifier arrayVariableDeclarationItems Semi
+    | ConstantKey? arrayTypeSpecifier arrayVariableDeclarationItems {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 arrayVariableDeclarationItems
@@ -207,13 +203,15 @@ statementList
     ;
 
 expressionStmt
-    : expression Semi
-    | expression {notifyErrorListeners("Missing semicolon ';'.");}
+    : (assignmentStandaloneExpression|call) Semi
+    | (assignmentStandaloneExpression|call) {notifyErrorListeners("Missing semicolon ';'.");}
     | Semi {notifyErrorListeners("Extraneous semicolon ';' found.");}
     ;
 
 compoundStmt
     : LeftBrace (localDeclarations | statementList)* RightBrace
+    | LeftBrace (localDeclarations | statementList)* {notifyErrorListeners("Missing closing bracket.");}
+    | LeftBrace (localDeclarations | statementList)* RightBrace RightBrace+ {notifyErrorListeners("Extra bracket found.");}
     ;
 
 localDeclarations
@@ -263,36 +261,38 @@ iterationStmt
     ;
 
 whileStatement
-    : While IDENTIFIER Up To relExpression compoundStmt
-    | While IDENTIFIER Down To relExpression compoundStmt
+    : While IDENTIFIER iterationToStatement relExpression compoundStmt
     ;
 
 forStatement
-    : For loopDeclaration Up To simpleExpression compoundStmt
-    | For loopDeclaration Down To simpleExpression compoundStmt
+    : For loopDeclaration iterationToStatement simpleExpression compoundStmt
+    ;
+
+iterationToStatement
+    : (Up|Down) To
     ;
 
 loopDeclaration
-    : Int IDENTIFIER Assign simpleExpression
-    | IDENTIFIER Assign simpleExpression
+    : Int IDENTIFIER simpleAssignExpression
+    | Int IDENTIFIER {notifyErrorListeners("Expecting assignment expression.");}
+    | IDENTIFIER simpleAssignExpression
     | IDENTIFIER
     ;
 
+simpleAssignExpression
+    : Assign simpleExpression
+    ;
+
 returnStmt
-    : Return expression Semi
+    : Return simpleExpression Semi
     | Return {notifyErrorListeners("Expecting an expression or identifier in return statement.");} (typeSpecifier | arrayTypeSpecifier)* Semi
-    | Return (expression | typeSpecifier | arrayTypeSpecifier)* {notifyErrorListeners("Missing semicolon ';' after return statement.");}
+    | Return (simpleExpression | typeSpecifier | arrayTypeSpecifier)* {notifyErrorListeners("Missing semicolon ';' after return statement.");}
     ;
 
 /* expressions */
-expression
-    : assignmentExpression
-    | simpleExpression
-    | createArrayExpression
-    ;
 
-assignmentExpression
-    : mutable Assign expression
+assignmentStandaloneExpression
+    : mutable Assign (simpleExpression | createArrayExpression)
     ;
 
 createArrayExpression
@@ -369,11 +369,11 @@ factor
 
 mutable
     : IDENTIFIER
-    | IDENTIFIER LeftBracket expression RightBracket
+    | IDENTIFIER LeftBracket simpleExpression RightBracket
     ;
 
 immutable
-    : LeftParen expression RightParen
+    : LeftParen simpleExpression RightParen
     | call
     | constant
     ;
@@ -389,8 +389,8 @@ arguments
     ;
 
 argumentList
-    : expression
-    | argumentList Comma expression
+    : simpleExpression
+    | argumentList Comma simpleExpression
     ;
 
 constant
