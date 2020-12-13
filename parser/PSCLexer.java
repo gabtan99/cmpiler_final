@@ -17,15 +17,15 @@ public class PSCLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		ConstantKey=1, Int=2, Float=3, String=4, Bool=5, Main=6, Do=7, Else=8, 
+		ConstantKey=1, Int=2, Float=3, String=4, Bool=5, MAIN=6, Do=7, Else=8, 
 		For=9, If=10, Then=11, Return=12, Void=13, While=14, Func=15, Create=16, 
 		Print=17, Scan=18, LeftParen=19, RightParen=20, LeftBracket=21, RightBracket=22, 
 		LeftBrace=23, RightBrace=24, Less=25, LessEqual=26, Greater=27, GreaterEqual=28, 
 		Plus=29, Minus=30, Star=31, Div=32, AndAnd=33, OrOr=34, Not=35, Colon=36, 
 		Semi=37, Comma=38, Assign=39, Equal=40, NotEqual=41, Dot=42, Ellipsis=43, 
-		Up=44, Down=45, To=46, DoubleQuotation=47, StringLiteral=48, INTEGERCONSTANT=49, 
-		FLOATCONSTANT=50, BOOLCONSTANT=51, STRINGCONSTANT=52, IDENTIFIER=53, BlockComment=54, 
-		LineComment=55, WS=56;
+		Up=44, Down=45, To=46, StringLiteral=47, INTEGERCONSTANT=48, FLOATCONSTANT=49, 
+		BOOLCONSTANT=50, STRINGCONSTANT=51, IDENTIFIER=52, BlockComment=53, LineComment=54, 
+		WS=55;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -36,13 +36,13 @@ public class PSCLexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"ConstantKey", "Int", "Float", "String", "Bool", "Main", "Do", "Else", 
+			"ConstantKey", "Int", "Float", "String", "Bool", "MAIN", "Do", "Else", 
 			"For", "If", "Then", "Return", "Void", "While", "Func", "Create", "Print", 
 			"Scan", "LeftParen", "RightParen", "LeftBracket", "RightBracket", "LeftBrace", 
 			"RightBrace", "Less", "LessEqual", "Greater", "GreaterEqual", "Plus", 
 			"Minus", "Star", "Div", "AndAnd", "OrOr", "Not", "Colon", "Semi", "Comma", 
 			"Assign", "Equal", "NotEqual", "Dot", "Ellipsis", "Up", "Down", "To", 
-			"DoubleQuotation", "NonDigit", "Digit", "DigitSequence", "FloatSuffix", 
+			"NonDigit", "DoubleQuotation", "Digit", "DigitSequence", "FloatSuffix", 
 			"FractionalConstant", "DecimalFloatingConstant", "EscapeSequence", "SimpleEscapeSequence", 
 			"SChar", "SCharSequence", "StringLiteral", "INTEGERCONSTANT", "FLOATCONSTANT", 
 			"BOOLCONSTANT", "STRINGCONSTANT", "IDENTIFIER", "BlockComment", "LineComment", 
@@ -58,21 +58,20 @@ public class PSCLexer extends Lexer {
 			"'func'", "'create'", "'print'", "'scan'", "'('", "')'", "'['", "']'", 
 			"'{'", "'}'", "'<'", "'<='", "'>'", "'>='", "'+'", "'-'", "'*'", "'/'", 
 			"'&&'", "'||'", "'!'", "':'", "';'", "','", "'='", "'=='", "'!='", "'.'", 
-			"'...'", "'up'", "'down'", "'to'", "'\"'"
+			"'...'", "'up'", "'down'", "'to'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "ConstantKey", "Int", "Float", "String", "Bool", "Main", "Do", 
+			null, "ConstantKey", "Int", "Float", "String", "Bool", "MAIN", "Do", 
 			"Else", "For", "If", "Then", "Return", "Void", "While", "Func", "Create", 
 			"Print", "Scan", "LeftParen", "RightParen", "LeftBracket", "RightBracket", 
 			"LeftBrace", "RightBrace", "Less", "LessEqual", "Greater", "GreaterEqual", 
 			"Plus", "Minus", "Star", "Div", "AndAnd", "OrOr", "Not", "Colon", "Semi", 
 			"Comma", "Assign", "Equal", "NotEqual", "Dot", "Ellipsis", "Up", "Down", 
-			"To", "DoubleQuotation", "StringLiteral", "INTEGERCONSTANT", "FLOATCONSTANT", 
-			"BOOLCONSTANT", "STRINGCONSTANT", "IDENTIFIER", "BlockComment", "LineComment", 
-			"WS"
+			"To", "StringLiteral", "INTEGERCONSTANT", "FLOATCONSTANT", "BOOLCONSTANT", 
+			"STRINGCONSTANT", "IDENTIFIER", "BlockComment", "LineComment", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -134,7 +133,7 @@ public class PSCLexer extends Lexer {
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2:\u0197\b\1\4\2\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\29\u0197\b\1\4\2\t"+
 		"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -162,9 +161,9 @@ public class PSCLexer extends Lexer {
 		"\6C\u0192\nC\rC\16C\u0193\3C\3C\3\u017d\2D\3\3\5\4\7\5\t\6\13\7\r\b\17"+
 		"\t\21\n\23\13\25\f\27\r\31\16\33\17\35\20\37\21!\22#\23%\24\'\25)\26+"+
 		"\27-\30/\31\61\32\63\33\65\34\67\359\36;\37= ?!A\"C#E$G%I&K\'M(O)Q*S+"+
-		"U,W-Y.[/]\60_\61a\2c\2e\2g\2i\2k\2m\2o\2q\2s\2u\62w\63y\64{\65}\66\177"+
-		"\67\u00818\u00839\u0085:\3\2\t\5\2C\\aac|\3\2\62;\f\2$$))AA^^cdhhpptt"+
-		"vvxx\6\2\f\f\17\17$$^^\4\2HHVV\4\2\f\f\17\17\5\2\13\f\17\17\"\"\2\u019a"+
+		"U,W-Y.[/]\60_\2a\2c\2e\2g\2i\2k\2m\2o\2q\2s\2u\61w\62y\63{\64}\65\177"+
+		"\66\u0081\67\u00838\u00859\3\2\t\5\2C\\aac|\3\2\62;\f\2$$))AA^^cdhhpp"+
+		"ttvvxx\6\2\f\f\17\17$$^^\4\2HHVV\4\2\f\f\17\17\5\2\13\f\17\17\"\"\2\u0199"+
 		"\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2"+
 		"\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\2\27\3\2\2\2"+
 		"\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2\2\2\37\3\2\2\2\2!\3\2\2\2\2#\3\2"+
@@ -172,15 +171,15 @@ public class PSCLexer extends Lexer {
 		"\2\2\61\3\2\2\2\2\63\3\2\2\2\2\65\3\2\2\2\2\67\3\2\2\2\29\3\2\2\2\2;\3"+
 		"\2\2\2\2=\3\2\2\2\2?\3\2\2\2\2A\3\2\2\2\2C\3\2\2\2\2E\3\2\2\2\2G\3\2\2"+
 		"\2\2I\3\2\2\2\2K\3\2\2\2\2M\3\2\2\2\2O\3\2\2\2\2Q\3\2\2\2\2S\3\2\2\2\2"+
-		"U\3\2\2\2\2W\3\2\2\2\2Y\3\2\2\2\2[\3\2\2\2\2]\3\2\2\2\2_\3\2\2\2\2u\3"+
-		"\2\2\2\2w\3\2\2\2\2y\3\2\2\2\2{\3\2\2\2\2}\3\2\2\2\2\177\3\2\2\2\2\u0081"+
-		"\3\2\2\2\2\u0083\3\2\2\2\2\u0085\3\2\2\2\3\u0087\3\2\2\2\5\u0090\3\2\2"+
-		"\2\7\u0094\3\2\2\2\t\u009a\3\2\2\2\13\u00a1\3\2\2\2\r\u00a6\3\2\2\2\17"+
-		"\u00ab\3\2\2\2\21\u00ae\3\2\2\2\23\u00b3\3\2\2\2\25\u00b7\3\2\2\2\27\u00ba"+
-		"\3\2\2\2\31\u00bf\3\2\2\2\33\u00c6\3\2\2\2\35\u00cb\3\2\2\2\37\u00d1\3"+
-		"\2\2\2!\u00d6\3\2\2\2#\u00dd\3\2\2\2%\u00e3\3\2\2\2\'\u00e8\3\2\2\2)\u00ea"+
-		"\3\2\2\2+\u00ec\3\2\2\2-\u00ee\3\2\2\2/\u00f0\3\2\2\2\61\u00f2\3\2\2\2"+
-		"\63\u00f4\3\2\2\2\65\u00f6\3\2\2\2\67\u00f9\3\2\2\29\u00fb\3\2\2\2;\u00fe"+
+		"U\3\2\2\2\2W\3\2\2\2\2Y\3\2\2\2\2[\3\2\2\2\2]\3\2\2\2\2u\3\2\2\2\2w\3"+
+		"\2\2\2\2y\3\2\2\2\2{\3\2\2\2\2}\3\2\2\2\2\177\3\2\2\2\2\u0081\3\2\2\2"+
+		"\2\u0083\3\2\2\2\2\u0085\3\2\2\2\3\u0087\3\2\2\2\5\u0090\3\2\2\2\7\u0094"+
+		"\3\2\2\2\t\u009a\3\2\2\2\13\u00a1\3\2\2\2\r\u00a6\3\2\2\2\17\u00ab\3\2"+
+		"\2\2\21\u00ae\3\2\2\2\23\u00b3\3\2\2\2\25\u00b7\3\2\2\2\27\u00ba\3\2\2"+
+		"\2\31\u00bf\3\2\2\2\33\u00c6\3\2\2\2\35\u00cb\3\2\2\2\37\u00d1\3\2\2\2"+
+		"!\u00d6\3\2\2\2#\u00dd\3\2\2\2%\u00e3\3\2\2\2\'\u00e8\3\2\2\2)\u00ea\3"+
+		"\2\2\2+\u00ec\3\2\2\2-\u00ee\3\2\2\2/\u00f0\3\2\2\2\61\u00f2\3\2\2\2\63"+
+		"\u00f4\3\2\2\2\65\u00f6\3\2\2\2\67\u00f9\3\2\2\29\u00fb\3\2\2\2;\u00fe"+
 		"\3\2\2\2=\u0100\3\2\2\2?\u0102\3\2\2\2A\u0104\3\2\2\2C\u0106\3\2\2\2E"+
 		"\u0109\3\2\2\2G\u010c\3\2\2\2I\u010e\3\2\2\2K\u0110\3\2\2\2M\u0112\3\2"+
 		"\2\2O\u0114\3\2\2\2Q\u0116\3\2\2\2S\u0119\3\2\2\2U\u011c\3\2\2\2W\u011e"+
@@ -231,8 +230,8 @@ public class PSCLexer extends Lexer {
 		"\60\2\2\u011f\u0120\7\60\2\2\u0120\u0121\7\60\2\2\u0121X\3\2\2\2\u0122"+
 		"\u0123\7w\2\2\u0123\u0124\7r\2\2\u0124Z\3\2\2\2\u0125\u0126\7f\2\2\u0126"+
 		"\u0127\7q\2\2\u0127\u0128\7y\2\2\u0128\u0129\7p\2\2\u0129\\\3\2\2\2\u012a"+
-		"\u012b\7v\2\2\u012b\u012c\7q\2\2\u012c^\3\2\2\2\u012d\u012e\7$\2\2\u012e"+
-		"`\3\2\2\2\u012f\u0130\t\2\2\2\u0130b\3\2\2\2\u0131\u0132\t\3\2\2\u0132"+
+		"\u012b\7v\2\2\u012b\u012c\7q\2\2\u012c^\3\2\2\2\u012d\u012e\t\2\2\2\u012e"+
+		"`\3\2\2\2\u012f\u0130\7$\2\2\u0130b\3\2\2\2\u0131\u0132\t\3\2\2\u0132"+
 		"d\3\2\2\2\u0133\u0135\5c\62\2\u0134\u0133\3\2\2\2\u0135\u0136\3\2\2\2"+
 		"\u0136\u0134\3\2\2\2\u0136\u0137\3\2\2\2\u0137f\3\2\2\2\u0138\u0139\7"+
 		"h\2\2\u0139h\3\2\2\2\u013a\u013c\5e\63\2\u013b\u013a\3\2\2\2\u013b\u013c"+
@@ -245,14 +244,14 @@ public class PSCLexer extends Lexer {
 		"\u0152\7\17\2\2\u0152\u0154\7\f\2\2\u0153\u014c\3\2\2\2\u0153\u014d\3"+
 		"\2\2\2\u0153\u014e\3\2\2\2\u0153\u0150\3\2\2\2\u0154r\3\2\2\2\u0155\u0157"+
 		"\5q9\2\u0156\u0155\3\2\2\2\u0157\u0158\3\2\2\2\u0158\u0156\3\2\2\2\u0158"+
-		"\u0159\3\2\2\2\u0159t\3\2\2\2\u015a\u015e\5_\60\2\u015b\u015d\5s:\2\u015c"+
+		"\u0159\3\2\2\2\u0159t\3\2\2\2\u015a\u015e\5a\61\2\u015b\u015d\5s:\2\u015c"+
 		"\u015b\3\2\2\2\u015d\u0160\3\2\2\2\u015e\u015c\3\2\2\2\u015e\u015f\3\2"+
-		"\2\2\u015f\u0161\3\2\2\2\u0160\u015e\3\2\2\2\u0161\u0162\5_\60\2\u0162"+
+		"\2\2\u015f\u0161\3\2\2\2\u0160\u015e\3\2\2\2\u0161\u0162\5a\61\2\u0162"+
 		"v\3\2\2\2\u0163\u0164\5e\63\2\u0164x\3\2\2\2\u0165\u0166\5k\66\2\u0166"+
-		"z\3\2\2\2\u0167\u0168\t\6\2\2\u0168|\3\2\2\2\u0169\u016b\5_\60\2\u016a"+
+		"z\3\2\2\2\u0167\u0168\t\6\2\2\u0168|\3\2\2\2\u0169\u016b\5a\61\2\u016a"+
 		"\u016c\5s:\2\u016b\u016a\3\2\2\2\u016b\u016c\3\2\2\2\u016c\u016d\3\2\2"+
-		"\2\u016d\u016e\5_\60\2\u016e~\3\2\2\2\u016f\u0174\5a\61\2\u0170\u0173"+
-		"\5a\61\2\u0171\u0173\5c\62\2\u0172\u0170\3\2\2\2\u0172\u0171\3\2\2\2\u0173"+
+		"\2\u016d\u016e\5a\61\2\u016e~\3\2\2\2\u016f\u0174\5_\60\2\u0170\u0173"+
+		"\5_\60\2\u0171\u0173\5c\62\2\u0172\u0170\3\2\2\2\u0172\u0171\3\2\2\2\u0173"+
 		"\u0176\3\2\2\2\u0174\u0172\3\2\2\2\u0174\u0175\3\2\2\2\u0175\u0080\3\2"+
 		"\2\2\u0176\u0174\3\2\2\2\u0177\u0178\7\61\2\2\u0178\u0179\7,\2\2\u0179"+
 		"\u017d\3\2\2\2\u017a\u017c\13\2\2\2\u017b\u017a\3\2\2\2\u017c\u017f\3"+

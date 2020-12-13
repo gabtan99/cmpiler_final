@@ -58,8 +58,6 @@ Up : 'up';
 Down : 'down';
 To : 'to';
 
-DoubleQuotation: '"';
-
 /* main program */
 
 program
@@ -90,10 +88,10 @@ functionDeclarationList
 
 /* ------- */
 variableDeclaration
-    : typeSpecifier variableDeclarationList Semi
-    | ConstantKey typeSpecifier variableDeclarationList Semi
-    | typeSpecifier variableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
-    | ConstantKey typeSpecifier variableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
+    : typeSpecifier  variableDeclarationItems Semi
+    | ConstantKey typeSpecifier variableDeclarationItems Semi
+    | typeSpecifier variableDeclarationItems {notifyErrorListeners("Missing semicolon ';'.");}
+    | ConstantKey typeSpecifier variableDeclarationItems {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 scopedVariableDeclaration
@@ -101,10 +99,14 @@ scopedVariableDeclaration
     | arrayVariableDeclaration 
     ;
 
+variableDeclarationItems
+    : variableDeclarationList
+    | variableDeclarationList {notifyErrorListeners("Multiple declarations should be separated by commas ','.");} variableDeclarationList+ 
+    ;
+
 variableDeclarationList
-    : variableDeclarationList Comma variableDeclarationInitialize
-    | variableDeclarationList variableDeclarationInitialize {notifyErrorListeners("Multiple declarations should be separated by commas ','.");}
-    | variableDeclarationInitialize
+    : variableDeclarationInitialize
+    | variableDeclarationList Comma variableDeclarationInitialize
     ;
 
 variableDeclarationInitialize
@@ -130,16 +132,20 @@ arrayTypeSpecifier
     ;
 
 arrayVariableDeclaration
-    : arrayTypeSpecifier arrayVariableDeclarationList Semi
-    | ConstantKey arrayTypeSpecifier arrayVariableDeclarationList Semi
+    : arrayTypeSpecifier arrayVariableDeclarationItems Semi
+    | ConstantKey arrayTypeSpecifier arrayVariableDeclarationItems Semi
     | arrayTypeSpecifier arrayVariableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
     | ConstantKey arrayTypeSpecifier arrayVariableDeclarationList {notifyErrorListeners("Missing semicolon ';'.");}
+    ;
+
+arrayVariableDeclarationItems
+    : arrayVariableDeclarationList
+    | arrayVariableDeclarationList arrayVariableDeclarationList+ {notifyErrorListeners("Multiple declarations should be separated by commas ','.");}
     ;
 
 arrayVariableDeclarationList
     : arrayVariableDeclarationList Comma arrayVariableDeclarationInitialize
     | arrayVariableDeclarationInitialize
-    | arrayVariableDeclarationList arrayVariableDeclarationInitialize {notifyErrorListeners("Multiple declarations should be separated by commas ','.");}
     ;
 
 arrayVariableDeclarationInitialize
@@ -160,20 +166,20 @@ typeSpecifierSelector
 
 functionDeclaration
     : Func (typeSpecifier | arrayTypeSpecifier | Void) IDENTIFIER LeftParen params RightParen compoundStmt
-    | Func (typeSpecifier | arrayTypeSpecifier | Void)  LeftParen params RightParen compoundStmt {notifyErrorListeners("Missing function name.");}
-    | Func (typeSpecifier | arrayTypeSpecifier | Void) (typeSpecifier | arrayTypeSpecifier | Void)+ IDENTIFIER*  LeftParen params RightParen compoundStmt {notifyErrorListeners("Function cannot have multiple return types.");}
-    | Func IDENTIFIER LeftParen params RightParen compoundStmt {notifyErrorListeners("Missing function return type.");}
+    | Func (typeSpecifier | arrayTypeSpecifier | Void) {notifyErrorListeners("Missing function name.");} LeftParen params RightParen compoundStmt 
+    | Func (typeSpecifier | arrayTypeSpecifier | Void) {notifyErrorListeners("Function cannot have multiple return types.");} (typeSpecifier | arrayTypeSpecifier | Void)+ IDENTIFIER* LeftParen params RightParen compoundStmt 
+    | Func {notifyErrorListeners("Missing function return type.");} IDENTIFIER LeftParen params RightParen compoundStmt 
     ;
 
 params
     : paramList
+    | paramList {notifyErrorListeners("Multiple declarations should be separated by commas ','.");} paramList+
     | /*epsilon */
     ;
 
 paramList
-    : paramTypeList
-    | paramList Comma paramTypeList
-    | paramList paramTypeList {notifyErrorListeners("Multiple declarations should be separated by commas ','.");}
+    : paramList Comma paramTypeList
+    | paramTypeList
     ;
 
 paramTypeList
@@ -227,12 +233,14 @@ printStmt
 
 printParams
     : printParamsList
+    | {notifyErrorListeners("Multiple print parameters should be concatenated by plus symbols '+'. Unless you meant this to be a string literal, then missing double quotes");} printParamsList printParamsList+ 
     ;
 
 printParamsList
     : printParamsList Plus printParamsSelector
     | printParamsSelector
     | printParamsList Plus {notifyErrorListeners("Extraneous '+' found / Expecting another print parameter.");}
+    | {notifyErrorListeners("Extraneous '+' found / Expecting another print parameter.");} Plus printParamsList 
     ;
     
 printParamsSelector
@@ -241,7 +249,7 @@ printParamsSelector
     ;
 
 selectionStmt
-    : If LeftParen expression RightParen Then compoundStmt elseSelector?
+    : If LeftParen simpleExpression RightParen Then compoundStmt elseSelector?
     ;
 
 elseSelector
@@ -272,7 +280,7 @@ loopDeclaration
 
 returnStmt
     : Return expression Semi
-    | Return (typeSpecifier | arrayTypeSpecifier)*  Semi {notifyErrorListeners("Expecting an expression or identifier in return statement.");}
+    | Return {notifyErrorListeners("Expecting an expression or identifier in return statement.");} (typeSpecifier | arrayTypeSpecifier)* Semi
     | Return (expression | typeSpecifier | arrayTypeSpecifier)* {notifyErrorListeners("Missing semicolon ';' after return statement.");}
     ;
 
@@ -293,6 +301,7 @@ createArrayExpression
 
 arrayInitExpression
     : typeSpecifier LeftBracket relExpression RightBracket
+    | typeSpecifier LeftBracket  RightBracket {notifyErrorListeners("Expecting an expression for declaring array sizes.");}
     ;
 
 simpleExpression
@@ -375,6 +384,7 @@ call
 
 arguments
     : argumentList
+    | argumentList {notifyErrorListeners("Multiple function arguments, if there are more than 1, should be separated by commas ','.");} argumentList+
     | /*epsilon */
     ;
 
@@ -394,6 +404,11 @@ constant
 fragment
 NonDigit
     : [a-zA-Z_]
+    ;
+
+fragment
+DoubleQuotation
+    : '"'
     ;
 
 fragment
