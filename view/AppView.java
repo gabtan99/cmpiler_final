@@ -137,6 +137,7 @@ public class AppView {
         textArea = new TextArea("Output");
         textArea.setEditable(false);
         textArea.setMinHeight(230);
+        textArea.setWrapText(true);
 
         VBox vBox = new VBox(menuBar,codeArea, textArea);
         Scene scene = new Scene(vBox, 800, 600);
