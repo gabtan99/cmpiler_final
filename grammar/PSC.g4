@@ -40,16 +40,16 @@ Div : '/';
 
 AndAnd : '&&';
 OrOr : '||';
+NotEqual : '!=';
 Not : '!';
 
 Colon : ':';
 Semi : ';';
 Comma : ',';
 
-Assign : '=';
-
 Equal : '==';
-NotEqual : '!=';
+
+Assign : '=';
 
 Dot : '.';
 Ellipsis : '...';
@@ -76,25 +76,15 @@ mainProgramLeftParen
     | Main {notifyErrorListeners("Expected '(' after main.");}
     ;
 
-declarationList
-    : declaration
-    | declarationList declaration 
-    ;
-
-declaration
-    : variableDeclaration 
-    | arrayVariableDeclaration 
-    ;
-
 functionDeclarationList
     : functionDeclaration
     | functionDeclarationList functionDeclaration
     ;
 
 /* ------- */
-variableDeclaration
-    : ConstantKey? typeSpecifier variableDeclarationItems Semi
-    | {notifyErrorListeners("Missing semicolon ';'.");} ConstantKey? typeSpecifier variableDeclarationItems 
+variableDeclaration 
+    : ConstantKey? typeSpecifier variableDeclarationInitialize Semi
+    | ConstantKey? typeSpecifier variableDeclarationInitialize {notifyErrorListeners("Missing semicolon ';'.");}  
     ;
 
 scopedVariableDeclaration
@@ -102,19 +92,11 @@ scopedVariableDeclaration
     | arrayVariableDeclaration 
     ;
 
-variableDeclarationItems
-    : variableDeclarationList
-    | variableDeclarationList {notifyErrorListeners("Multiple declarations should be separated by commas ','.");} variableDeclarationList+ 
-    ;
-
-variableDeclarationList
-    : variableDeclarationInitialize
-    | variableDeclarationList Comma variableDeclarationInitialize
-    ;
-
 variableDeclarationInitialize
-    : variableDeclarationIdentifier
-    | variableDeclarationIdentifier Assign simpleExpression
+    : variableDeclarationIdentifier 
+    | variableDeclarationIdentifier Assign simpleExpression 
+    | variableDeclarationIdentifier {notifyErrorListeners("Missing assignment '=' operator.");} simpleExpression
+    | simpleExpression {notifyErrorListeners("Consider adding variable declarator to complete the declaration.");} 
     ;
 
 variableDeclarationIdentifier
@@ -131,27 +113,25 @@ typeSpecifier
 /* ------- */
 
 arrayTypeSpecifier
-    : typeSpecifier LeftBracket RightBracket
+    : arrayTypeLeftBracket RightBracket
+    | arrayTypeLeftBracket {notifyErrorListeners("Expecting a closing bracket ']'.");}
+    | arrayTypeLeftBracket RightBracket RightBracket+ {notifyErrorListeners("Extra bracket/s found.");}
+    ;
+
+arrayTypeLeftBracket
+    : typeSpecifier LeftBracket
     ;
 
 arrayVariableDeclaration
-    : ConstantKey? arrayTypeSpecifier arrayVariableDeclarationItems Semi
-    | {notifyErrorListeners("Missing semicolon ';'.");} ConstantKey? arrayTypeSpecifier arrayVariableDeclarationItems 
-    ;
-
-arrayVariableDeclarationItems
-    : arrayVariableDeclarationList
-    | arrayVariableDeclarationList arrayVariableDeclarationList+ {notifyErrorListeners("Multiple declarations should be separated by commas ','.");}
-    ;
-
-arrayVariableDeclarationList
-    : arrayVariableDeclarationList Comma arrayVariableDeclarationInitialize
-    | arrayVariableDeclarationInitialize
+    : ConstantKey? arrayTypeSpecifier arrayVariableDeclarationInitialize Semi
+    | ConstantKey? arrayTypeSpecifier arrayVariableDeclarationInitialize {notifyErrorListeners("Missing semicolon ';'.");}
     ;
 
 arrayVariableDeclarationInitialize
     : arrayVariableDeclarationIdentifier
     | arrayVariableDeclarationIdentifier Assign createArrayExpression 
+    | arrayVariableDeclarationIdentifier {notifyErrorListeners("Missing assignment '=' operator.");} createArrayExpression
+    | createArrayExpression {notifyErrorListeners("Consider adding array variable declarator to complete the declaration.");} 
     ;
 
 arrayVariableDeclarationIdentifier
@@ -209,7 +189,7 @@ statementList
 
 expressionStmt
     : (assignmentStandaloneExpression|call) Semi
-    | {notifyErrorListeners("Missing semicolon ';'.");} (assignmentStandaloneExpression|call) 
+    | (assignmentStandaloneExpression|call) {notifyErrorListeners("Missing semicolon ';'.");} 
     | Semi {notifyErrorListeners("Extraneous semicolon ';' found.");}
     ;
 
@@ -226,12 +206,26 @@ localDeclarations
     
 scanStmt
     : Scan LeftParen StringLiteral Comma IDENTIFIER RightParen Semi
-    | {notifyErrorListeners("Missing semicolon ';'.");} Scan LeftParen StringLiteral Comma IDENTIFIER RightParen 
+    | Scan LeftParen StringLiteral Comma IDENTIFIER RightParen {notifyErrorListeners("Missing semicolon ';'.");}  
     ;
 
 printStmt
-    : Print LeftParen printParams RightParen Semi
-    | {notifyErrorListeners("Missing semicolon ';'.");} Print LeftParen printParams RightParen 
+    : Print printExpression Semi
+    | Print {notifyErrorListeners("Missing parenthesis and print parameters for complete print statement.");}  Semi
+    | Print printExpression {notifyErrorListeners("Missing semicolon ';'.");} 
+    ;
+
+printExpression
+    : printExpressionLeft RightParen
+    | printExpressionLeft RightParen RightParen+ {notifyErrorListeners("Redundant closing parenthesis')'.");}
+    | printExpressionLeft {notifyErrorListeners("Expecting a closing parenthesis ')'.");}
+    | 
+    ;
+
+printExpressionLeft
+    : LeftParen printParams
+    | printParams {notifyErrorListeners("Expecting '(' after print.");}
+    | LeftParen {notifyErrorListeners("Expecting at least one parameter for printing.");}
     ;
 
 printParams
@@ -264,7 +258,8 @@ selectionCondition
 
 selectionLeftParen
     : LeftParen simpleExpression
-    | simpleExpression {notifyErrorListeners("Expected '(' after main.");}
+    | simpleExpression {notifyErrorListeners("Expected '(' after if.");}
+    | LeftParen {notifyErrorListeners("Expecting an expression for evaluation.");}
     ;
 
 elseSelector
@@ -305,9 +300,13 @@ simpleAssignExpression
     ;
 
 returnStmt
-    : Return simpleExpression Semi
-    | Return {notifyErrorListeners("Expecting an expression or identifier in return statement.");} (typeSpecifier | arrayTypeSpecifier)* Semi
-    | Return (simpleExpression | typeSpecifier | arrayTypeSpecifier)* {notifyErrorListeners("Missing semicolon ';' after return statement.");}
+    : Return returnStmtContainer Semi
+    | Return returnStmtContainer {notifyErrorListeners("Missing semicolon ';' after return statement.");} 
+    ;
+
+returnStmtContainer
+    : simpleExpression
+    | {notifyErrorListeners("Expecting an expression or identifier in return statement.");} (typeSpecifier | arrayTypeSpecifier)*
     ;
 
 /* expressions */
@@ -334,6 +333,7 @@ arrayInitLeftBracket
 simpleExpression
     : andExpression
     | simpleExpression OrOr andExpression
+    | simpleExpression andExpression+ {notifyErrorListeners("Expecting a proper operator somewhere between these.");}
     ;
 
 andExpression
@@ -347,8 +347,8 @@ unaryRelExpression
     ;
 
 relExpression
-    : sumExpression 
-    | sumExpression relOperator  sumExpression
+    : sumExpression relOperator sumExpression
+    | sumExpression 
     ;
 
 relOperator
@@ -361,7 +361,7 @@ relOperator
     ;
 
 sumExpression
-    : sumExpression sumOperator mulExpression
+    : sumExpression sumOperator mulExpression 
     | mulExpression
     ;
 
@@ -403,6 +403,7 @@ mutable
 
 mutableLeftBracket
     : LeftBracket simpleExpression
+    | LeftBracket {notifyErrorListeners("Expecting an expression for array indices.");}
     ;
 
 immutable
@@ -415,6 +416,7 @@ immutable
 
 immutableLeftParen
     : LeftParen simpleExpression
+    | LeftParen {notifyErrorListeners("Redundant parenthesis pair, expecting expression after '('.");}
     ;
 
 call
@@ -424,7 +426,6 @@ call
 
 callLeftParen
     : LeftParen arguments
-    | {notifyErrorListeners("Expecting an opening parenthesis '(' after function identifier.");} arguments
     ;
 
 arguments

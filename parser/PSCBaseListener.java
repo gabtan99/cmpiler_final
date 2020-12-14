@@ -52,30 +52,6 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDeclarationList(PSCParser.DeclarationListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDeclarationList(PSCParser.DeclarationListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDeclaration(PSCParser.DeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDeclaration(PSCParser.DeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunctionDeclarationList(PSCParser.FunctionDeclarationListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -107,30 +83,6 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitScopedVariableDeclaration(PSCParser.ScopedVariableDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVariableDeclarationItems(PSCParser.VariableDeclarationItemsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVariableDeclarationItems(PSCParser.VariableDeclarationItemsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVariableDeclarationList(PSCParser.VariableDeclarationListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVariableDeclarationList(PSCParser.VariableDeclarationListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -184,6 +136,18 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArrayTypeLeftBracket(PSCParser.ArrayTypeLeftBracketContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayTypeLeftBracket(PSCParser.ArrayTypeLeftBracketContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArrayVariableDeclaration(PSCParser.ArrayVariableDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -191,30 +155,6 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayVariableDeclaration(PSCParser.ArrayVariableDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayVariableDeclarationItems(PSCParser.ArrayVariableDeclarationItemsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayVariableDeclarationItems(PSCParser.ArrayVariableDeclarationItemsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayVariableDeclarationList(PSCParser.ArrayVariableDeclarationListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayVariableDeclarationList(PSCParser.ArrayVariableDeclarationListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -400,6 +340,30 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrintExpression(PSCParser.PrintExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrintExpression(PSCParser.PrintExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrintExpressionLeft(PSCParser.PrintExpressionLeftContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrintExpressionLeft(PSCParser.PrintExpressionLeftContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPrintParams(PSCParser.PrintParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -568,6 +532,18 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReturnStmtContainer(PSCParser.ReturnStmtContainerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturnStmtContainer(PSCParser.ReturnStmtContainerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAssignmentStandaloneExpression(PSCParser.AssignmentStandaloneExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -659,6 +635,18 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRelExpression(PSCParser.RelExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRelOperator(PSCParser.RelOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRelOperator(PSCParser.RelOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
