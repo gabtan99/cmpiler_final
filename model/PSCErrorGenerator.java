@@ -32,9 +32,13 @@ public class PSCErrorGenerator {
             if (alts.contains(INT_CONST_TOK) && alts.contains(FLOAT_CONST_TOK) && alts.contains(BOOL_CONST_TOK) && alts.contains(STRING_TOK) && alts.contains(IDENTIFIER_TOK)) {
                 err.setMsg("Mismatched input " + offending + ". Try replacing it with an expression.");
             } else if (alts.contains(IDENTIFIER_TOK)) {
-                err.setMsg("Expecting an identifier");
+                err.setMsg("Expecting an identifier.");
+            
+            } else if (offending.contains("(")) {
+                err.setMsg("Possible redundant parenthesis. Consider removing it.");
             } else {
-                err.setMsg("Mismatched input " + offending + " Try replacing it with " + alts);
+                System.out.println(offending);
+                err.setMsg("Mismatched input " + offending + ". Try replacing it with " + alts);
             }
 
         } else if (msg.contains(MISSING_ERR)) {
@@ -54,14 +58,14 @@ public class PSCErrorGenerator {
             String alts = tokList[1];
 
             if (alts.contains(INT_CONST_TOK) && alts.contains(FLOAT_CONST_TOK) && alts.contains(BOOL_CONST_TOK) && alts.contains(STRING_TOK) && alts.contains(IDENTIFIER_TOK)) {
-                err.setMsg("Extraneous Input : Consider removing " + offending + " and replacing it with an expression.");
+                err.setMsg("Extraneous " + offending + ". Remove or consider replacing it with an expression.");
             } 
             else if (alts.contains(IDENTIFIER_TOK) && alts.contains("}")) {
-                err.setMsg("Extraneous Input : Consider matching all previous bracket pairs.");
+                err.setMsg("Try checking and matching all previous bracket pairs.");
             }else if (alts.contains(IDENTIFIER_TOK))  {
-                err.setMsg("Extraneous Input : Consider removing " + offending + " and replacing it with an identifier.");
+                err.setMsg("Extraneous " + offending + ". Remove or consider replacing it with an identifier.");
             } else {
-                err.setMsg("Extraneous Input : Consider removing " + offending + " and replacing it with " + alts + ".");
+                err.setMsg("Extraneous " + offending + ". Remove or consider replacing it with " + alts + ".");
             }
 
         } else if (msg.contains(TOKEN_RECOGNITION_ERR)) {
