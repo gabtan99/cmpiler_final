@@ -43,7 +43,7 @@ public class Parser {
         errorList.clear();
         Lexer lexer = new PSCLexer(this.input);
 
-        MyErrorListener errorListener = new MyErrorListener(errorList);
+        PSCErrorListener errorListener = new PSCErrorListener(errorList);
         lexer.removeErrorListeners();
         lexer.addErrorListener( errorListener );
         
