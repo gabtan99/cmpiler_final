@@ -32,10 +32,9 @@ public class PSCErrorGenerator {
             if (alts.contains(INT_CONST_TOK) && alts.contains(FLOAT_CONST_TOK) && alts.contains(BOOL_CONST_TOK) && alts.contains(STRING_TOK) && alts.contains(IDENTIFIER_TOK)) {
                 err.setMsg("Mismatched input " + offending + ". Try replacing it with an expression.");
             } else if (alts.contains(IDENTIFIER_TOK)) {
-                err.setMsg("Expecting an identifier.");
-            
+                err.setMsg("Mismatched input " + offending +". Expecting an identifier.");
             } else if (offending.contains("(")) {
-                err.setMsg("Possible redundant parenthesis. Consider removing it.");
+                err.setMsg("Mismatched input " + offending +". Possible redundant parenthesis. Consider removing it.");
             } else {
                 System.out.println(offending);
                 err.setMsg("Mismatched input " + offending + ". Try replacing it with " + alts);
@@ -70,7 +69,7 @@ public class PSCErrorGenerator {
 
             String offending = strList[1];
             
-            err.setMsg("Token recognition error at " + offending + ".");
+            err.setMsg("Error in identifying token " + offending + ".");
         }
 
         return err.getFullError();
