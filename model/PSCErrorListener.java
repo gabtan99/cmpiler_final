@@ -21,8 +21,8 @@ public class PSCErrorListener extends BaseErrorListener {
 
     PSCErrorGenerator generator = new PSCErrorGenerator();
     
-    List<String> stack = ((Parser)recognizer).getRuleInvocationStack(); 
-    Collections.reverse(stack);
+    // List<String> stack = ((Parser)recognizer).getRuleInvocationStack(); 
+    // Collections.reverse(stack);
 
     errorList.add(generator.generateMsg(line, charPositionInLine, msg));
     System.out.println(generator.generateMsg(line, charPositionInLine, msg));

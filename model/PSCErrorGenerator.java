@@ -59,17 +59,18 @@ public class PSCErrorGenerator {
 
             if (alts.contains(INT_CONST_TOK) && alts.contains(FLOAT_CONST_TOK) && alts.contains(BOOL_CONST_TOK) && alts.contains(STRING_TOK) && alts.contains(IDENTIFIER_TOK)) {
                 err.setMsg("Extraneous " + offending + ". Remove or consider replacing it with an expression.");
-            } 
-            else if (alts.contains(IDENTIFIER_TOK) && alts.contains("}")) {
-                err.setMsg("Try checking and matching all previous bracket pairs.");
-            }else if (alts.contains(IDENTIFIER_TOK))  {
+            } else if (alts.contains(IDENTIFIER_TOK))  {
                 err.setMsg("Extraneous " + offending + ". Remove or consider replacing it with an identifier.");
             } else {
                 err.setMsg("Extraneous " + offending + ". Remove or consider replacing it with " + alts + ".");
             }
 
         } else if (msg.contains(TOKEN_RECOGNITION_ERR)) {
-            err.setMsg("Token recognition error at ");
+            String strList[] = msg.split(TOKEN_RECOGNITION_ERR + " at: ");
+
+            String offending = strList[1];
+            
+            err.setMsg("Token recognition error at " + offending + ".");
         }
 
         return err.getFullError();
