@@ -106,11 +106,7 @@ typeSpecifier
 /* ------- */
 
 arrayTypeSpecifier
-    : arrayTypeLeftBracket RightBracket
-    ;
-
-arrayTypeLeftBracket
-    : typeSpecifier LeftBracket
+    : typeSpecifier LeftBracket RightBracket
     ;
 
 arrayVariableDeclaration
@@ -189,17 +185,9 @@ scanStmt
     ;
 
 printStmt
-    : Print printExpression Semi
+    : Print LeftParen printParams RightParen Semi
     ;
-
-printExpression
-    : printExpressionLeft RightParen
-    ;
-
-printExpressionLeft
-    : LeftParen printParams
-    ;
-
+   
 printParams
     : printParamsList
     ;
@@ -215,15 +203,7 @@ printParamsSelector
     ;
 
 selectionStmt
-    :  selectionCondition Then compoundStmt elseSelector?
-    ;
-
-selectionCondition
-    : If selectionLeftParen RightParen
-    ;
-
-selectionLeftParen
-    : LeftParen simpleExpression
+    :  If LeftParen simpleExpression RightParen Then compoundStmt elseSelector?
     ;
 
 elseSelector
@@ -278,11 +258,7 @@ createArrayExpression
     ;
 
 arrayInitExpression
-    : typeSpecifier arrayInitLeftBracket RightBracket
-    ;
-
-arrayInitLeftBracket
-    : LeftBracket relExpression
+    : typeSpecifier LeftBracket relExpression RightBracket
     ;
 
 simpleExpression
@@ -360,11 +336,7 @@ mutableLeftBracket
 immutable
     : call
     | constant
-    | immutableLeftParen RightParen
-    ;
-
-immutableLeftParen
-    : LeftParen simpleExpression
+    | LeftParen simpleExpression RightParen
     ;
 
 call

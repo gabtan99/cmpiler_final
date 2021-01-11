@@ -136,18 +136,6 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayTypeLeftBracket(PSCParser.ArrayTypeLeftBracketContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayTypeLeftBracket(PSCParser.ArrayTypeLeftBracketContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterArrayVariableDeclaration(PSCParser.ArrayVariableDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -340,30 +328,6 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrintExpression(PSCParser.PrintExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPrintExpression(PSCParser.PrintExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPrintExpressionLeft(PSCParser.PrintExpressionLeftContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPrintExpressionLeft(PSCParser.PrintExpressionLeftContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterPrintParams(PSCParser.PrintParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -407,30 +371,6 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSelectionStmt(PSCParser.SelectionStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSelectionCondition(PSCParser.SelectionConditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSelectionCondition(PSCParser.SelectionConditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSelectionLeftParen(PSCParser.SelectionLeftParenContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSelectionLeftParen(PSCParser.SelectionLeftParenContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -575,18 +515,6 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayInitExpression(PSCParser.ArrayInitExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayInitLeftBracket(PSCParser.ArrayInitLeftBracketContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayInitLeftBracket(PSCParser.ArrayInitLeftBracketContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -767,18 +695,6 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitImmutable(PSCParser.ImmutableContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterImmutableLeftParen(PSCParser.ImmutableLeftParenContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitImmutableLeftParen(PSCParser.ImmutableLeftParenContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
