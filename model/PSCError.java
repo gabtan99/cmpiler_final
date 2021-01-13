@@ -24,7 +24,7 @@ public class PSCError {
     }
 
     public String getFullError() {
-        return "Line " + this.line + ":" + this.charPosition + " - " + this.msg;
+        return "Check [Line " + this.line + ":" + this.charPosition + "] " + this.msg;
     }
 
 }
