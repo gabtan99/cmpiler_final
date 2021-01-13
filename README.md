@@ -1,19 +1,21 @@
 # cmpiler-parser
 
-How to compile ANTLR grammar file
+How to compile ANTLR grammar file in TERMINAL
 
 ```
-'compantlr' in TERMINAL
+compantlr
 ```
 
-How to compile ANTLR generated files
+How to compile ANTLR generated files in TERMINAL
 
 ```
-'compmvc' in TERMINAL
+compmvc
 ```
 
-How to run Main
+How to run Main in TERMINAL
 
 ```
-'run' in TERMINAL
+run
 ```
+
+- These are batch files for running multiple commands. Please use that for the dependencies.
