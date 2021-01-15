@@ -186,6 +186,7 @@ scanStmt
 
 printStmt
     : Print LeftParen printParams RightParen Semi
+    | Print LeftParen ((StringLiteral | IDENTIFIER) (StringLiteral | IDENTIFIER)+) {notifyErrorListeners("Missing quotation marks for these print parameters.");} RightParen Semi 
     ;
    
 printParams
@@ -194,12 +195,13 @@ printParams
 
 printParamsList
     : printParamsList Plus printParamsSelector
+    | printParamsList Plus {notifyErrorListeners("Extra '+' symbols found.");}
     | printParamsSelector
     ;
     
 printParamsSelector
     : StringLiteral
-    | simpleExpression
+    | IDENTIFIER
     ;
 
 selectionStmt
@@ -221,16 +223,24 @@ whileStatement
     ;
 
 forStatement
-    : For loopDeclaration iterationToStatement simpleExpression compoundStmt
+    : For loopDeclaration iterationToStatement simpleExpression LeftBrace (localDeclarations | statementList)+ RightBrace
     ;
 
 iterationToStatement
     : Upto
     | Downto
+    | g=(Up|Down) {notifyErrorListeners("Missing 'to' after " + $g.text + ".");}
+    | To {notifyErrorListeners("Missing 'up' or 'down' in iteration statement.");}
+    | StringLiteral {notifyErrorListeners("Incorrect iterator. Should be 'up to' or 'down to");}
+    ;
+
+DoubleQuote
+    : '"'
     ;
 
 loopDeclaration
     : Int IDENTIFIER simpleAssignExpression
+    | Int IDENTIFIER {notifyErrorListeners("Newly declared variables in loops needs to be assigned to a value immediately.");}
     | IDENTIFIER simpleAssignExpression
     | IDENTIFIER
     ;
@@ -264,6 +274,7 @@ arrayInitExpression
 simpleExpression
     : andExpression
     | simpleExpression OrOr andExpression
+    | simpleExpression simpleExpression+ {notifyErrorListeners("Missing valid operators.");}
     ;
 
 andExpression
@@ -278,6 +289,7 @@ unaryRelExpression
 
 relExpression
     : sumExpression relOperator sumExpression
+    | sumExpression Assign {notifyErrorListeners("Wrong relational operator '='. Should be '=='.");} sumExpression 
     | sumExpression 
     ;
 
@@ -292,6 +304,7 @@ relOperator
 
 sumExpression
     : sumExpression sumOperator mulExpression 
+    | sumExpression sumOperator g=sumOperator+ mulExpression {notifyErrorListeners("An extra '" + $g.text + "' operator is found. Remove this.");}
     | mulExpression
     ;
 
@@ -302,6 +315,7 @@ sumOperator
 
 mulExpression
     : mulExpression mulOperator unaryExpression
+    | mulExpression mulOperator g=mulOperator+ unaryExpression {notifyErrorListeners("An extra '" + $g.text + "' operator is found. Remove this.");}
     | unaryExpression
     ;
 
