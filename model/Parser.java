@@ -18,39 +18,35 @@ import parser.PSCBaseListener;
 public class Parser {
 
     private CharStream input;
-    private List<String> errorList;
-
 
     public Parser() {
-        errorList = new ArrayList<>();
+        Console.init();
     }
 
     public Parser(CharStream input) {
-        errorList = new ArrayList<>();
+        Console.init();
         this.input = input;
     }
-
     
     public void setInput(CharStream input) {
         this.input = input;
     }
 
     public List<String> getErrorList () {
-        return this.errorList;
+        return Console.getErrorList();
     }
 
     public void parse() {
-        errorList.clear();
         Lexer lexer = new PSCLexer(this.input);
 
-        PSCErrorListener errorListener = new PSCErrorListener(errorList);
+        PSCSyntaxChecker syntaxListener = new PSCSyntaxChecker();
         lexer.removeErrorListeners();
-        lexer.addErrorListener( errorListener );
+        lexer.addErrorListener( syntaxListener );
         
         TokenStream tokenStream = new CommonTokenStream(lexer);
         PSCParser parser = new PSCParser(tokenStream);
         parser.removeErrorListeners();
-        parser.addErrorListener( errorListener );
+        parser.addErrorListener( syntaxListener );
 
         ParseTree tree = parser.program();
         ParseTreeWalker walker = new ParseTreeWalker();

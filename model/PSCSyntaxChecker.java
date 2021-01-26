@@ -7,13 +7,7 @@ import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Parser;
 
-public class PSCErrorListener extends BaseErrorListener {
-
-  private List<String> errorList;
-
-  public PSCErrorListener(List<String> errorList) {
-    this.errorList = errorList;
-  }
+public class PSCSyntaxChecker extends BaseErrorListener {
 
   @Override
   public void syntaxError( Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
@@ -24,7 +18,9 @@ public class PSCErrorListener extends BaseErrorListener {
     List<String> stack = ((Parser)recognizer).getRuleInvocationStack(); 
     Collections.reverse(stack);
                             
-    errorList.add(generator.generateMsg(line, charPositionInLine, msg));
+    Console.log(generator.generateMsg(line, charPositionInLine, msg));
     System.out.println(generator.generateMsg(line, charPositionInLine, msg));
   }
+
+
 }
