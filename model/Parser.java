@@ -20,20 +20,14 @@ public class Parser {
     private CharStream input;
 
     public Parser() {
-        Console.init();
     }
 
     public Parser(CharStream input) {
-        Console.init();
         this.input = input;
     }
     
     public void setInput(CharStream input) {
         this.input = input;
-    }
-
-    public List<String> getErrorList () {
-        return Console.getErrorList();
     }
 
     public void parse() {

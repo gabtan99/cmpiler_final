@@ -15,7 +15,9 @@ public class Console {
     }
 
     public static void reset() {
-        errorList.clear();
+        if (errorList != null) {
+            errorList.clear();
+        }
     }
 
     public static void log(String msg) {
