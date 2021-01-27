@@ -1,22 +1,28 @@
+package model.objects;
+import model.Console;
+
 public class PseudoValue {
 
 	private Object value;
 	private PrimitiveType primitiveType = PrimitiveType.NOT_YET_IDENTIFIED;
 	private boolean constFlag = false;
 	
-	public PseudoValue(Object value, PrimitiveType primitiveType) {
+	public PseudoValue(Object value, String primitiveType) {
 
-		if (value == null || checkValueType(value, primitiveType)) {
+		PrimitiveType type = resolve_type(primitiveType);
+
+		if (value == null || checkValueType(value, type)) {
 			this.value = value;
-			this.primitiveType = primitiveType;
+			this.primitiveType = type;
 		}
 		else {
             Console.log("Value is not suitable for  " + primitiveType + "!");
 		}
 	}
 	
-	public void setPrimitiveType(PrimitiveType primitiveType) {
-		this.primitiveType = primitiveType;
+	public void setPrimitiveType(String primitiveType) {
+		PrimitiveType type = resolve_type(primitiveType);
+		this.primitiveType = type;
 	}
 	
 	public void reset() {
@@ -70,26 +76,24 @@ public class PseudoValue {
 		}
 	}
 	
-	public static PseudoValue createEmptyVariableFromKeywords(String primitiveTypeString) {
+	public static PrimitiveType resolve_type(String primitiveTypeString) {
 		
 		PrimitiveType primitiveType = PrimitiveType.NOT_YET_IDENTIFIED;
 		
-		if(RecognizedKeywords.matchesKeyword(RecognizedKeywords.PRIMITIVE_TYPE_BOOLEAN, primitiveTypeString)) {
+		if(primitiveTypeString.contains("bool")) {
 			primitiveType = PrimitiveType.BOOLEAN;
 		}
-		else if(RecognizedKeywords.matchesKeyword(RecognizedKeywords.PRIMITIVE_TYPE_FLOAT, primitiveTypeString)) {
+		else if(primitiveTypeString.contains("int")) {
 			primitiveType = PrimitiveType.FLOAT;
 		}
-		else if(RecognizedKeywords.matchesKeyword(RecognizedKeywords.PRIMITIVE_TYPE_INT, primitiveTypeString)) {
+		else if(primitiveTypeString.contains("float")) {
 			primitiveType = PrimitiveType.INT;
 		}
-		else if(RecognizedKeywords.matchesKeyword(RecognizedKeywords.PRIMITIVE_TYPE_STRING, primitiveTypeString)) {
+		else if(primitiveTypeString.contains("String")) {
 			primitiveType = PrimitiveType.STRING;
 		}
-		
-		PseudoValue value = new PseudoValue(null, primitiveType);
 	
-		return value;
+		return primitiveType;
 	}
 	
 }

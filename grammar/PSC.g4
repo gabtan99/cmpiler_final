@@ -65,11 +65,7 @@ program
     ;
 
 mainProgram
-    :  mainProgramLeftParen RightParen compoundStmt
-    ;
-
-mainProgramLeftParen
-    : Main LeftParen
+    :  Main LeftParen RightParen compoundStmt
     ;
 
 functionDeclarationList
@@ -144,11 +140,7 @@ paramList
     ;
 
 paramTypeList
-    : typeSpecifierSelector paramDeclarationIdentifier
-    ;
-
-paramDeclarationIdentifier
-    : IDENTIFIER
+    : typeSpecifierSelector IDENTIFIER
     ;
 
 /* statements */
@@ -239,23 +231,16 @@ DoubleQuote
     ;
 
 loopDeclaration
-    : Int IDENTIFIER simpleAssignExpression
+    : Int IDENTIFIER Assign simpleExpression
     | Int IDENTIFIER {notifyErrorListeners("Newly declared variables in loops needs to be assigned to a value immediately.");}
-    | IDENTIFIER simpleAssignExpression
+    | IDENTIFIER Assign simpleExpression
     | IDENTIFIER
     ;
 
-simpleAssignExpression
-    : Assign simpleExpression
-    ;
-
 returnStmt
-    : Return returnStmtContainer Semi
+    : Return simpleExpression Semi
     ;
 
-returnStmtContainer
-    : simpleExpression
-    ;
 
 /* expressions */
 
@@ -340,11 +325,7 @@ factor
 
 mutable
     : IDENTIFIER
-    | IDENTIFIER  mutableLeftBracket RightBracket
-    ;
-
-mutableLeftBracket
-    : LeftBracket simpleExpression
+    | IDENTIFIER  LeftBracket simpleExpression RightBracket
     ;
 
 immutable
@@ -354,11 +335,7 @@ immutable
     ;
 
 call
-    : IDENTIFIER callLeftParen RightParen
-    ;
-
-callLeftParen
-    : LeftParen arguments
+    : IDENTIFIER LeftParen arguments RightParen
     ;
 
 arguments

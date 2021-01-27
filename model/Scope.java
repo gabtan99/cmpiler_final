@@ -1,0 +1,59 @@
+package model;
+
+import java.util.*;
+import model.objects.*;
+import model.Console;
+
+public class Scope {
+
+    private Scope parent;
+    private HashMap<String, PseudoValue> localVars = null;
+
+    public Scope() {
+        this.parent = null;
+        this.localVars = new HashMap<String, PseudoValue>();
+    }
+
+    public Scope(Scope parent) {
+        this.parent = parent;
+        this.localVars = new HashMap<String, PseudoValue>();
+    }
+
+    public Scope getParent() {
+        return this.parent;
+    }
+
+    public void setParent(Scope parent) {
+        this.parent = parent;
+    }
+
+    public void addVariable(String type, String id) {
+        PseudoValue pseudoValue = new PseudoValue(null, type);
+        this.localVars.put(id, pseudoValue);
+    }
+
+    public void addVariable(String type, String id, String value) {
+        PseudoValue pseudoValue = new PseudoValue(value, type);
+        this.localVars.put(id, pseudoValue);
+    }
+
+    public void addVariable(String id, PseudoValue pseudoValue) {
+        this.localVars.put(id, pseudoValue);
+    }
+
+    public PseudoValue getVariable(String id) {
+        if (this.localVars.containsKey(id)) {
+            return this.localVars.get(id);
+        } else {
+            Console.log(id + " cannot be found.");
+            return null;
+        }
+    }
+
+
+
+
+    
+
+}
+

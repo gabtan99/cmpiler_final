@@ -28,16 +28,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitMainProgram(PSCParser.MainProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#mainProgramLeftParen}.
-	 * @param ctx the parse tree
-	 */
-	void enterMainProgramLeftParen(PSCParser.MainProgramLeftParenContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#mainProgramLeftParen}.
-	 * @param ctx the parse tree
-	 */
-	void exitMainProgramLeftParen(PSCParser.MainProgramLeftParenContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#functionDeclarationList}.
 	 * @param ctx the parse tree
 	 */
@@ -187,16 +177,6 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParamTypeList(PSCParser.ParamTypeListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PSCParser#paramDeclarationIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterParamDeclarationIdentifier(PSCParser.ParamDeclarationIdentifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#paramDeclarationIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitParamDeclarationIdentifier(PSCParser.ParamDeclarationIdentifierContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#statement}.
 	 * @param ctx the parse tree
@@ -368,16 +348,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitLoopDeclaration(PSCParser.LoopDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#simpleAssignExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterSimpleAssignExpression(PSCParser.SimpleAssignExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#simpleAssignExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitSimpleAssignExpression(PSCParser.SimpleAssignExpressionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#returnStmt}.
 	 * @param ctx the parse tree
 	 */
@@ -387,16 +357,6 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReturnStmt(PSCParser.ReturnStmtContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PSCParser#returnStmtContainer}.
-	 * @param ctx the parse tree
-	 */
-	void enterReturnStmtContainer(PSCParser.ReturnStmtContainerContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#returnStmtContainer}.
-	 * @param ctx the parse tree
-	 */
-	void exitReturnStmtContainer(PSCParser.ReturnStmtContainerContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#assignmentStandaloneExpression}.
 	 * @param ctx the parse tree
@@ -558,16 +518,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitMutable(PSCParser.MutableContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#mutableLeftBracket}.
-	 * @param ctx the parse tree
-	 */
-	void enterMutableLeftBracket(PSCParser.MutableLeftBracketContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#mutableLeftBracket}.
-	 * @param ctx the parse tree
-	 */
-	void exitMutableLeftBracket(PSCParser.MutableLeftBracketContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#immutable}.
 	 * @param ctx the parse tree
 	 */
@@ -587,16 +537,6 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCall(PSCParser.CallContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PSCParser#callLeftParen}.
-	 * @param ctx the parse tree
-	 */
-	void enterCallLeftParen(PSCParser.CallLeftParenContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#callLeftParen}.
-	 * @param ctx the parse tree
-	 */
-	void exitCallLeftParen(PSCParser.CallLeftParenContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#arguments}.
 	 * @param ctx the parse tree

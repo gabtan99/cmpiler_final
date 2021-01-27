@@ -1,3 +1,5 @@
+package model.objects;
+
 public class PseudoArray {
 	
 	private PseudoValue[] pseudoValueArray;
