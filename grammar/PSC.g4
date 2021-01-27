@@ -110,12 +110,8 @@ arrayVariableDeclaration
     ;
 
 arrayVariableDeclarationInitialize
-    : arrayVariableDeclarationIdentifier
-    | arrayVariableDeclarationIdentifier Assign createArrayExpression 
-    ;
-
-arrayVariableDeclarationIdentifier
-    : IDENTIFIER
+    : variableDeclarationIdentifier
+    | variableDeclarationIdentifier Assign createArrayExpression 
     ;
 
 /* ------- */
@@ -338,15 +334,13 @@ call
     : IDENTIFIER LeftParen arguments RightParen
     ;
 
+
 arguments
-    : argumentList
+    : simpleExpression (Comma simpleExpression)*
     | /*epsilon */
     ;
 
-argumentList
-    : simpleExpression
-    | argumentList Comma simpleExpression
-    ;
+
 
 constant
     : BOOLCONSTANT

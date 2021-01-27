@@ -148,18 +148,6 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayVariableDeclarationIdentifier(PSCParser.ArrayVariableDeclarationIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayVariableDeclarationIdentifier(PSCParser.ArrayVariableDeclarationIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterTypeSpecifierSelector(PSCParser.TypeSpecifierSelectorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -659,18 +647,6 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArguments(PSCParser.ArgumentsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArgumentList(PSCParser.ArgumentListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArgumentList(PSCParser.ArgumentListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

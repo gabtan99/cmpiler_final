@@ -26,21 +26,11 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
     }
 
     @Override
-	public void verify() {
+	public void check() {
 		// ParseTreeWalker treeWalker = new ParseTreeWalker();
 		// treeWalker.walk(this, this.exprCtx);
 	}
 
-    @Override
-	public void visitTerminal(TerminalNode node) {
-		
-	}
-
-	@Override
-	public void visitErrorNode(ErrorNode node) {
-
-		
-	}
 
     @Override
 	public void enterEveryRule(ParserRuleContext ctx) {
@@ -83,10 +73,4 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 		}
 	}
 
-
-    @Override
-	public void exitEveryRule(ParserRuleContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
 }

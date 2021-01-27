@@ -1,15 +1,32 @@
 package model.semcheck;
 
+import model.objects.*;
+import model.Console;
+import parser.PSCParser.FunctionDeclarationContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-public class MultipleFuncSemCheck implements SemCheck, ParseTreeListener {
+
+public class MultipleFuncSemCheck implements SemCheck {
+
+
+	private FunctionDeclarationContext funcIdCtx;
+	private int line;
+
+	public MultipleFuncSemCheck(FunctionDeclarationContext funcIdCtx) {
+		this.funcIdCtx = funcIdCtx;
+
+		Token first = new funcIdCtx.getStart();
+		this.line = first.getLine();
+	}
 
     @Override
-	public void verify() {
-		// ParseTreeWalker treeWalker = new ParseTreeWalker();
-		// treeWalker.walk(this, this.exprCtx);
+	public void check() {
+
+		PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(funcIdCtx.IDENTIFIER().getText());
+
+		if (pseudoFunction != null) {
+			Console.log("MultipleFuncDeclaration error at " + this.line);
+		}
 	}
 }

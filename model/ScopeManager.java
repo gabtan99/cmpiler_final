@@ -49,6 +49,25 @@ public class ScopeManager {
         }
     }
 
+    public PseudoValue searchMyScope(String id) {
+
+        Scope myScope = curScope;
+        PseudoValue pseudoValue = null;
+
+        // null = it is the outer most scope
+        while (myScope != null) {
+            pseudoValue = myScope.getVariable(id);
+
+            if (pseudoValue != null) {
+                return pseudoValue;
+            } 
+
+            myScope = myScope.getParent();
+        }
+
+        return pseudoValue;
+    }
+
 
 
 

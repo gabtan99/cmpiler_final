@@ -1,15 +1,42 @@
 package model.semcheck;
 
+import model.objects.*;
+import model.Console;
+import parser.PSCParser.ArgumentListContext;
+import parser.PSCParser.ArgumentsContext;
+import parser.PSCParser.SimpleExpressionContext;
+
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-public class ParameterCountSemCheck implements SemCheck, ParseTreeListener {
+
+public class ParameterCountSemCheck implements SemCheck {
+	
+	private PseudoFunction pseudoFunction;
+	private List<SimpleExpressionContext> exprCtxList;
+	private int line;
+
+	public ParameterCountSemCheck(PseudoFunction pseudoFunction, ArgumentsContext argsCtx) {
+		this.pseudoFunction = pseudoFunction;
+
+		if (argsCtx.argumentList() != null) {
+			this.exprCtxList = argsCtx.argumentList().simpleExpression();
+		}
+
+		this.line = argsCtx.getStart().getLine();
+	}
 
     @Override
-	public void verify() {
-		// ParseTreeWalker treeWalker = new ParseTreeWalker();
-		// treeWalker.walk(this, this.exprCtx);
+	public void check() {
+		
+		if (this.pseudoFunction == null) {
+			return;
+		} else if (this.exprCtxList == null && this.pseudoFunction.getParameterCount() != 0) {
+			Console.log("ParameterMismatch Error at line " + this.line);
+		} else if (this.exprCtxList != null && this.pseudoFunction.getParameterCount() != this.exprCtxList.size() ) {
+			Console.log("ParameterMismatch Error at line " + this.line);
+		}
+
+
 	}
 }

@@ -3,6 +3,7 @@ package model.semcheck;
 import model.objects.*;
 import model.Console;
 import parser.PSCParser.MutableContext;
+import parser.PSCParser.SimpleExpressionContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -11,34 +12,23 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class ConstantSemCheck implements SemCheck, ParseTreeListener {
 
-	private MutableContext mutableCtx;
+	private SimpleExpressionContext simpleCtx;
 	private int line;
 
-	public ConstantSemCheck(MutableContext mutableCtx) {
-		this.mutableCtx = mutableCtx;
+	public ConstantSemCheck(SimpleExpressionContext simpleCtx) {
+		this.simpleCtx = simpleCtx;
 
-		Token first = this.mutableCtx.getStart();
+		Token first = this.simpleCtx.getStart();
 		this.line = first.getLine();
 	}
 
 
     @Override
-	public void verify() {
+	public void check() {
 		// ParseTreeWalker treeWalker = new ParseTreeWalker();
 		// treeWalker.walk(this, this.exprCtx);
 	}
 
-	@Override
-	public void visitTerminal(TerminalNode node) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitErrorNode(ErrorNode node) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void enterEveryRule(ParserRuleContext ctx) {
@@ -56,9 +46,4 @@ public class ConstantSemCheck implements SemCheck, ParseTreeListener {
 		}
 	}
 
-	@Override
-	public void exitEveryRule(ParserRuleContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-}
+} 

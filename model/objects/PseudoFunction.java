@@ -52,6 +52,13 @@ public class PseudoFunction {
         return this.name;
     }
 
+    public void addParameter(String id, PseudoValue pseudoValue) {
+        this.parameters.put(id, pseudoValue);
+    }
+
+    public int getParameterCount() {
+        return this.parameters.size();
+    }
 
 
 

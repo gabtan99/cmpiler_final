@@ -118,16 +118,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitArrayVariableDeclarationInitialize(PSCParser.ArrayVariableDeclarationInitializeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#arrayVariableDeclarationIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayVariableDeclarationIdentifier(PSCParser.ArrayVariableDeclarationIdentifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#arrayVariableDeclarationIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayVariableDeclarationIdentifier(PSCParser.ArrayVariableDeclarationIdentifierContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#typeSpecifierSelector}.
 	 * @param ctx the parse tree
 	 */
@@ -547,16 +537,6 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArguments(PSCParser.ArgumentsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PSCParser#argumentList}.
-	 * @param ctx the parse tree
-	 */
-	void enterArgumentList(PSCParser.ArgumentListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#argumentList}.
-	 * @param ctx the parse tree
-	 */
-	void exitArgumentList(PSCParser.ArgumentListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#constant}.
 	 * @param ctx the parse tree
