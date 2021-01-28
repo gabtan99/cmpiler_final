@@ -1,8 +1,9 @@
 package model.semcheck;
 
+import java.util.*;
+
 import model.objects.*;
 import model.Console;
-import parser.PSCParser.ArgumentListContext;
 import parser.PSCParser.ArgumentsContext;
 import parser.PSCParser.SimpleExpressionContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -10,6 +11,8 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
+
+import model.*;
 
 
 public class ParameterCountSemCheck implements SemCheck {
@@ -21,8 +24,8 @@ public class ParameterCountSemCheck implements SemCheck {
 	public ParameterCountSemCheck(PseudoFunction pseudoFunction, ArgumentsContext argsCtx) {
 		this.pseudoFunction = pseudoFunction;
 
-		if (argsCtx.argumentList() != null) {
-			this.exprCtxList = argsCtx.argumentList().simpleExpression();
+		if (argsCtx.simpleExpression() != null) {
+			this.exprCtxList = argsCtx.simpleExpression();
 		}
 
 		this.line = argsCtx.getStart().getLine();
@@ -42,21 +45,4 @@ public class ParameterCountSemCheck implements SemCheck {
 
 	}
 
-	@Override
-	public void exitEveryRule(ParserRuleContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-    @Override
-	public void visitTerminal(TerminalNode node) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitErrorNode(ErrorNode node) {
-		// TODO Auto-generated method stub
-		
-	}
 }

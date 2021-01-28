@@ -172,13 +172,13 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParamTypeList(PSCParser.ParamTypeListContext ctx) { }
+	@Override public void enterParameter(PSCParser.ParameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParamTypeList(PSCParser.ParamTypeListContext ctx) { }
+	@Override public void exitParameter(PSCParser.ParameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -227,6 +227,18 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCompoundStmt(PSCParser.CompoundStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCompoundStmtBody(PSCParser.CompoundStmtBodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCompoundStmtBody(PSCParser.CompoundStmtBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

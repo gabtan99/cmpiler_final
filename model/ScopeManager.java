@@ -44,7 +44,6 @@ public class ScopeManager {
         if (this.funcList.containsKey(id)) {
             return this.funcList.get(id);
         } else {
-            Console.log(" function not found.");
             return null;
         }
     }

@@ -61,21 +61,21 @@ public class PseudoArray {
         
 		PrimitiveType primitiveType = PrimitiveType.NOT_YET_IDENTIFIED;
 		
-		if(RecognizedKeywords.matchesKeyword(RecognizedKeywords.PRIMITIVE_TYPE_BOOLEAN, primitiveTypeString)) {
+		if(primitiveTypeString.contains("bool")) {
 			primitiveType = PrimitiveType.BOOLEAN;
 		}
-		else if(RecognizedKeywords.matchesKeyword(RecognizedKeywords.PRIMITIVE_TYPE_FLOAT, primitiveTypeString)) {
+		else if(primitiveTypeString.contains("int")) {
 			primitiveType = PrimitiveType.FLOAT;
 		}
-		else if(RecognizedKeywords.matchesKeyword(RecognizedKeywords.PRIMITIVE_TYPE_INT, primitiveTypeString)) {
+		else if(primitiveTypeString.contains("float")) {
 			primitiveType = PrimitiveType.INT;
 		}
-		else if(RecognizedKeywords.matchesKeyword(RecognizedKeywords.PRIMITIVE_TYPE_STRING, primitiveTypeString)) {
+		else if(primitiveTypeString.contains("String")) {
 			primitiveType = PrimitiveType.STRING;
 		}
 		
 		PseudoArray pseudoArray = new PseudoArray(primitiveType, arrayIdentifier);
 		
-		return PseudoArray;
+		return pseudoArray;
 	}
 }

@@ -146,7 +146,7 @@ public class AppView {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.getIcons().add(new Image("/assets/code.png"));
-        stage.setTitle("Psuedocode Compiler by Tan & Ty");
+        stage.setTitle("Pseudocode IDE by Tan & Ty");
         stage.show();
 
     }

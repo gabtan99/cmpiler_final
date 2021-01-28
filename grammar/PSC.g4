@@ -122,11 +122,11 @@ functionDeclaration
     ;
 
 params
-    : paramTypeList (Comma paramTypeList)*
+    : parameter (Comma parameter)*
     | /*epsilon */
     ;
 
-paramTypeList
+parameter
     : typeSpecifierSelector IDENTIFIER
     ;
 

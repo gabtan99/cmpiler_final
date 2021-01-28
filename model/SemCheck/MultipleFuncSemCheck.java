@@ -8,9 +8,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 
+import model.*;
+
 
 public class MultipleFuncSemCheck implements SemCheck {
-
 
 	private FunctionDeclarationContext funcIdCtx;
 	private int line;
@@ -18,35 +19,21 @@ public class MultipleFuncSemCheck implements SemCheck {
 	public MultipleFuncSemCheck(FunctionDeclarationContext funcIdCtx) {
 		this.funcIdCtx = funcIdCtx;
 
-		Token first = new funcIdCtx.getStart();
+		Token first = funcIdCtx.getStart();
 		this.line = first.getLine();
 	}
 
     @Override
 	public void check() {
 
-		PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(funcIdCtx.IDENTIFIER().getText());
+		if (funcIdCtx.IDENTIFIER() != null) {
+			PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(funcIdCtx.IDENTIFIER().getText());
 
-		if (pseudoFunction != null) {
-			Console.log("MultipleFuncDeclaration error at " + this.line);
+			if (pseudoFunction != null) {
+				Console.log("MultipleFuncDeclaration error at " + this.line);
+			}
 		}
+
 	}
 
-	@Override
-	public void exitEveryRule(ParserRuleContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-    @Override
-	public void visitTerminal(TerminalNode node) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visitErrorNode(ErrorNode node) {
-		// TODO Auto-generated method stub
-		
-	}
 }

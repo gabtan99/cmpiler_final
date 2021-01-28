@@ -11,6 +11,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 
+import model.*;
+
+
 public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 
     private static final String errorTemplate = "TypeMismatch error:  ";
@@ -50,25 +53,25 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 			}
 			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.BOOLEAN) {
 				if(constCtx.BOOLCONSTANT() == null) {
-					String msg = "Expected boolean at " + this.lineNumber;
+					String msg = "Expected boolean at " + this.line;
 					Console.log(errorTemplate + msg);
 				}
 			}
 			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.INT) {
 				if(constCtx.INTEGERCONSTANT() == null) {
-					String msg = "Expected int at " + this.lineNumber;
+					String msg = "Expected int at " + this.line;
 					Console.log(errorTemplate + msg);
 				}
 			}
 			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT) {
 				if(constCtx.FLOATCONSTANT() == null) {
-					String msg = "Expected float at " + this.lineNumber;
+					String msg = "Expected float at " + this.line;
 					Console.log(errorTemplate + msg);
 				}
 			}
 			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING) {
-				if(constCtx.STRINGCONSTANT() == null) {
-					String msg = "Expected string at " + this.lineNumber;
+				if(constCtx.StringLiteral() == null) {
+					String msg = "Expected string at " + this.line;
 					Console.log(errorTemplate + msg);
 				}
 			}

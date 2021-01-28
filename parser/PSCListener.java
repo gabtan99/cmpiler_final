@@ -138,15 +138,15 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitParams(PSCParser.ParamsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#paramTypeList}.
+	 * Enter a parse tree produced by {@link PSCParser#parameter}.
 	 * @param ctx the parse tree
 	 */
-	void enterParamTypeList(PSCParser.ParamTypeListContext ctx);
+	void enterParameter(PSCParser.ParameterContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link PSCParser#paramTypeList}.
+	 * Exit a parse tree produced by {@link PSCParser#parameter}.
 	 * @param ctx the parse tree
 	 */
-	void exitParamTypeList(PSCParser.ParamTypeListContext ctx);
+	void exitParameter(PSCParser.ParameterContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#statement}.
 	 * @param ctx the parse tree
@@ -187,6 +187,16 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCompoundStmt(PSCParser.CompoundStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PSCParser#compoundStmtBody}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompoundStmtBody(PSCParser.CompoundStmtBodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PSCParser#compoundStmtBody}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompoundStmtBody(PSCParser.CompoundStmtBodyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#localDeclarations}.
 	 * @param ctx the parse tree
