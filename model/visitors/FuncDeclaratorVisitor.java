@@ -36,10 +36,18 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
             TypeSpecifierContext typeCtx = ctx.typeSpecifier();
             if (typeCtx.Bool()!= null){
 
-            }
-        } else if (ctx.arrayTypeSpecifier() != null) {
+            } else if (typeCtx.Bool()!= null){
 
-        } else if (ctx.Void() != null) {
+            } else if (typeCtx.Bool()!= null){
+
+            } else if (typeCtx.Bool()!= null){
+
+            }
+        }
+        //  else if (ctx.arrayTypeSpecifier() != null) {
+
+        // }
+        else if (ctx.Void() != null) {
             func.setReturnType(FunctionType.VOID);
         }
 
