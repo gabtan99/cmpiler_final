@@ -3,6 +3,7 @@ package model.visitors;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.PSCParser.ProgramContext;
+import parser.PSCParser.TypeSpecifierContext;
 import parser.PSCParser.FunctionDeclarationContext;
 import parser.PSCParser.ParamsContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -30,6 +31,17 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
 
         String id = ctx.IDENTIFIER().getText();
         func.setName(id);
+
+        if (ctx.typeSpecifier() != null) {
+            TypeSpecifierContext typeCtx = ctx.typeSpecifier();
+            if (typeCtx.Bool()!= null){
+
+            }
+        } else if (ctx.arrayTypeSpecifier() != null) {
+
+        } else if (ctx.Void() != null) {
+            func.setReturnType(FunctionType.VOID);
+        }
 
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(this, ctx);

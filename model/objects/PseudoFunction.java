@@ -18,6 +18,7 @@ public class PseudoFunction {
     public PseudoFunction() {
         this.parameters = new LinkedHashMap<>();
         this.returnType = FunctionType.VOID;
+        this.localScope = new Scope();
     }
 
     public void setLocalScope(Scope localScope) {

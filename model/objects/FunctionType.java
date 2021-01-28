@@ -4,6 +4,6 @@ public enum FunctionType {
 		INT,
         BOOLEAN,
         FLOAT,
-        STRING, 
-        VOID
+        STRING,
+        VOID,
 }
