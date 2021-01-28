@@ -26,6 +26,7 @@ public class ScopeManager {
     }
 
     public void reset() {
+        instance = null;
         funcList = new HashMap<String, PseudoFunction>();
     }
 

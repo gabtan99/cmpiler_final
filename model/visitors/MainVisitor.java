@@ -2,8 +2,6 @@ package model.visitors;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import parser.PSCParser.ProgramContext;
-import parser.PSCParser.FunctionDeclarationContext;
 import parser.PSCParser.MainProgramContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -11,30 +9,21 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 
 import model.ScopeManager;
 
-public class ProgramVisitor implements ParseTreeListener {
+public class MainVisitor implements ParseTreeListener {
 
-    public ProgramVisitor() {}
+    public MainVisitor() {}
 
-    public void visit(ProgramContext ctx) {
-        ScopeManager.getInstance();
-
+    public void visit(MainProgramContext ctx) {
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(this, ctx);
     }
 
     @Override
 	public void enterEveryRule(ParserRuleContext ctx) {
-		if(ctx instanceof FunctionDeclarationContext) {
-            FunctionDeclarationContext funcCtx = (FunctionDeclarationContext) ctx;
-
-			FuncDeclaratorVisitor visitor = new FuncDeclaratorVisitor();
-            visitor.visit(funcCtx);
-		} else if (ctx instanceof MainProgramContext) {
-            MainProgramContext mainCtx = (MainProgramContext) ctx;
-
-            MainVisitor visitor = new MainVisitor();
-            visitor.visit(mainCtx);
-        }
+		if(ctx instanceof MainProgramContext) {
+            System.out.println("lmao found main");
+            // block visitor
+		}
 
 	}
 
