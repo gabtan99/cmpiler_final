@@ -388,18 +388,6 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayInitExpression(PSCParser.ArrayInitExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayInitExpression(PSCParser.ArrayInitExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSimpleExpression(PSCParser.SimpleExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

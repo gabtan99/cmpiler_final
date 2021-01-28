@@ -223,11 +223,7 @@ assignmentStandaloneExpression
     ;
 
 createArrayExpression
-    : Create arrayInitExpression
-    ;
-
-arrayInitExpression
-    : typeSpecifier LeftBracket relExpression RightBracket
+    : Create typeSpecifier LeftBracket simpleExpression RightBracket
     ;
 
 simpleExpression

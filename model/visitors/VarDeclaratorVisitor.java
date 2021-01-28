@@ -5,6 +5,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.PSCParser.ScopedVariableDeclarationContext;
 import parser.PSCParser.VariableDeclarationContext;
 import parser.PSCParser.VariableDeclarationInitializeContext;
+import parser.PSCParser.ArrayVariableDeclarationInitializeContext;
+import parser.PSCParser.ArrayVariableDeclarationContext;
+import parser.PSCParser.TypeSpecifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -13,6 +16,7 @@ import model.ScopeManager;
 import model.semcheck.*;
 import model.objects.*;
 import model.Scope;
+import model.Console;
 
 public class VarDeclaratorVisitor implements ParseTreeListener {
 
@@ -28,16 +32,19 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 
 		if (ctx instanceof ScopedVariableDeclarationContext) {
 			ScopedVariableDeclarationContext scopedVarDecCtx = (ScopedVariableDeclarationContext) ctx;
-			VariableDeclarationContext varDecCtx = scopedVarDecCtx.variableDeclaration();
+			
+			
+
 			PseudoValue pseudoValue = null;
 
-			if (varDecCtx != null) {
+			MultipleVarSemCheck mulVarSemCheck = new MultipleVarSemCheck(scopedVarDecCtx);
+			mulVarSemCheck.check();
+			
 
+			if (scopedVarDecCtx.variableDeclaration() != null) {
+				VariableDeclarationContext varDecCtx = scopedVarDecCtx.variableDeclaration();
 				VariableDeclarationInitializeContext varDecInitCtx = varDecCtx.variableDeclarationInitialize();
-				
-				MultipleVarSemCheck mulVarSemCheck = new MultipleVarSemCheck(varDecInitCtx);
-				mulVarSemCheck.check();
-				
+					
 				if (varDecCtx.typeSpecifier().Int() != null) {
 					pseudoValue = new PseudoValue(null, "int");
 				} else if (varDecCtx.typeSpecifier().Bool() != null) {
@@ -48,18 +55,56 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					pseudoValue = new PseudoValue(null, "float");
 				}
 				
-				if (varDecInitCtx.Assign() == null) {
-					// empty initialization, walang problema
-					Scope scope = ScopeManager.getInstance().getScope();
-					scope.addVariable(varDecInitCtx.IDENTIFIER().getText(), pseudoValue);
-				} else {
+				if (varDecInitCtx.Assign() != null) {
+					UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(varDecInitCtx.simpleExpression() );
+					undeclaredSemCheck.check();
+
 					// may value, you need to check
 					TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, varDecInitCtx.simpleExpression());
 					typeMMSemCheck.check();
-				}
+				} 
+
+				Scope scope = ScopeManager.getInstance().getScope();
+				scope.addVariable(varDecInitCtx.IDENTIFIER().getText(), pseudoValue);
 			
 				System.out.println("lmao found a normie declaration");
+
 			} else if (scopedVarDecCtx.arrayVariableDeclaration() != null) {
+
+				ArrayVariableDeclarationContext arrVarDecCtx = scopedVarDecCtx.arrayVariableDeclaration();
+				ArrayVariableDeclarationInitializeContext arrVarDecInitCtx = scopedVarDecCtx.arrayVariableDeclaration().arrayVariableDeclarationInitialize();
+
+				PseudoArray pseudoArray = null;
+				if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Int() != null) {
+					pseudoArray = PseudoArray.createArray("int", arrVarDecInitCtx.IDENTIFIER().getText());
+				} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null) {
+					pseudoArray = PseudoArray.createArray("bool", arrVarDecInitCtx.IDENTIFIER().getText());
+				} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().String() != null) {
+					pseudoArray = PseudoArray.createArray("String", arrVarDecInitCtx.IDENTIFIER().getText());
+				} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Float() != null) {
+					pseudoArray = PseudoArray.createArray("float", arrVarDecInitCtx.IDENTIFIER().getText());
+				}
+
+				pseudoValue = new PseudoValue(pseudoArray, "array");
+
+				if (arrVarDecInitCtx.createArrayExpression().Create() != null) {
+
+					TypeSpecifierContext typeSpecifier = arrVarDecInitCtx.createArrayExpression().typeSpecifier();
+					
+					// if there is create type[]
+					
+					if ((arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Int() != null && typeSpecifier.Int() == null) || 
+					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Float() != null && typeSpecifier.Float() == null) || 
+					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().String() != null && typeSpecifier.String() == null) ||
+					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null && typeSpecifier.Bool() == null) ) {
+						Console.log("TypeMismatch Error at " + arrVarDecCtx.getStart().getLine() );
+					}	 
+					
+					
+				} 
+
+				Scope scope = ScopeManager.getInstance().getScope();
+				scope.addVariable(arrVarDecInitCtx.IDENTIFIER().getText(), pseudoValue);
 
 				System.out.println("lmao found a array declaration");
 			}

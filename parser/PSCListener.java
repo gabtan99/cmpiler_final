@@ -318,16 +318,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitCreateArrayExpression(PSCParser.CreateArrayExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#arrayInitExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayInitExpression(PSCParser.ArrayInitExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#arrayInitExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayInitExpression(PSCParser.ArrayInitExpressionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#simpleExpression}.
 	 * @param ctx the parse tree
 	 */
