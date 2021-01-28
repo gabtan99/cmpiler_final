@@ -80,12 +80,8 @@ scopedVariableDeclaration
     ;
 
 variableDeclarationInitialize
-    : variableDeclarationIdentifier 
-    | variableDeclarationIdentifier Assign simpleExpression 
-    ;
-
-variableDeclarationIdentifier
-    : IDENTIFIER
+    : IDENTIFIER 
+    | IDENTIFIER Assign simpleExpression 
     ;
 
 typeSpecifier
@@ -106,8 +102,8 @@ arrayVariableDeclaration
     ;
 
 arrayVariableDeclarationInitialize
-    : variableDeclarationIdentifier
-    | variableDeclarationIdentifier Assign createArrayExpression 
+    : IDENTIFIER
+    | IDENTIFIER Assign createArrayExpression 
     ;
 
 /* ------- */
@@ -141,10 +137,6 @@ statement
     | returnStmt
     ;
    
-statementList
-    : (statement)+
-    ;
-
 expressionStmt
     : (assignmentStandaloneExpression|call) Semi
     ;
@@ -154,12 +146,8 @@ compoundStmt
     ;
 
 compoundStmtBody
-    : localDeclarations
-    | statementList
-    ;
-
-localDeclarations
-    : (scopedVariableDeclaration)+
+    : scopedVariableDeclaration
+    | statement
     ;
     
 scanStmt

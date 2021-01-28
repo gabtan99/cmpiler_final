@@ -6,6 +6,7 @@ import parser.PSCParser.ProgramContext;
 import parser.PSCParser.TypeSpecifierContext;
 import parser.PSCParser.ArrayTypeSpecifierContext;
 import parser.PSCParser.FunctionDeclarationContext;
+import parser.PSCParser.CompoundStmtContext;
 import parser.PSCParser.ParamsContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -75,8 +76,16 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
                 visitor.visit(paramsCtx.parameter());
             } 
 
-           
-            // register in function table 
+        } else if (ctx instanceof CompoundStmtContext) {
+            CompoundStmtContext compoundCtx = (CompoundStmtContext) ctx;
+
+            func.getLocalScope().setParent(ScopeManager.getInstance().getScope());
+            ScopeManager.getInstance().setScope(func.getLocalScope());
+		    System.out.println("Opened scope");
+
+            CompoundVisitor visitor = new CompoundVisitor();
+			visitor.visit(compoundCtx);
+        
         }
 		
 	}

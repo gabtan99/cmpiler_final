@@ -3,6 +3,7 @@ package model.visitors;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.PSCParser.MainProgramContext;
+import parser.PSCParser.CompoundStmtContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -20,9 +21,13 @@ public class MainVisitor implements ParseTreeListener {
 
     @Override
 	public void enterEveryRule(ParserRuleContext ctx) {
-		if(ctx instanceof MainProgramContext) {
+		if(ctx instanceof CompoundStmtContext) {
             System.out.println("lmao found main");
-            // block visitor
+
+			CompoundStmtContext compoundCtx = (CompoundStmtContext) ctx;
+            
+			CompoundVisitor visitor = new CompoundVisitor();
+			visitor.visit(compoundCtx);
 		}
 
 	}

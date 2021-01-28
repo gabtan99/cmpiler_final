@@ -21,9 +21,11 @@ public class Parser {
     private CharStream input;
 
     public Parser() {
+        ScopeManager.getInstance();
     }
 
     public Parser(CharStream input) {
+        ScopeManager.getInstance();
         this.input = input;
     }
     

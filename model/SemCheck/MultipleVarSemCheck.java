@@ -2,7 +2,7 @@ package model.semcheck;
 
 import model.objects.*;
 import model.Console;
-import parser.PSCParser.VariableDeclarationIdentifierContext;
+import parser.PSCParser.VariableDeclarationInitializeContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -15,10 +15,10 @@ import model.*;
 
 public class MultipleVarSemCheck implements SemCheck, ParseTreeListener {
 
-	private VariableDeclarationIdentifierContext varIdCtx;
+	private VariableDeclarationInitializeContext varIdCtx;
 	private int line;
 
-	public MultipleVarSemCheck (VariableDeclarationIdentifierContext varIdCtx) {
+	public MultipleVarSemCheck (VariableDeclarationInitializeContext varIdCtx) {
 		this.varIdCtx = varIdCtx;
 
 		Token first = this.varIdCtx.getStart();
@@ -27,15 +27,15 @@ public class MultipleVarSemCheck implements SemCheck, ParseTreeListener {
 
     @Override
 	public void check() {
-		// ParseTreeWalker treeWalker = new ParseTreeWalker();
-		// treeWalker.walk(this, this.exprCtx);
+		ParseTreeWalker treeWalker = new ParseTreeWalker();
+		treeWalker.walk(this, this.varIdCtx);
 	}
 
 
 	@Override
 	public void enterEveryRule(ParserRuleContext ctx) {
-		if(ctx instanceof VariableDeclarationIdentifierContext) {
-			VariableDeclarationIdentifierContext varDecCtx = (VariableDeclarationIdentifierContext) ctx;
+		if(ctx instanceof VariableDeclarationInitializeContext) {
+			VariableDeclarationInitializeContext varDecCtx = (VariableDeclarationInitializeContext) ctx;
 			
 			if (ScopeManager.getInstance().searchMyScope(varDecCtx.IDENTIFIER().getText()) != null) {
 				Console.log("MultipleVarDeclaration Error at " + this.line);

@@ -58,16 +58,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitVariableDeclarationInitialize(PSCParser.VariableDeclarationInitializeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#variableDeclarationIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariableDeclarationIdentifier(PSCParser.VariableDeclarationIdentifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#variableDeclarationIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariableDeclarationIdentifier(PSCParser.VariableDeclarationIdentifierContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#typeSpecifier}.
 	 * @param ctx the parse tree
 	 */
@@ -158,16 +148,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitStatement(PSCParser.StatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#statementList}.
-	 * @param ctx the parse tree
-	 */
-	void enterStatementList(PSCParser.StatementListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#statementList}.
-	 * @param ctx the parse tree
-	 */
-	void exitStatementList(PSCParser.StatementListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#expressionStmt}.
 	 * @param ctx the parse tree
 	 */
@@ -197,16 +177,6 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCompoundStmtBody(PSCParser.CompoundStmtBodyContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PSCParser#localDeclarations}.
-	 * @param ctx the parse tree
-	 */
-	void enterLocalDeclarations(PSCParser.LocalDeclarationsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#localDeclarations}.
-	 * @param ctx the parse tree
-	 */
-	void exitLocalDeclarations(PSCParser.LocalDeclarationsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#scanStmt}.
 	 * @param ctx the parse tree

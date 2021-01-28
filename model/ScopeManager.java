@@ -38,6 +38,12 @@ public class ScopeManager {
         return this.curScope;
     }
 
+    public void goToParent() {
+        if (curScope != null) {
+            curScope = curScope.getParent();  
+        }
+    }
+
     public void addFunction(String id, PseudoFunction pseudoFunction) {
         this.funcList.put(id, pseudoFunction);
     }

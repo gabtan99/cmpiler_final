@@ -6,6 +6,7 @@ import model.Console;
 
 public class Scope {
 
+    
     private Scope parent;
     private HashMap<String, PseudoValue> localVars = null;
 
@@ -45,7 +46,6 @@ public class Scope {
         if (this.localVars.containsKey(id)) {
             return this.localVars.get(id);
         } else {
-            Console.log(id + " cannot be found.");
             return null;
         }
     }

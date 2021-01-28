@@ -76,18 +76,6 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariableDeclarationIdentifier(PSCParser.VariableDeclarationIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVariableDeclarationIdentifier(PSCParser.VariableDeclarationIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterTypeSpecifier(PSCParser.TypeSpecifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -196,18 +184,6 @@ public class PSCBaseListener implements PSCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatementList(PSCParser.StatementListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStatementList(PSCParser.StatementListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterExpressionStmt(PSCParser.ExpressionStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -239,18 +215,6 @@ public class PSCBaseListener implements PSCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCompoundStmtBody(PSCParser.CompoundStmtBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLocalDeclarations(PSCParser.LocalDeclarationsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLocalDeclarations(PSCParser.LocalDeclarationsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

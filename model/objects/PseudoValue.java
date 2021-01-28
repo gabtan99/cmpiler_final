@@ -84,10 +84,10 @@ public class PseudoValue {
 			primitiveType = PrimitiveType.BOOLEAN;
 		}
 		else if(primitiveTypeString.contains("int")) {
-			primitiveType = PrimitiveType.FLOAT;
+			primitiveType = PrimitiveType.INT;
 		}
 		else if(primitiveTypeString.contains("float")) {
-			primitiveType = PrimitiveType.INT;
+			primitiveType = PrimitiveType.FLOAT;
 		}
 		else if(primitiveTypeString.contains("String")) {
 			primitiveType = PrimitiveType.STRING;
