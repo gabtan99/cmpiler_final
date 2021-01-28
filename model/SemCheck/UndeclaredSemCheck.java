@@ -10,6 +10,8 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.ErrorNode;
 
 public class UndeclaredSemCheck implements SemCheck, ParseTreeListener {
 
@@ -52,6 +54,24 @@ public class UndeclaredSemCheck implements SemCheck, ParseTreeListener {
 				Console.log("UndeclaredFunction Error at line " + this.line);
 			}
 		}
+	}
+
+	@Override
+	public void exitEveryRule(ParserRuleContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+    @Override
+	public void visitTerminal(TerminalNode node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitErrorNode(ErrorNode node) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

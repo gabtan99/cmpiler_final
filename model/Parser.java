@@ -13,7 +13,7 @@ import org.antlr.v4.gui.TreeViewer;
 
 import parser.PSCLexer;
 import parser.PSCParser;
-import parser.PSCBaseListener;
+import model.PSCCustomListener;
 
 public class Parser {
 
@@ -44,7 +44,7 @@ public class Parser {
 
         ParseTree tree = parser.program();
         ParseTreeWalker walker = new ParseTreeWalker();
-        PSCBaseListener listener = new PSCBaseListener();
+        PSCCustomListener listener = new PSCCustomListener();
         walker.walk(listener, tree);
    }
 

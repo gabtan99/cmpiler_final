@@ -5,6 +5,8 @@ import model.Console;
 import parser.PSCParser.FunctionDeclarationContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.ErrorNode;
 
 
 public class MultipleFuncSemCheck implements SemCheck {
@@ -28,5 +30,23 @@ public class MultipleFuncSemCheck implements SemCheck {
 		if (pseudoFunction != null) {
 			Console.log("MultipleFuncDeclaration error at " + this.line);
 		}
+	}
+
+	@Override
+	public void exitEveryRule(ParserRuleContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+    @Override
+	public void visitTerminal(TerminalNode node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitErrorNode(ErrorNode node) {
+		// TODO Auto-generated method stub
+		
 	}
 }

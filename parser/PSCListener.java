@@ -28,16 +28,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitMainProgram(PSCParser.MainProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#functionDeclarationList}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionDeclarationList(PSCParser.FunctionDeclarationListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#functionDeclarationList}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionDeclarationList(PSCParser.FunctionDeclarationListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#variableDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -148,16 +138,6 @@ public interface PSCListener extends ParseTreeListener {
 	 */
 	void exitParams(PSCParser.ParamsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PSCParser#paramList}.
-	 * @param ctx the parse tree
-	 */
-	void enterParamList(PSCParser.ParamListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#paramList}.
-	 * @param ctx the parse tree
-	 */
-	void exitParamList(PSCParser.ParamListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PSCParser#paramTypeList}.
 	 * @param ctx the parse tree
 	 */
@@ -247,16 +227,6 @@ public interface PSCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrintParams(PSCParser.PrintParamsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PSCParser#printParamsList}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrintParamsList(PSCParser.PrintParamsListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PSCParser#printParamsList}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrintParamsList(PSCParser.PrintParamsListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PSCParser#printParamsSelector}.
 	 * @param ctx the parse tree

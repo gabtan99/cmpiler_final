@@ -61,17 +61,13 @@ To : 'to';
 /* main program */
 
 program
-    : functionDeclarationList? mainProgram EOF
+    : functionDeclaration* mainProgram EOF
     ;
 
 mainProgram
     :  Main LeftParen RightParen compoundStmt
     ;
 
-functionDeclarationList
-    : functionDeclaration
-    | functionDeclarationList functionDeclaration
-    ;
 
 /* ------- */
 variableDeclaration 
@@ -126,13 +122,8 @@ functionDeclaration
     ;
 
 params
-    : paramList
+    : paramTypeList (Comma paramTypeList)*
     | /*epsilon */
-    ;
-
-paramList
-    : paramList Comma paramTypeList
-    | paramTypeList
     ;
 
 paramTypeList
@@ -151,8 +142,7 @@ statement
     ;
    
 statementList
-    : statement
-    | statementList statement
+    : (statement)+
     ;
 
 expressionStmt
@@ -160,12 +150,16 @@ expressionStmt
     ;
 
 compoundStmt
-    : LeftBrace (localDeclarations | statementList)* RightBrace
+    : LeftBrace (compoundStmtBody)* RightBrace
+    ;
+
+compoundStmtBody
+    : localDeclarations
+    | statementList
     ;
 
 localDeclarations
-    : scopedVariableDeclaration
-    | localDeclarations scopedVariableDeclaration
+    : (scopedVariableDeclaration)+
     ;
     
 scanStmt
@@ -178,14 +172,10 @@ printStmt
     ;
    
 printParams
-    : printParamsList
+    : printParamsSelector (Plus printParamsSelector)*
+    | printParamsSelector Plus (printParamsSelector Plus)+ {notifyErrorListeners("Extra '+' symbols found.");}
     ;
 
-printParamsList
-    : printParamsList Plus printParamsSelector
-    | printParamsList Plus {notifyErrorListeners("Extra '+' symbols found.");}
-    | printParamsSelector
-    ;
     
 printParamsSelector
     : StringLiteral
@@ -211,7 +201,7 @@ whileStatement
     ;
 
 forStatement
-    : For loopDeclaration iterationToStatement simpleExpression LeftBrace (localDeclarations | statementList)+ RightBrace
+    : For loopDeclaration iterationToStatement simpleExpression compoundStmt
     ;
 
 iterationToStatement

@@ -7,6 +7,8 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.ErrorNode;
 
 public class MultipleVarSemCheck implements SemCheck, ParseTreeListener {
 
@@ -36,6 +38,24 @@ public class MultipleVarSemCheck implements SemCheck, ParseTreeListener {
 				Console.log("MultipleVarDeclaration Error at " + this.line);
 			}
 		}
+	}
+
+	@Override
+	public void exitEveryRule(ParserRuleContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+    @Override
+	public void visitTerminal(TerminalNode node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitErrorNode(ErrorNode node) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

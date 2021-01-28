@@ -5,6 +5,8 @@ import model.Console;
 import parser.PSCParser.ArgumentListContext;
 import parser.PSCParser.ArgumentsContext;
 import parser.PSCParser.SimpleExpressionContext;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.ErrorNode;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -38,5 +40,23 @@ public class ParameterCountSemCheck implements SemCheck {
 		}
 
 
+	}
+
+	@Override
+	public void exitEveryRule(ParserRuleContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+    @Override
+	public void visitTerminal(TerminalNode node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitErrorNode(ErrorNode node) {
+		// TODO Auto-generated method stub
+		
 	}
 }

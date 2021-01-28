@@ -1,22 +1,28 @@
 // Generated from grammar/PSC.g4 by ANTLR 4.9
-package parser;
+package model;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
+
+import model.visitors.*;
+import parser.*;
 
 /**
  * This class provides an empty implementation of {@link PSCListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-public class PSCBaseListener implements PSCListener {
+public class PSCCustomListener implements PSCListener {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProgram(PSCParser.ProgramContext ctx) { }
+	@Override public void enterProgram(PSCParser.ProgramContext ctx) { 
+		ProgramVisitor visitor = new ProgramVisitor();
+		visitor.visit(ctx);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
