@@ -5,5 +5,5 @@ public enum FunctionType {
         BOOLEAN,
         FLOAT,
         STRING,
-        VOID,
+        VOID
 }

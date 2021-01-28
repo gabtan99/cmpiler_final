@@ -70,7 +70,7 @@ public class PseudoValue {
 			case STRING:
 				return value instanceof String;
 			case ARRAY:
-				return value instanceof Object;
+				return value instanceof PseudoArray;
 			default:
 				return false;
 		}
@@ -91,6 +91,8 @@ public class PseudoValue {
 		}
 		else if(primitiveTypeString.contains("String")) {
 			primitiveType = PrimitiveType.STRING;
+		} else if(primitiveTypeString.contains("array")) {
+			primitiveType = PrimitiveType.ARRAY;
 		}
 	
 		return primitiveType;

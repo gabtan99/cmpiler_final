@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.PSCParser.ProgramContext;
 import parser.PSCParser.TypeSpecifierContext;
+import parser.PSCParser.ArrayTypeSpecifierContext;
 import parser.PSCParser.FunctionDeclarationContext;
 import parser.PSCParser.ParamsContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -25,7 +26,6 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
         
         ScopeManager sm = ScopeManager.getInstance();
         
-
         MultipleFuncSemCheck checker = new MultipleFuncSemCheck(ctx);
         checker.check();
 
@@ -34,22 +34,31 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
 
         if (ctx.typeSpecifier() != null) {
             TypeSpecifierContext typeCtx = ctx.typeSpecifier();
-            if (typeCtx.Bool()!= null){
-
+            if (typeCtx.Int()!= null){
+                func.setReturnType(FunctionType.INT);
             } else if (typeCtx.Bool()!= null){
-
-            } else if (typeCtx.Bool()!= null){
-
-            } else if (typeCtx.Bool()!= null){
-
+                func.setReturnType(FunctionType.BOOLEAN);
+            } else if (typeCtx.String()!= null){
+                func.setReturnType(FunctionType.STRING);
+            } else if (typeCtx.Float()!= null){
+                func.setReturnType(FunctionType.FLOAT);
             }
-        }
-        //  else if (ctx.arrayTypeSpecifier() != null) {
-
-        // }
-        else if (ctx.Void() != null) {
+        } else if (ctx.arrayTypeSpecifier() != null) {
+            TypeSpecifierContext typeCtx = ctx.arrayTypeSpecifier().typeSpecifier();
+            if (typeCtx.Int()!= null){
+                func.setReturnType(FunctionType.INT, 1);
+            } else if (typeCtx.Bool()!= null){
+                func.setReturnType(FunctionType.BOOLEAN, 1);
+            } else if (typeCtx.String()!= null){
+                func.setReturnType(FunctionType.STRING, 1);
+            } else if (typeCtx.Float()!= null){
+                func.setReturnType(FunctionType.FLOAT, 1);
+            }
+        } else if (ctx.Void() != null) {
             func.setReturnType(FunctionType.VOID);
         }
+
+        sm.addFunction(id, func);
 
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(this, ctx);
@@ -60,11 +69,15 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
 
         if (ctx instanceof ParamsContext) {
             ParamsContext paramsCtx = (ParamsContext) ctx;
-            ParameterVisitor visitor = new ParameterVisitor(func);
-            visitor.visit(paramsCtx.parameter());
-        }
 
-	    System.out.println("Pumasok ako");
+            if (paramsCtx.parameter() != null) {
+                ParameterVisitor visitor = new ParameterVisitor(func);
+                visitor.visit(paramsCtx.parameter());
+            } 
+
+           
+            // register in function table 
+        }
 		
 	}
 

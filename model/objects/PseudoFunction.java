@@ -41,6 +41,26 @@ public class PseudoFunction {
 		}
 	}
 
+    public void setReturnType(FunctionType functionType, int isArray) {
+		this.returnType = functionType;
+		
+        if (isArray == 1) {
+
+            PseudoArray pseudoArray = null;
+
+            switch(this.returnType) {
+                case BOOLEAN: pseudoArray = PseudoArray.createArray("boolean", null); break;
+                case INT: pseudoArray = PseudoArray.createArray("int", null); break;
+                case FLOAT: pseudoArray = PseudoArray.createArray("float", null); break;
+                case STRING: pseudoArray = PseudoArray.createArray("String", null); break;
+                default:break;	
+            }
+
+            this.returnValue = new PseudoValue(pseudoArray, "array");
+        }
+		
+	}
+
     public FunctionType getReturnType() {
         return this.returnType;
     }
@@ -61,10 +81,8 @@ public class PseudoFunction {
         return this.parameters.size();
     }
 
-
-
-
-
-
+    public boolean searchParameter(String id) {
+        return parameters.containsKey(id);
+    }
 
 }

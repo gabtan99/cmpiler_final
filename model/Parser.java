@@ -14,6 +14,7 @@ import org.antlr.v4.gui.TreeViewer;
 import parser.PSCLexer;
 import parser.PSCParser;
 import model.PSCCustomListener;
+import model.ScopeManager;
 
 public class Parser {
 
@@ -31,6 +32,7 @@ public class Parser {
     }
 
     public void parse() {
+        ScopeManager.getInstance().reset();
         Lexer lexer = new PSCLexer(this.input);
 
         PSCSyntaxChecker syntaxListener = new PSCSyntaxChecker();

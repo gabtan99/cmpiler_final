@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import model.objects.*;
 import model.ScopeManager;
 import model.Scope;
+import model.Console;
 import model.semcheck.MultipleFuncSemCheck;
 
 public class ParameterVisitor implements ParseTreeListener {
@@ -28,12 +29,9 @@ public class ParameterVisitor implements ParseTreeListener {
     public void visit(List<ParameterContext> params) {
         
         for (ParameterContext paramCtx : params) {
-            System.out.println(paramCtx.IDENTIFIER().getText());
             ParseTreeWalker walker = new ParseTreeWalker();
             walker.walk(this, paramCtx);
         }
-        
-    
         
     }
 
@@ -44,6 +42,10 @@ public class ParameterVisitor implements ParseTreeListener {
             ParameterContext parameterCtx = (ParameterContext) ctx;
             TypeSpecifierSelectorContext typeSpecifierSelectorContext= parameterCtx.typeSpecifierSelector();
 
+            if (func.searchParameter(parameterCtx.IDENTIFIER().getText())) {
+                Console.log("Duplicate Parameter found at line " + ctx.getStart().getLine());
+            }
+           
             //Declare the pseudo value insert sa list ng parameters
             //check if array or not
             if (typeSpecifierSelectorContext.typeSpecifier() != null) { //primitive non-array
@@ -61,14 +63,28 @@ public class ParameterVisitor implements ParseTreeListener {
                     PseudoValue pseudoValue = new PseudoValue(null, "String");
                     this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
                 }
+            
+            } else if (typeSpecifierSelectorContext.arrayTypeSpecifier() != null ) {
+                TypeSpecifierContext typeSpecifierContext= typeSpecifierSelectorContext.arrayTypeSpecifier().typeSpecifier();
+                PseudoArray pseudoArray = null;
 
-            }
-            System.out.println("Look a parameter");
+                if (typeSpecifierContext.Int() != null) {
+                pseudoArray = PseudoArray.createArray("int", parameterCtx.IDENTIFIER().getText());
+                } else if (typeSpecifierContext.Bool() != null) {
+                pseudoArray = PseudoArray.createArray("bool", parameterCtx.IDENTIFIER().getText());
+                } else if (typeSpecifierContext.Float() != null) {
+                pseudoArray = PseudoArray.createArray("float", parameterCtx.IDENTIFIER().getText());
+                } else if (typeSpecifierContext.String() != null) {
+                pseudoArray = PseudoArray.createArray("String", parameterCtx.IDENTIFIER().getText());
+                }
+                PseudoValue pseudoValue = new PseudoValue(pseudoArray, "array");
+                this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
+
+            } 
         }
-
-	    
-		
+            
 	}
+
 
     @Override
 	public void exitEveryRule(ParserRuleContext ctx) {
