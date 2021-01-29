@@ -81,24 +81,33 @@ public class AppView {
 
         Menu runMenu = new Menu("Run");
         
-        // Parse
-        MenuItem runMenuItem1 = new MenuItem("Parse");
+        // Build
+        MenuItem runMenuItem1 = new MenuItem("Build");
+        Image buildIcon = new Image(getClass().getResourceAsStream("/assets/build.png"));
+        ImageView buildIconView = new ImageView(buildIcon);
+        buildIconView.setFitWidth(17);
+        buildIconView.setFitHeight(17);
+        runMenuItem1.setGraphic(buildIconView);
+
+        // Run
+        MenuItem runMenuItem2 = new MenuItem("Run");
         Image playIcon = new Image(getClass().getResourceAsStream("/assets/play.png"));
         ImageView playIconView = new ImageView(playIcon);
         playIconView.setFitWidth(17);
         playIconView.setFitHeight(17);
-        runMenuItem1.setGraphic(playIconView);
+        runMenuItem2.setGraphic(playIconView);
 
         // Show Parse Tree
-        MenuItem runMenuItem2 = new MenuItem("Show Parse Tree");
+        MenuItem runMenuItem3 = new MenuItem("Show Parse Tree");
         Image treeIcon = new Image(getClass().getResourceAsStream("/assets/tree.png"));
         ImageView treeIconView = new ImageView(treeIcon);
         treeIconView.setFitWidth(17);
         treeIconView.setFitHeight(17);
-        runMenuItem2.setGraphic(treeIconView);
+        runMenuItem3.setGraphic(treeIconView);
 
         runMenu.getItems().add(runMenuItem1);
         runMenu.getItems().add(runMenuItem2);
+        runMenu.getItems().add(runMenuItem3);
 
         MenuBar menuBar = new MenuBar(fileMenu, runMenu);
 
@@ -111,11 +120,18 @@ public class AppView {
             controller.parse(codeArea.getText());
         });
 
+        runMenuItem2.addEventHandler(ActionEvent.ACTION,event -> { 
+            System.out.println("executing");
+        });
+
         // Keyboard Shortcut for Parse
         KeyCombination kc = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
-        Runnable rn = ()-> controller.parse(codeArea.getText());;
+        Runnable rn = ()-> {
+            controller.parse(codeArea.getText());
+            System.out.println("executing");
+        };
 
-        runMenuItem2.addEventHandler(ActionEvent.ACTION,event -> { 
+        runMenuItem3.addEventHandler(ActionEvent.ACTION,event -> { 
             controller.showTree(codeArea.getText());
         });
 
