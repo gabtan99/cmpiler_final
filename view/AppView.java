@@ -121,14 +121,14 @@ public class AppView {
         });
 
         runMenuItem2.addEventHandler(ActionEvent.ACTION,event -> { 
-            System.out.println("executing");
+            controller.execute();
         });
 
         // Keyboard Shortcut for Parse
         KeyCombination kc = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
         Runnable rn = ()-> {
             controller.parse(codeArea.getText());
-            System.out.println("executing");
+            controller.execute();
         };
 
         runMenuItem3.addEventHandler(ActionEvent.ACTION,event -> { 

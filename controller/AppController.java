@@ -24,13 +24,17 @@ public class AppController {
 
         Console.reset();
 
-        System.out.println("----------- PARSING ----------");
+        System.out.println("----------- BUILDING ----------");
         // process the input
         CharStream stream = CharStreams.fromString(input);
         parser.setInput(stream);
         parser.parse();
 
         view.updateLogs(Console.getErrorList());
+    }
+
+    public void execute() {
+        System.out.println("----------- EXECUTING ----------");
     }
 
     public void showTree(String input) {
