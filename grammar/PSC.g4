@@ -130,7 +130,6 @@ parameter
 /* statements */
 statement
     : expressionStmt
-    | compoundStmt
     | scanStmt
     | printStmt
     | selectionStmt
@@ -163,6 +162,7 @@ printStmt
 printParams
     : printParamsSelector (Plus printParamsSelector)*
     | printParamsSelector Plus (printParamsSelector Plus)+ {notifyErrorListeners("Extra '+' symbols found.");}
+    | /*epsilon */
     ;
 
     

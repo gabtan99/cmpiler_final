@@ -20,6 +20,7 @@ import model.objects.*;
 public class FuncDeclaratorVisitor implements ParseTreeListener {
 
     private PseudoFunction func = new PseudoFunction();
+    private boolean openedScope = false;
 
     public FuncDeclaratorVisitor() { }
 
@@ -76,12 +77,14 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
                 visitor.visit(paramsCtx.parameter());
             } 
 
-        } else if (ctx instanceof CompoundStmtContext) {
+        } else if (ctx instanceof CompoundStmtContext && !openedScope) {
+            openedScope = true;
+
             CompoundStmtContext compoundCtx = (CompoundStmtContext) ctx;
 
             func.getLocalScope().setParent(ScopeManager.getInstance().getScope());
             ScopeManager.getInstance().setScope(func.getLocalScope());
-		    System.out.println("Opened scope");
+		    System.out.println("Opened function scope");
 
             CompoundVisitor visitor = new CompoundVisitor();
 			visitor.visit(compoundCtx);

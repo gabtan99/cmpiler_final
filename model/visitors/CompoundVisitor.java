@@ -15,17 +15,20 @@ public class CompoundVisitor  {
 
     public void visit(CompoundStmtContext ctx) {
 		
-		System.out.println("lmao found a block HAHAHAHHAHA");
 		List<CompoundStmtBodyContext> stmtList = ctx.compoundStmtBody();
         
 		for (CompoundStmtBodyContext stmt : stmtList) {
+
 			if (stmt.scopedVariableDeclaration() != null) {
 				
+				System.out.println("Found local dec");
 				VarDeclaratorVisitor visitor = new VarDeclaratorVisitor();
 				visitor.visit(stmt.scopedVariableDeclaration());
-				System.out.println("Found local dec");
 			} else if (stmt.statement() != null) {
+				
 				System.out.println("Found statement !");
+				StatementVisitor visitor = new StatementVisitor();
+				visitor.visit(stmt.statement());
 			}
 		}
 

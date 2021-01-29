@@ -42,7 +42,7 @@ public class UndeclaredSemCheck implements SemCheck, ParseTreeListener {
 		if(ctx instanceof MutableContext) {
 			MutableContext mutableCtx = (MutableContext) ctx;
 
-			PseudoValue pseudoValue = ScopeManager.getInstance().getScope().getVariable(mutableCtx.IDENTIFIER().getText());
+			PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 
 			if(pseudoValue == null) {
 				Console.log("UndeclaredVariable Error at line " + this.line);
