@@ -59,7 +59,9 @@ public class IterationVisitor {
 
                 if (ScopeManager.getInstance().searchMyScopeVariable(loopDecCtx.IDENTIFIER().getText()) != null) {
 				    Console.log("MultipleVarDeclaration Error at while line" + ctx.getStart().getLine());
-			    }   
+			    }  else {
+                    ScopeManager.getInstance().getScope().addVariable(loopDecCtx.IDENTIFIER().getText(), new PseudoValue(null, "int"));
+                }
 
                 // i = 2
                 if (loopDecCtx.Assign() != null ) {
