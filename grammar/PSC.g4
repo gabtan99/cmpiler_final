@@ -186,7 +186,7 @@ iterationStmt
     ;
 
 whileStatement
-    : While IDENTIFIER iterationToStatement relExpression compoundStmt
+    : While IDENTIFIER iterationToStatement simpleExpression compoundStmt
     ;
 
 forStatement

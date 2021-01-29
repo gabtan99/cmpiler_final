@@ -6,6 +6,7 @@ import parser.PSCParser.StatementContext;
 import parser.PSCParser.ScanStmtContext;
 import parser.PSCParser.PrintStmtContext;
 import parser.PSCParser.PrintParamsSelectorContext;
+import parser.PSCParser.IterationStmtContext;
 import parser.PSCParser.SelectionStmtContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -56,11 +57,16 @@ public class StatementVisitor {
             } else if (stmtCtx.selectionStmt() != null) {
                 SelectionStmtContext ifCtx = stmtCtx.selectionStmt();
                 analyzeSelection(ifCtx);
-            } 
+            } else if (stmtCtx.iterationStmt() != null) {
+                IterationStmtContext iterStmtCtx = stmtCtx.iterationStmt();
+
+                IterationVisitor iterationVisitor = new IterationVisitor();
+                iterationVisitor.visit(iterStmtCtx);
+            }
         } else if (ctx instanceof SelectionStmtContext) {
             SelectionStmtContext ifCtx = (SelectionStmtContext) ctx;
             analyzeSelection(ifCtx);
-        }
+        } 
 	
 	}
 
@@ -90,8 +96,5 @@ public class StatementVisitor {
                 stmtVisitor.visit(ifCtx.elseSelector().selectionStmt());
             }
         }
-    }
-
-
-    
+    }   
 }
