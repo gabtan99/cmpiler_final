@@ -57,26 +57,26 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 			}
 			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.BOOLEAN) {
 				if(constCtx.BOOLCONSTANT() == null) {
-					String msg = "Expected boolean at " + this.line;
-					Console.log(errorTemplate + msg);
+					String msg = "Expected boolean";
+					Console.log(errorTemplate + msg, this.line);
 				}
 			}
 			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.INT) {
 				if(constCtx.INTEGERCONSTANT() == null) {
-					String msg = "Expected int at " + this.line;
-					Console.log(errorTemplate + msg);
+					String msg = "Expected int";
+					Console.log(errorTemplate + msg, this.line);
 				}
 			}
 			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT) {
 				if(constCtx.FLOATCONSTANT() == null) {
-					String msg = "Expected float at " + this.line;
-					Console.log(errorTemplate + msg);
+					String msg = "Expected float";
+					Console.log(errorTemplate + msg, this.line);
 				}
 			}
 			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING) {
 				if(constCtx.StringLiteral() == null) {
-					String msg = "Expected string at " + this.line;
-					Console.log(errorTemplate + msg);
+					String msg = "Expected string";
+					Console.log(errorTemplate + msg, this.line);
 				}
 			}
 		} else if (ctx instanceof MutableContext) {
@@ -119,45 +119,45 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 	public void analyzeType(PseudoValue pv) {
 		if(this.pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY) {
 			if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
-				String msg = "Expected array at " + this.line;
-				Console.log(errorTemplate + msg);
+				String msg = "Expected array";
+				Console.log(errorTemplate + msg, this.line);
 			} else {
 				PseudoArray pa = (PseudoArray)this.pseudoValue.getValue();
 				PseudoArray pa1 = (PseudoArray)pv.getValue();
 				if(pa.getPrimitiveType() == PrimitiveType.BOOLEAN && pa1.getPrimitiveType() != PrimitiveType.BOOLEAN) {
-					String msg = "Expected boolean array at " + this.line;
-					Console.log(errorTemplate + msg);
+					String msg = "Expected boolean array";
+					Console.log(errorTemplate + msg, this.line);
 				}
 				else if(pa.getPrimitiveType() == PrimitiveType.INT && pa1.getPrimitiveType() != PrimitiveType.INT) {
-					String msg = "Expected integer array at " + this.line;
-					Console.log(errorTemplate + msg);
+					String msg = "Expected integer array";
+					Console.log(errorTemplate + msg, this.line);
 				}
 				else if(pa.getPrimitiveType() == PrimitiveType.FLOAT && pa1.getPrimitiveType() != PrimitiveType.FLOAT) {
-					String msg = "Expected float array at " + this.line;
-					Console.log(errorTemplate + msg);
+					String msg = "Expected float array";
+					Console.log(errorTemplate + msg, this.line);
 				}
 				else if(pa.getPrimitiveType() == PrimitiveType.STRING && pa1.getPrimitiveType() != PrimitiveType.STRING) {
-					String msg = "Expected String array at " + this.line;
-					Console.log(errorTemplate + msg);
+					String msg = "Expected String array";
+					Console.log(errorTemplate + msg, this.line);
 				}
 			}
 			
 		}
 		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.BOOLEAN && pv.getPrimitiveType() != PrimitiveType.BOOLEAN) {
-			String msg = "Expected boolean at " + this.line;
-			Console.log(errorTemplate + msg);
+			String msg = "Expected boolean";
+			Console.log(errorTemplate + msg, this.line);
 		}
 		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.INT && pv.getPrimitiveType() != PrimitiveType.INT) {
-			String msg = "Expected integer at " + this.line;
-			Console.log(errorTemplate + msg);
+			String msg = "Expected integer";
+			Console.log(errorTemplate + msg, this.line);
 		}
 		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT && pv.getPrimitiveType() != PrimitiveType.FLOAT) {
-			String msg = "Expected float at " + this.line;
-			Console.log(errorTemplate + msg);
+			String msg = "Expected float";
+			Console.log(errorTemplate + msg, this.line);
 		}
 		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING && pv.getPrimitiveType() != PrimitiveType.STRING) {
-			String msg = "Expected String at " + this.line;
-			Console.log(errorTemplate + msg);
+			String msg = "Expected String";
+			Console.log(errorTemplate + msg, this.line);
 		}
 	}
 

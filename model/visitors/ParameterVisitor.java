@@ -43,7 +43,7 @@ public class ParameterVisitor implements ParseTreeListener {
             TypeSpecifierSelectorContext typeSpecifierSelectorContext= parameterCtx.typeSpecifierSelector();
 
             if (func.searchParameter(parameterCtx.IDENTIFIER().getText())) {
-                Console.log("Duplicate Parameter found at line " + ctx.getStart().getLine());
+                Console.log("Duplicate Parameter found", ctx.getStart().getLine());
             }
            
             //Declare the pseudo value insert sa list ng parameters

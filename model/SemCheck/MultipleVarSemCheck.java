@@ -40,13 +40,13 @@ public class MultipleVarSemCheck implements SemCheck, ParseTreeListener {
 			VariableDeclarationInitializeContext varDecCtx = (VariableDeclarationInitializeContext) ctx;
 			
 			if (ScopeManager.getInstance().searchMyScopeVariable(varDecCtx.IDENTIFIER().getText()) != null) {
-				Console.log("MultipleVarDeclaration Error at " + this.line);
+				Console.log("MultipleVarDeclaration Error", this.line);
 			}
 		} else if(ctx instanceof ArrayVariableDeclarationInitializeContext) {
 			ArrayVariableDeclarationInitializeContext varDecCtx = (ArrayVariableDeclarationInitializeContext) ctx;
 			
 			if (ScopeManager.getInstance().searchMyScopeVariable(varDecCtx.IDENTIFIER().getText()) != null) {
-				Console.log("MultipleVarDeclaration Error at " + this.line);
+				Console.log("MultipleVarDeclaration Error",  this.line);
 			}
 		}  
 	}

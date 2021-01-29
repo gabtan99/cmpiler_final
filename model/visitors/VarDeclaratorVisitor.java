@@ -98,7 +98,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Float() != null && typeSpecifier.Float() == null) || 
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().String() != null && typeSpecifier.String() == null) ||
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null && typeSpecifier.Bool() == null) ) {
-						Console.log("TypeMismatch Error at " + arrVarDecCtx.getStart().getLine() );
+						Console.log("TypeMismatch Error", arrVarDecCtx.getStart().getLine() );
 					}	 
 
 				}

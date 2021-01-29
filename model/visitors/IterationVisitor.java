@@ -31,10 +31,10 @@ public class IterationVisitor {
             PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(whileCtx.IDENTIFIER().getText());
 
 			if(pseudoValue == null) {
-				Console.log("UndeclaredVariable Error at while line " + ctx.getStart().getLine());
+				Console.log("UndeclaredVariable Error at while statement", ctx.getStart().getLine());
 			} else {
                 if (pseudoValue.getPrimitiveType() != PrimitiveType.INT) {
-                    Console.log("TypeMismatch Error at while line " + ctx.getStart().getLine());
+                    Console.log("TypeMismatch Error at while statement", ctx.getStart().getLine());
                 }
             }
 
@@ -58,7 +58,7 @@ public class IterationVisitor {
             if (loopDecCtx.Int() != null) { // to check if declared new var
 
                 if (ScopeManager.getInstance().searchMyScopeVariable(loopDecCtx.IDENTIFIER().getText()) != null) {
-				    Console.log("MultipleVarDeclaration Error at while line" + ctx.getStart().getLine());
+				    Console.log("MultipleVarDeclaration Error at while statement", ctx.getStart().getLine());
 			    }   
 
                 // i = 2
@@ -73,10 +73,10 @@ public class IterationVisitor {
                 PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(loopDecCtx.IDENTIFIER().getText());
 
                 if(pseudoValue == null) {
-                    Console.log("UndeclaredVariable Error at while line " + ctx.getStart().getLine());
+                    Console.log("UndeclaredVariable Error at while statement", ctx.getStart().getLine());
                 } else {
                     if (pseudoValue.getPrimitiveType() != PrimitiveType.INT) {
-                        Console.log("TypeMismatch Error at while line " + ctx.getStart().getLine());
+                        Console.log("TypeMismatch Error at while statement", ctx.getStart().getLine());
                     } 
                 } 
 

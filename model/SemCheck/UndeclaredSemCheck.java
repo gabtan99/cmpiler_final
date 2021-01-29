@@ -45,7 +45,7 @@ public class UndeclaredSemCheck implements SemCheck, ParseTreeListener {
 			PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 
 			if(pseudoValue == null) {
-				Console.log("UndeclaredVariable Error at line " + this.line);
+				Console.log("UndeclaredVariable Error", this.line);
 			}
 
 		} else if (ctx instanceof CallContext) {
@@ -54,7 +54,7 @@ public class UndeclaredSemCheck implements SemCheck, ParseTreeListener {
 			PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(callCtx.IDENTIFIER().getText());
 
 			if(pseudoFunction == null) {
-				Console.log("UndeclaredFunction Error at line " + this.line);
+				Console.log("UndeclaredFunction Error", this.line);
 			}
 		}
 	}

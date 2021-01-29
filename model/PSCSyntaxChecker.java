@@ -18,8 +18,7 @@ public class PSCSyntaxChecker extends BaseErrorListener {
     List<String> stack = ((Parser)recognizer).getRuleInvocationStack(); 
     Collections.reverse(stack);
                             
-    Console.log(generator.generateMsg(line, charPositionInLine, msg));
-    System.out.println(generator.generateMsg(line, charPositionInLine, msg));
+    Console.log(generator.generateMsg(msg), line);
   }
 
 

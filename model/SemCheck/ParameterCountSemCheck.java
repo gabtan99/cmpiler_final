@@ -37,9 +37,9 @@ public class ParameterCountSemCheck implements SemCheck {
 		if (this.pseudoFunction == null) {
 			return;
 		} else if (this.exprCtxList == null && this.pseudoFunction.getParameterCount() != 0) {
-			Console.log("ParameterMismatch Error at line " + this.line);
+			Console.log("ParameterMismatch Error", this.line);
 		} else if (this.exprCtxList != null && this.pseudoFunction.getParameterCount() != this.exprCtxList.size() ) {
-			Console.log("ParameterMismatch Error at line " + this.line);
+			Console.log("ParameterMismatch Error", this.line);
 		}
 
 

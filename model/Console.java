@@ -5,13 +5,13 @@ import java.util.*;
 public class Console {
 
     private static Console instance = null;
-    private static List<String> errorList;
+    private static Map<Integer, String> errorList;
     
     public static void init() {
         if (instance == null) {
             instance = new Console();
         }
-        errorList = new ArrayList<>();
+        errorList = new TreeMap<>();
     }
 
     public static void reset() {
@@ -20,12 +20,19 @@ public class Console {
         }
     }
 
-    public static void log(String msg) {
-        errorList.add(msg);
+    public static void log(String msg, int line) {
+        errorList.put(line, msg);
     }
 
     public static List<String> getErrorList() {
-        return errorList;
+
+        List<String> lis = new ArrayList<>();
+
+        for (Map.Entry<Integer, String> c : errorList.entrySet()) {
+            lis.add("[Line " + c.getKey() + "] " + c.getValue());
+        }
+
+        return lis;
     }
 
 }

@@ -30,7 +30,7 @@ public class MultipleFuncSemCheck implements SemCheck {
 			PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(funcIdCtx.IDENTIFIER().getText());
 
 			if (pseudoFunction != null) {
-				Console.log("MultipleFuncDeclaration error at " + this.line);
+				Console.log("MultipleFuncDeclaration error", this.line);
 			}
 		}
 

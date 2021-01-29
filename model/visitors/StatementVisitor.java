@@ -39,7 +39,7 @@ public class StatementVisitor {
                     PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(scanCtx.IDENTIFIER().getText());
 
                     if(pseudoValue == null) {
-                        Console.log("UndeclaredVariable Error at scan line " + stmtCtx.getStart().getLine());
+                        Console.log("UndeclaredVariable Error at scan statement", stmtCtx.getStart().getLine());
                     }
                 }
             } else if (stmtCtx.printStmt() != null) {
@@ -52,7 +52,7 @@ public class StatementVisitor {
                         if (param.IDENTIFIER() != null) {
                             PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(param.IDENTIFIER().getText());
                             if(pseudoValue == null) {
-                                Console.log("UndeclaredVariable Error at print line " + stmtCtx.getStart().getLine());
+                                Console.log("UndeclaredVariable Error at print statement", stmtCtx.getStart().getLine());
                             }
                         }
                     }
@@ -128,14 +128,14 @@ public class StatementVisitor {
                 TypeMismatchSemCheck typeSemCheck = new TypeMismatchSemCheck(pv, ctx.simpleExpression());
                 typeSemCheck.check();
             } else {
-                Console.log("UndeclaredVariable error at line " + ctx.getStart().getLine());
+                Console.log("UndeclaredVariable error", ctx.getStart().getLine());
             }
         
             
         } else if (ctx.createArrayExpression() != null) { //  x= create int[]
 
             if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
-                Console.log("Identifier is not an array at line" + ctx.getStart().getLine());
+                Console.log("Identifier is not an array", ctx.getStart().getLine());
             } else {
                 TypeSpecifierContext typeSpecifier = ctx.createArrayExpression().typeSpecifier();
 
@@ -145,7 +145,7 @@ public class StatementVisitor {
                     (pa.getPrimitiveType() == PrimitiveType.STRING && typeSpecifier.String() == null) || 
                     (pa.getPrimitiveType() == PrimitiveType.BOOLEAN && typeSpecifier.Bool() == null) ||
                     (pa.getPrimitiveType() == PrimitiveType.FLOAT && typeSpecifier.Float() == null) ) {
-                    Console.log("TypeMismatch Error at " + ctx.getStart().getLine() );
+                    Console.log("TypeMismatch Error", ctx.getStart().getLine() );
                 }	 
             }
         }

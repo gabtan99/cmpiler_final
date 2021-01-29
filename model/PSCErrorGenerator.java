@@ -17,13 +17,13 @@ public class PSCErrorGenerator {
     private static final String STRING_TOK = "StringLiteral";
     private static final String IDENTIFIER_TOK = "IDENTIFIER";
 
-    public String generateMsg(int line, int charPositionInLine, String msg) {
+    public String generateMsg(String msg) {
 
-        PSCError err = new PSCError(line, charPositionInLine);
+        String errorMsg = "Default Message";
 
         if (msg.contains(NO_VIABLE_ERR)) { 
             String strList[] = msg.split(NO_VIABLE_ERR);
-            err.setMsg("Could not resolve the token " + strList[1] + ". Check and or remove.");
+            errorMsg = "Could not resolve the token " + strList[1] + ". Check and or remove.";
         } else if (msg.contains(MISMATCHED_ERR)) {
 
             String strList[] = msg.split(MISMATCHED_ERR);
@@ -32,20 +32,20 @@ public class PSCErrorGenerator {
             String alts = tokList[1];
 
             if (alts.contains(INT_CONST_TOK) && alts.contains(FLOAT_CONST_TOK) && alts.contains(BOOL_CONST_TOK) && alts.contains(STRING_TOK) && alts.contains(IDENTIFIER_TOK)) {
-                err.setMsg("Input mismatch seen on " + offending + ". Try replacing it with an expression.");
+                errorMsg = "Input mismatch seen on " + offending + ". Try replacing it with an expression.";
             } else if (alts.contains(IDENTIFIER_TOK)) {
-                err.setMsg("Input mismatch seen on " + offending +". Expecting an identifier.");
+                errorMsg = "Input mismatch seen on " + offending +". Expecting an identifier.";
             } else if (offending.contains("(")) {
-                err.setMsg("Input mismatch seen on " + offending +". Possible redundant parenthesis. Consider removing it.");
+                errorMsg = "Input mismatch seen on " + offending +". Possible redundant parenthesis. Consider removing it.";
             } else {
-                err.setMsg("Input mismatch seen on " + offending + ". Try replacing it with " + alts+ ".");
+                errorMsg = "Input mismatch seen on " + offending + ". Try replacing it with " + alts+ ".";
             }
 
         } else if (msg.contains(MISSING_ERR)) {
             String strList[] = msg.split(MISSING_ERR);
             String tokens[] = strList[1].split("at");
 
-            err.setMsg("There is a token " + tokens[0] + " missing before " + tokens[1] + "." + " Consider inserting " + tokens[0] + " before " + tokens[1] + ".");
+            errorMsg = "There is a token " + tokens[0] + " missing before " + tokens[1] + "." + " Consider inserting " + tokens[0] + " before " + tokens[1] + ".";
         } else if (msg.contains(EXTRANEOUS_ERR)) {
 
             String strList[] = msg.split(EXTRANEOUS_ERR);
@@ -58,14 +58,14 @@ public class PSCErrorGenerator {
             String alts = tokList[1];
 
             if (offending.contains("func")) {
-                err.setMsg("Unpaired brackets found. Close brackets before this function declaration.");
+                errorMsg = "Unpaired brackets found. Close brackets before this function declaration.";
             }
             else if (alts.contains(INT_CONST_TOK) && alts.contains(FLOAT_CONST_TOK) && alts.contains(BOOL_CONST_TOK) && alts.contains(STRING_TOK) && alts.contains(IDENTIFIER_TOK)) {
-                err.setMsg("An extra " + offending + " is found. Remove or consider replacing it with an expression.");
+                errorMsg = "An extra " + offending + " is found. Remove or consider replacing it with an expression.";
             } else if (alts.contains(IDENTIFIER_TOK))  {
-                err.setMsg("An extra " + offending + " is found. Remove or consider replacing it with an identifier.");
+                errorMsg = "An extra " + offending + " is found. Remove or consider replacing it with an identifier.";
             } else {
-                err.setMsg("An extra " + offending + " is found. Remove or consider replacing it with " + alts + ".");
+                errorMsg = "An extra " + offending + " is found. Remove or consider replacing it with " + alts + ".";
             }
 
         } else if (msg.contains(TOKEN_RECOGNITION_ERR)) {
@@ -73,12 +73,12 @@ public class PSCErrorGenerator {
 
             String offending = strList[1];
             
-            err.setMsg("Error in identifying token " + offending + ".");
+            errorMsg = "Error in identifying token " + offending + ".";
         } else {
-            err.setMsg(msg);
+            errorMsg = msg;
         }
 
-        return err.getFullError();
+        return errorMsg;
     }
 
 

@@ -15,9 +15,7 @@ public class PseudoValue {
 			this.value = value;
 			this.primitiveType = type;
 		}
-		else {
-            Console.log("Value is not suitable for  " + primitiveType + "!");
-		}
+
 	}
 	
 	public void setPrimitiveType(String primitiveType) {
@@ -45,18 +43,6 @@ public class PseudoValue {
 		return this.value;
 	}
 	
-	public void setValue(String value) {
-		
-		if(this.primitiveType == PrimitiveType.NOT_YET_IDENTIFIED) {
-			Console.log("Primitive type not yet identified!");
-		}
-		else if(this.primitiveType == PrimitiveType.STRING) {
-			this.value = value.replace("\"", "");
-		}
-		else if(this.primitiveType == PrimitiveType.ARRAY) {
-			Console.log(this.primitiveType + " is an array. Cannot directly change value.");
-        }
-	}
 	
 	public static boolean checkValueType(Object value, PrimitiveType primitiveType) {
 

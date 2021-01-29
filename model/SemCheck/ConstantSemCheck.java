@@ -42,7 +42,7 @@ public class ConstantSemCheck implements SemCheck, ParseTreeListener {
 				PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 
 				if (pseudoValue != null && pseudoValue.isConst()) {
-					Console.log("ConstantReassignment Error at line " + this.line );
+					Console.log("ConstantReassignment Error ", this.line);
 				}
 			}
 		}
