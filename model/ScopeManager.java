@@ -56,7 +56,7 @@ public class ScopeManager {
         }
     }
 
-    public PseudoValue searchMyScope(String id) {
+    public PseudoValue searchMyScopeVariable(String id) {
 
         Scope myScope = curScope;
         PseudoValue pseudoValue = null;
@@ -74,7 +74,6 @@ public class ScopeManager {
 
         return pseudoValue;
     }
-
 
 
 

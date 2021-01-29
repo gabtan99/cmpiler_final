@@ -104,6 +104,7 @@ arrayVariableDeclaration
 arrayVariableDeclarationInitialize
     : IDENTIFIER
     | IDENTIFIER Assign createArrayExpression 
+    | IDENTIFIER Assign simpleExpression
     ;
 
 /* ------- */

@@ -65,6 +65,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 				} 
 
 				Scope scope = ScopeManager.getInstance().getScope();
+				System.out.println(pseudoValue.getClass());
 				scope.addVariable(varDecInitCtx.IDENTIFIER().getText(), pseudoValue);
 			
 				System.out.println("lmao found a normie declaration");
@@ -87,7 +88,10 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 
 				pseudoValue = new PseudoValue(pseudoArray, "array");
 
-				if (arrVarDecInitCtx.createArrayExpression().Create() != null) {
+				if (arrVarDecInitCtx.simpleExpression() != null) {
+					TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, arrVarDecInitCtx.simpleExpression());
+					typeMMSemCheck.check();
+				} else if (arrVarDecInitCtx.createArrayExpression() != null) {
 
 					TypeSpecifierContext typeSpecifier = arrVarDecInitCtx.createArrayExpression().typeSpecifier();
 					
@@ -99,9 +103,10 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null && typeSpecifier.Bool() == null) ) {
 						Console.log("TypeMismatch Error at " + arrVarDecCtx.getStart().getLine() );
 					}	 
-					
-					
-				} 
+
+				} else {
+
+				}
 
 				Scope scope = ScopeManager.getInstance().getScope();
 				scope.addVariable(arrVarDecInitCtx.IDENTIFIER().getText(), pseudoValue);
