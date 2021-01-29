@@ -32,7 +32,7 @@ public class Parser {
     public void setInput(CharStream input) {
         this.input = input;
     }
-    
+
     public void parse() {
 
         ScopeManager.getInstance().reset();
@@ -55,8 +55,12 @@ public class Parser {
 
    public void showTree() {
        Lexer lexer = new PSCLexer(this.input);
+       lexer.removeErrorListeners();
+
        TokenStream tokenStream = new CommonTokenStream(lexer);
        PSCParser parser = new PSCParser(tokenStream);
+       parser.removeErrorListeners();
+       
        ParseTree tree = parser.program();
 
        // Tree inspector

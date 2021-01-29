@@ -44,43 +44,54 @@ public class ParameterVisitor implements ParseTreeListener {
 
             if (func.searchParameter(parameterCtx.IDENTIFIER().getText())) {
                 Console.log("Duplicate Parameter found", ctx.getStart().getLine());
+            } else {
+                PseudoValue pseudoValue = null;
+
+                //check if array or not
+                if (typeSpecifierSelectorContext.typeSpecifier() != null) { //primitive non-array
+                    TypeSpecifierContext typeSpecifierContext= typeSpecifierSelectorContext.typeSpecifier();
+                    if (typeSpecifierContext.Int() != null) {
+                        pseudoValue = new PseudoValue(null, "int");
+                        this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
+                    } else if (typeSpecifierContext.Bool() != null) {
+                        pseudoValue = new PseudoValue(null, "float");
+                        this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
+                    } else if (typeSpecifierContext.Float() != null) {
+                        pseudoValue = new PseudoValue(null, "bool");
+                        this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
+                    } else if (typeSpecifierContext.String() != null) {
+                        pseudoValue = new PseudoValue(null, "String");
+                        this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
+                    }
+
+                    //Declare the pseudo value insert sa list ng parameters
+                    ScopeManager.getInstance().getScope().addVariable(parameterCtx.IDENTIFIER().getText(), pseudoValue);
+                
+                
+                } else if (typeSpecifierSelectorContext.arrayTypeSpecifier() != null ) {
+                    TypeSpecifierContext typeSpecifierContext= typeSpecifierSelectorContext.arrayTypeSpecifier().typeSpecifier();
+                    PseudoArray pseudoArray = null;
+
+                    if (typeSpecifierContext.Int() != null) {
+                    pseudoArray = PseudoArray.createArray("int", parameterCtx.IDENTIFIER().getText());
+                    } else if (typeSpecifierContext.Bool() != null) {
+                    pseudoArray = PseudoArray.createArray("bool", parameterCtx.IDENTIFIER().getText());
+                    } else if (typeSpecifierContext.Float() != null) {
+                    pseudoArray = PseudoArray.createArray("float", parameterCtx.IDENTIFIER().getText());
+                    } else if (typeSpecifierContext.String() != null) {
+                    pseudoArray = PseudoArray.createArray("String", parameterCtx.IDENTIFIER().getText());
+                    }
+                    pseudoValue = new PseudoValue(pseudoArray, "array");
+                    this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
+
+                    //Declare the pseudo value insert sa list ng parameters
+                    ScopeManager.getInstance().getScope().addVariable(parameterCtx.IDENTIFIER().getText(), pseudoValue);
+                } 
             }
-           
-            //Declare the pseudo value insert sa list ng parameters
-            //check if array or not
-            if (typeSpecifierSelectorContext.typeSpecifier() != null) { //primitive non-array
-                TypeSpecifierContext typeSpecifierContext= typeSpecifierSelectorContext.typeSpecifier();
-                if (typeSpecifierContext.Int() != null) {
-                    PseudoValue pseudoValue = new PseudoValue(null, "int");
-                    this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
-                } else if (typeSpecifierContext.Bool() != null) {
-                    PseudoValue pseudoValue = new PseudoValue(null, "float");
-                    this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
-                } else if (typeSpecifierContext.Float() != null) {
-                    PseudoValue pseudoValue = new PseudoValue(null, "bool");
-                    this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
-                } else if (typeSpecifierContext.String() != null) {
-                    PseudoValue pseudoValue = new PseudoValue(null, "String");
-                    this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
-                }
+
             
-            } else if (typeSpecifierSelectorContext.arrayTypeSpecifier() != null ) {
-                TypeSpecifierContext typeSpecifierContext= typeSpecifierSelectorContext.arrayTypeSpecifier().typeSpecifier();
-                PseudoArray pseudoArray = null;
 
-                if (typeSpecifierContext.Int() != null) {
-                pseudoArray = PseudoArray.createArray("int", parameterCtx.IDENTIFIER().getText());
-                } else if (typeSpecifierContext.Bool() != null) {
-                pseudoArray = PseudoArray.createArray("bool", parameterCtx.IDENTIFIER().getText());
-                } else if (typeSpecifierContext.Float() != null) {
-                pseudoArray = PseudoArray.createArray("float", parameterCtx.IDENTIFIER().getText());
-                } else if (typeSpecifierContext.String() != null) {
-                pseudoArray = PseudoArray.createArray("String", parameterCtx.IDENTIFIER().getText());
-                }
-                PseudoValue pseudoValue = new PseudoValue(pseudoArray, "array");
-                this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
-
-            } 
+           
         }
             
 	}

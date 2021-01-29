@@ -72,18 +72,19 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
         if (ctx instanceof ParamsContext) {
             ParamsContext paramsCtx = (ParamsContext) ctx;
 
+            func.getLocalScope().setParent(ScopeManager.getInstance().getScope());
+            ScopeManager.getInstance().setScope(func.getLocalScope());
+
             if (paramsCtx.parameter() != null) {
                 ParameterVisitor visitor = new ParameterVisitor(func);
                 visitor.visit(paramsCtx.parameter());
             } 
 
+
         } else if (ctx instanceof CompoundStmtContext && !openedScope) {
             openedScope = true;
 
             CompoundStmtContext compoundCtx = (CompoundStmtContext) ctx;
-
-            func.getLocalScope().setParent(ScopeManager.getInstance().getScope());
-            ScopeManager.getInstance().setScope(func.getLocalScope());
 		    System.out.println("Opened function scope");
 
             CompoundVisitor visitor = new CompoundVisitor();

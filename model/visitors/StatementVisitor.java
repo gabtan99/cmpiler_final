@@ -54,6 +54,12 @@ public class StatementVisitor {
                             if(pseudoValue == null) {
                                 Console.log("UndeclaredVariable Error at print statement", stmtCtx.getStart().getLine());
                             }
+                        } else if (param.call() != null) {
+                            PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(param.call().IDENTIFIER().getText());
+
+                            if (pseudoFunction == null) {
+                                Console.log("UndeclaredFunction error at print statement",  stmtCtx.getStart().getLine());
+                            }
                         }
                     }
                 }

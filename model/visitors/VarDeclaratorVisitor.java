@@ -77,14 +77,17 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 				ArrayVariableDeclarationInitializeContext arrVarDecInitCtx = scopedVarDecCtx.arrayVariableDeclaration().arrayVariableDeclarationInitialize();
 
 				PseudoArray pseudoArray = null;
-				if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Int() != null) {
-					pseudoArray = PseudoArray.createArray("int", arrVarDecInitCtx.IDENTIFIER().getText());
-				} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null) {
-					pseudoArray = PseudoArray.createArray("bool", arrVarDecInitCtx.IDENTIFIER().getText());
-				} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().String() != null) {
-					pseudoArray = PseudoArray.createArray("String", arrVarDecInitCtx.IDENTIFIER().getText());
-				} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Float() != null) {
-					pseudoArray = PseudoArray.createArray("float", arrVarDecInitCtx.IDENTIFIER().getText());
+
+				if (arrVarDecInitCtx.IDENTIFIER() != null) {
+					if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Int() != null) {
+						pseudoArray = PseudoArray.createArray("int", arrVarDecInitCtx.IDENTIFIER().getText());
+					} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null) {
+						pseudoArray = PseudoArray.createArray("bool", arrVarDecInitCtx.IDENTIFIER().getText());
+					} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().String() != null) {
+						pseudoArray = PseudoArray.createArray("String", arrVarDecInitCtx.IDENTIFIER().getText());
+					} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Float() != null) {
+						pseudoArray = PseudoArray.createArray("float", arrVarDecInitCtx.IDENTIFIER().getText());
+					}
 				}
 
 				pseudoValue = new PseudoValue(pseudoArray, "array");
@@ -111,9 +114,11 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 
 				}
 
-				Scope scope = ScopeManager.getInstance().getScope();
-				scope.addVariable(arrVarDecInitCtx.IDENTIFIER().getText(), pseudoValue);
-
+				if (arrVarDecInitCtx.IDENTIFIER() != null) {
+					Scope scope = ScopeManager.getInstance().getScope();
+					scope.addVariable(arrVarDecInitCtx.IDENTIFIER().getText(), pseudoValue);
+				}
+				
 				System.out.println("lmao found a array declaration");
 			}
 		}

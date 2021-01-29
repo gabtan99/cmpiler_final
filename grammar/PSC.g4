@@ -168,6 +168,7 @@ printParams
     
 printParamsSelector
     : StringLiteral
+    | call
     | IDENTIFIER
     ;
 
