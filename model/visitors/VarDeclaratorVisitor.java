@@ -112,6 +112,9 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 						Console.log("TypeMismatch Error", arrVarDecCtx.getStart().getLine() );
 					}	 
 
+					// if size is int int[size] <--
+					TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, "int"), arrVarDecInitCtx.createArrayExpression().simpleExpression());
+					typeMMSemCheck.check();
 				}
 
 				if (arrVarDecInitCtx.IDENTIFIER() != null) {
