@@ -21,7 +21,6 @@ public class AppController {
     }
 
     public void parse(String input) {
-
         Console.reset();
 
         System.out.println("----------- BUILDING ----------");

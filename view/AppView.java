@@ -25,6 +25,7 @@ import javafx.scene.input.Mnemonic;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.control.TextInputDialog;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CharStream;
@@ -43,7 +44,6 @@ public class AppView {
         // MENU GUI
         Menu fileMenu = new Menu("File");
 
-
         // New
         MenuItem fileMenuItem1 = new MenuItem("New");
         Image plusIcon = new Image(getClass().getResourceAsStream("/assets/plus.png"));
@@ -51,7 +51,6 @@ public class AppView {
         plusIconView.setFitWidth(17);
         plusIconView.setFitHeight(17);
         fileMenuItem1.setGraphic(plusIconView);
-        
 
         // Open
         Image folderIcon = new Image(getClass().getResourceAsStream("/assets/folder.png"));
@@ -157,8 +156,17 @@ public class AppView {
 
     }
 
+    // returns the value that the user enters
+    public String getInput(String prompt) {
+         // create a text input dialog 
+        TextInputDialog td = new TextInputDialog(); 
+        td.setHeaderText(prompt);
+        td.showAndWait(); 
     
+        return td.getEditor().getText(); 
+    }
 
+    
     public void updateLogs(List<String> output) {
         StringBuilder logs = new StringBuilder(""); 
 
