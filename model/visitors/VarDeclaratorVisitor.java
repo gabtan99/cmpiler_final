@@ -52,6 +52,10 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 				} else if (varDecCtx.typeSpecifier().Float() != null) {
 					pseudoValue = new PseudoValue(null, "float");
 				}
+
+				if (pseudoValue != null && varDecCtx.ConstantKey() != null) {
+					pseudoValue.markConst();
+				} 
 				
 				if (varDecInitCtx.Assign() != null) {
 					UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(varDecInitCtx.simpleExpression() );
@@ -84,6 +88,10 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 				}
 
 				pseudoValue = new PseudoValue(pseudoArray, "array");
+				
+				if (pseudoValue != null && arrVarDecCtx.ConstantKey() != null) {
+					pseudoValue.markConst();
+				} 
 
 				if (arrVarDecInitCtx.simpleExpression() != null) {
 					TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, arrVarDecInitCtx.simpleExpression());
