@@ -32,8 +32,9 @@ public class Parser {
     public void setInput(CharStream input) {
         this.input = input;
     }
-
+    
     public void parse() {
+
         ScopeManager.getInstance().reset();
         Lexer lexer = new PSCLexer(this.input);
 

@@ -9,9 +9,7 @@ import model.ScopeManager;
 
 public class CompoundVisitor  {
 
-    public CompoundVisitor() {
-
-	}
+    public CompoundVisitor() { }
 
     public void visit(CompoundStmtContext ctx) {
 		

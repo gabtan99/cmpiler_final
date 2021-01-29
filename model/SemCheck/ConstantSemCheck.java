@@ -15,21 +15,21 @@ import model.*;
 
 public class ConstantSemCheck implements SemCheck, ParseTreeListener {
 
-	private SimpleExpressionContext simpleCtx;
+	private MutableContext mutableCtx;
 	private int line;
 
-	public ConstantSemCheck(SimpleExpressionContext simpleCtx) {
-		this.simpleCtx = simpleCtx;
+	public ConstantSemCheck(MutableContext mutableCtx) {
+		this.mutableCtx = mutableCtx;
 
-		Token first = this.simpleCtx.getStart();
+		Token first = this.mutableCtx.getStart();
 		this.line = first.getLine();
 	}
 
 
     @Override
 	public void check() {
-		// ParseTreeWalker treeWalker = new ParseTreeWalker();
-		// treeWalker.walk(this, this.exprCtx);
+		ParseTreeWalker treeWalker = new ParseTreeWalker();
+		treeWalker.walk(this, this.mutableCtx);
 	}
 
 
@@ -39,7 +39,6 @@ public class ConstantSemCheck implements SemCheck, ParseTreeListener {
 		if(ctx instanceof MutableContext) {
 			MutableContext mutableCtx = (MutableContext) ctx;
 			if(mutableCtx.LeftBracket() == null) { 
-
 				PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 
 				if (pseudoValue != null && pseudoValue.isConst()) {

@@ -63,7 +63,6 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 				} 
 
 				Scope scope = ScopeManager.getInstance().getScope();
-				System.out.println(pseudoValue.getClass());
 				scope.addVariable(varDecInitCtx.IDENTIFIER().getText(), pseudoValue);
 			
 				System.out.println("lmao found a normie declaration");

@@ -6,6 +6,7 @@ import parser.PSCParser.SimpleExpressionContext;
 import parser.PSCParser.ConstantContext;
 import parser.PSCParser.MutableContext;
 import parser.PSCParser.CallContext;
+import parser.PSCParser.ArgumentsContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -14,7 +15,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 
 import model.*;
-
+import java.util.*;
 
 public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 
@@ -23,6 +24,7 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
     private PseudoValue pseudoValue;
     private SimpleExpressionContext exprCtx;
     private int line;
+	private boolean isArgs = false;
 
     public TypeMismatchSemCheck(PseudoValue pseudoValue, SimpleExpressionContext exprCtx) {
         this.pseudoValue = pseudoValue;
@@ -40,6 +42,7 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 
     @Override
 	public void enterEveryRule(ParserRuleContext ctx) {
+
 		if(ctx instanceof ConstantContext) {
 
 			if(this.pseudoValue == null) {
@@ -88,24 +91,29 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 
 		} else if (ctx instanceof CallContext) {
 			
+			// you process it first before you compare int x = awd(), dapat int x = 1;
 			CallContext callCtx = (CallContext) ctx;
 
 			String id = callCtx.IDENTIFIER().getText();
-			PseudoFunction pf = ScopeManager.getInstance().getFunction(id);
+       		PseudoFunction pf = ScopeManager.getInstance().getFunction(id);
 
-			if( pf != null) {
+			FunctionCallSemCheck callSemCheck = new FunctionCallSemCheck(callCtx);
+			callSemCheck.check();
 
-				if (pf.getReturnType() == FunctionType.VOID) {
-					String msg = "Function has void return type at " + this.line;
-					Console.log(errorTemplate + msg);
-				} else {
-					PseudoValue pv = pf.getReturnValue();
-					analyzeType(pv);
-				}
+			// evaluate the function with commands
+
+			// if( pf != null) {
 				
-			}
-			
-		}
+			// 	if (pf.getReturnType() == FunctionType.VOID) {
+			// 		String msg = "Function has void return type at " + this.line;
+			// 		Console.log(errorTemplate + msg);
+			// 	} else {
+			// 		PseudoValue pv = pf.getReturnValue();
+			// 		analyzeType(pv);
+			// 	}
+				
+			// }
+		} 
 	}
 
 	public void analyzeType(PseudoValue pv) {

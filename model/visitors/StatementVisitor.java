@@ -8,6 +8,9 @@ import parser.PSCParser.PrintStmtContext;
 import parser.PSCParser.PrintParamsSelectorContext;
 import parser.PSCParser.IterationStmtContext;
 import parser.PSCParser.SelectionStmtContext;
+import parser.PSCParser.MutableContext;
+import parser.PSCParser.TypeSpecifierContext;
+import parser.PSCParser.AssignmentStandaloneExpressionContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -62,6 +65,17 @@ public class StatementVisitor {
 
                 IterationVisitor iterationVisitor = new IterationVisitor();
                 iterationVisitor.visit(iterStmtCtx);
+            } else if (stmtCtx.expressionStmt() != null) { // assignment standalone or function call
+
+                if (stmtCtx.expressionStmt().assignmentStandaloneExpression() != null) {
+                    analyzeExpressionStmt(stmtCtx.expressionStmt().assignmentStandaloneExpression());
+                } else if (stmtCtx.expressionStmt().call() != null) {
+                    FunctionCallSemCheck callSemCheck = new FunctionCallSemCheck(stmtCtx.expressionStmt().call());
+                    callSemCheck.check();
+                }
+            } else if (stmtCtx.returnStmt() != null) {
+                UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(stmtCtx.returnStmt().simpleExpression());
+                undeclaredSemCheck.check();
             }
         } else if (ctx instanceof SelectionStmtContext) {
             SelectionStmtContext ifCtx = (SelectionStmtContext) ctx;
@@ -97,4 +111,44 @@ public class StatementVisitor {
             }
         }
     }   
+
+
+    private void analyzeExpressionStmt(AssignmentStandaloneExpressionContext ctx) {
+        MutableContext mutableCtx = ctx.mutable();
+
+        
+
+        ConstantSemCheck constSemCheck = new ConstantSemCheck(mutableCtx);
+        constSemCheck.check();
+
+        PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
+
+        if (ctx.simpleExpression() != null) {
+            if (pv != null) {
+                TypeMismatchSemCheck typeSemCheck = new TypeMismatchSemCheck(pv, ctx.simpleExpression());
+                typeSemCheck.check();
+            } else {
+                Console.log("UndeclaredVariable error at line " + ctx.getStart().getLine());
+            }
+        
+            
+        } else if (ctx.createArrayExpression() != null) { //  x= create int[]
+
+            if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
+                Console.log("Identifier is not an array at line" + ctx.getStart().getLine());
+            } else {
+                TypeSpecifierContext typeSpecifier = ctx.createArrayExpression().typeSpecifier();
+
+                PseudoArray pa = (PseudoArray) pv.getValue();
+
+                if ((pa.getPrimitiveType() == PrimitiveType.INT && typeSpecifier.Int() == null) || 
+                    (pa.getPrimitiveType() == PrimitiveType.STRING && typeSpecifier.String() == null) || 
+                    (pa.getPrimitiveType() == PrimitiveType.BOOLEAN && typeSpecifier.Bool() == null) ||
+                    (pa.getPrimitiveType() == PrimitiveType.FLOAT && typeSpecifier.Float() == null) ) {
+                    Console.log("TypeMismatch Error at " + ctx.getStart().getLine() );
+                }	 
+            }
+        }
+    }
+
 }
