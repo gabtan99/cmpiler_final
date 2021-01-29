@@ -29,13 +29,17 @@ public class PseudoFunction {
         return localScope;
     }
 
+    public PseudoValue getReturnValue() {
+        return this.returnValue;
+    }
+
     public void setReturnType(FunctionType functionType) {
 		this.returnType = functionType;
 		
 		switch(this.returnType) {
 			case BOOLEAN: this.returnValue = new PseudoValue(true, "bool"); break;
 			case INT: this.returnValue = new PseudoValue(0, "int"); break;
-			case FLOAT: this.returnValue = new PseudoValue(0, "float"); break;
+			case FLOAT: this.returnValue = new PseudoValue(0.0f, "float"); break;
 			case STRING: this.returnValue = new PseudoValue("", "String"); break;
 			default:break;	
 		}

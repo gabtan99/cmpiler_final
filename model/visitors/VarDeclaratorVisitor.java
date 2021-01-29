@@ -32,9 +32,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 
 		if (ctx instanceof ScopedVariableDeclarationContext) {
 			ScopedVariableDeclarationContext scopedVarDecCtx = (ScopedVariableDeclarationContext) ctx;
-			
-			
-
+		
 			PseudoValue pseudoValue = null;
 
 			MultipleVarSemCheck mulVarSemCheck = new MultipleVarSemCheck(scopedVarDecCtx);
@@ -103,8 +101,6 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null && typeSpecifier.Bool() == null) ) {
 						Console.log("TypeMismatch Error at " + arrVarDecCtx.getStart().getLine() );
 					}	 
-
-				} else {
 
 				}
 

@@ -82,53 +82,74 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 				PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutCtx.IDENTIFIER().getText());
 
 				if( pv != null) {
-					if(this.pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY) {
-						if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
-							String msg = "Expected array at " + this.line;
-							Console.log(errorTemplate + msg);
-						} else {
-							PseudoArray pa = (PseudoArray)this.pseudoValue.getValue();
-							PseudoArray pa1 = (PseudoArray)pv.getValue();
-							if(pa.getPrimitiveType() == PrimitiveType.BOOLEAN && pa1.getPrimitiveType() != PrimitiveType.BOOLEAN) {
-								String msg = "Expected boolean array at " + this.line;
-								Console.log(errorTemplate + msg);
-							}
-							else if(pa.getPrimitiveType() == PrimitiveType.INT && pa1.getPrimitiveType() != PrimitiveType.INT) {
-								String msg = "Expected integer array at " + this.line;
-								Console.log(errorTemplate + msg);
-							}
-							else if(pa.getPrimitiveType() == PrimitiveType.FLOAT && pa1.getPrimitiveType() != PrimitiveType.FLOAT) {
-								String msg = "Expected float array at " + this.line;
-								Console.log(errorTemplate + msg);
-							}
-							else if(pa.getPrimitiveType() == PrimitiveType.STRING && pa1.getPrimitiveType() != PrimitiveType.STRING) {
-								String msg = "Expected String array at " + this.line;
-								Console.log(errorTemplate + msg);
-							}
-						}
-						
-					}
-					else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.BOOLEAN && pv.getPrimitiveType() != PrimitiveType.BOOLEAN) {
-						String msg = "Expected boolean at " + this.line;
-						Console.log(errorTemplate + msg);
-					}
-					else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.INT && pv.getPrimitiveType() != PrimitiveType.INT) {
-						String msg = "Expected integer at " + this.line;
-						Console.log(errorTemplate + msg);
-					}
-					else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT && pv.getPrimitiveType() != PrimitiveType.FLOAT) {
-						String msg = "Expected float at " + this.line;
-						Console.log(errorTemplate + msg);
-					}
-					else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING && pv.getPrimitiveType() != PrimitiveType.STRING) {
-						String msg = "Expected String at " + this.line;
-						Console.log(errorTemplate + msg);
-					}
+					analyzeType(pv);
 				}
 			}
 
 		} else if (ctx instanceof CallContext) {
+			
+			CallContext callCtx = (CallContext) ctx;
 
+			String id = callCtx.IDENTIFIER().getText();
+			PseudoFunction pf = ScopeManager.getInstance().getFunction(id);
+
+			if( pf != null) {
+
+				if (pf.getReturnType() == FunctionType.VOID) {
+					String msg = "Function has void return type at " + this.line;
+					Console.log(errorTemplate + msg);
+				} else {
+					PseudoValue pv = pf.getReturnValue();
+					analyzeType(pv);
+				}
+				
+			}
+			
+		}
+	}
+
+	public void analyzeType(PseudoValue pv) {
+		if(this.pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY) {
+			if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
+				String msg = "Expected array at " + this.line;
+				Console.log(errorTemplate + msg);
+			} else {
+				PseudoArray pa = (PseudoArray)this.pseudoValue.getValue();
+				PseudoArray pa1 = (PseudoArray)pv.getValue();
+				if(pa.getPrimitiveType() == PrimitiveType.BOOLEAN && pa1.getPrimitiveType() != PrimitiveType.BOOLEAN) {
+					String msg = "Expected boolean array at " + this.line;
+					Console.log(errorTemplate + msg);
+				}
+				else if(pa.getPrimitiveType() == PrimitiveType.INT && pa1.getPrimitiveType() != PrimitiveType.INT) {
+					String msg = "Expected integer array at " + this.line;
+					Console.log(errorTemplate + msg);
+				}
+				else if(pa.getPrimitiveType() == PrimitiveType.FLOAT && pa1.getPrimitiveType() != PrimitiveType.FLOAT) {
+					String msg = "Expected float array at " + this.line;
+					Console.log(errorTemplate + msg);
+				}
+				else if(pa.getPrimitiveType() == PrimitiveType.STRING && pa1.getPrimitiveType() != PrimitiveType.STRING) {
+					String msg = "Expected String array at " + this.line;
+					Console.log(errorTemplate + msg);
+				}
+			}
+			
+		}
+		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.BOOLEAN && pv.getPrimitiveType() != PrimitiveType.BOOLEAN) {
+			String msg = "Expected boolean at " + this.line;
+			Console.log(errorTemplate + msg);
+		}
+		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.INT && pv.getPrimitiveType() != PrimitiveType.INT) {
+			String msg = "Expected integer at " + this.line;
+			Console.log(errorTemplate + msg);
+		}
+		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT && pv.getPrimitiveType() != PrimitiveType.FLOAT) {
+			String msg = "Expected float at " + this.line;
+			Console.log(errorTemplate + msg);
+		}
+		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING && pv.getPrimitiveType() != PrimitiveType.STRING) {
+			String msg = "Expected String at " + this.line;
+			Console.log(errorTemplate + msg);
 		}
 	}
 
