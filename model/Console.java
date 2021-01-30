@@ -7,7 +7,7 @@ public class Console {
     private static Console instance = null;
     private static List<ConsoleItem> errorList;
     
-    public static void init() {
+    public static void startInstance() {
         if (instance == null) {
             instance = new Console();
         }

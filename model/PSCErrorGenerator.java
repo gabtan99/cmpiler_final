@@ -2,7 +2,7 @@ package model;
 
 import java.util.Arrays;
 
-public class PSCErrorGenerator {
+public class PSCErrorGenerator { // only responsible for syntax errors!
 
     // default ANTLR template messages
     private static final String EXTRANEOUS_ERR = "extraneous input";

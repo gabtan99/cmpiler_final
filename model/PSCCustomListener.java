@@ -11,6 +11,7 @@ import parser.*;
 
 public class PSCCustomListener extends PSCBaseListener {
 
+	// Visitors handle semantic errors.
 	@Override public void enterProgram(PSCParser.ProgramContext ctx) { 
 		ProgramVisitor visitor = new ProgramVisitor();
 		visitor.visit(ctx);

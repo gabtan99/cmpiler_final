@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.CharStream;
 
 import model.Console;
 import model.Parser;
+import model.ScopeManager;
 import view.AppView;
 
 public class AppController {
@@ -17,14 +18,14 @@ public class AppController {
     public AppController(Parser parser, AppView view) {
         this.parser = parser;
         this.view = view;        
-        Console.init();
+        init();
     }
 
     public void parse(String input) {
         Console.reset();
 
-        System.out.println("----------- BUILDING ----------");
-        // process the input
+        System.out.println("----------- PARSING ----------");
+
         CharStream stream = CharStreams.fromString(input);
         parser.setInput(stream);
         parser.parse();
@@ -34,6 +35,16 @@ public class AppController {
 
     public void execute() {
         System.out.println("----------- EXECUTING ----------");
+        
+        // execute all in execution manager
+
+        // after, cleanup and reset
+    }
+
+    private void init() {
+        Console.startInstance(); 
+        ScopeManager.getInstance();
+        // start execution manager here
     }
 
     public void showTree(String input) {

@@ -20,12 +20,9 @@ public class Parser {
 
     private CharStream input;
 
-    public Parser() {
-        ScopeManager.getInstance();
-    }
+    public Parser() { }
 
     public Parser(CharStream input) {
-        ScopeManager.getInstance();
         this.input = input;
     }
     
@@ -34,7 +31,6 @@ public class Parser {
     }
 
     public void parse() {
-
         ScopeManager.getInstance().reset();
         Lexer lexer = new PSCLexer(this.input);
 
