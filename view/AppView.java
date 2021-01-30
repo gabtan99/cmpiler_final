@@ -154,6 +154,9 @@ public class AppView {
         stage.setTitle("Pseudocode IDE by Tan & Ty");
         stage.show();
 
+        //for dev purposes
+        File file = new File("resources/testcase.psc"); 
+        codeArea.appendText(readFile(file));
     }
 
     // returns the value that the user enters
