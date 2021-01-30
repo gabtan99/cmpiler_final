@@ -5,9 +5,7 @@ import java.util.*;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CharStream;
 
-import model.Console;
-import model.Parser;
-import model.ScopeManager;
+import model.*;
 import view.AppView;
 
 public class AppController {
@@ -42,9 +40,10 @@ public class AppController {
     }
 
     private void init() {
+        System.out.println("----------- INITIALIZING ----------");
         Console.startInstance(); 
         ScopeManager.getInstance();
-        // start execution manager here
+        RuntimeManager.getInstance();
     }
 
     public void showTree(String input) {

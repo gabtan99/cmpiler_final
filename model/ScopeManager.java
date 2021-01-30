@@ -21,6 +21,8 @@ public class ScopeManager {
         if (instance == null) {
             instance = new ScopeManager();
         } 
+
+        System.out.println("Scope Manager initialized");
         
         return instance;
     }

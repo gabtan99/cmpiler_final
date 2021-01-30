@@ -12,6 +12,8 @@ public class Console {
             instance = new Console();
         }
         errorList = new ArrayList<>();
+
+        System.out.println("Console initialized");
     }
 
     public static void reset() {
