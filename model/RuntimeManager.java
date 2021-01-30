@@ -2,24 +2,64 @@ package model;
 
 import java.util.*;
 import model.commands.*;
+import model.objects.*;
+
 
 public class RuntimeManager {
 
     private static RuntimeManager instance = null;
     private static List<Command> commandList;
-    
-    public static void getInstance() {
+    private RuntimeThread thread;
+
+    public static RuntimeManager getInstance() {
         if (instance == null) {
             instance = new RuntimeManager();
+            commandList = new ArrayList<>();
+            System.out.println("Runtime Manager initialized");
         }
-        commandList = new ArrayList<>();
-        System.out.println("Runtime Manager initialized");
+
+        return instance;
     }
 
-    public static void reset() {
+
+    public void initialize() {
+        commandList = new ArrayList<Command>();
+    }
+
+    public void cleanup() {
         if (commandList != null) {
             commandList.clear();
         }
+
+        System.out.println("Runtime was reset");
     }
 
+    public void addCommand(Command c) {
+        System.out.println("Added " + c.getClass() + " to command list");
+        commandList.add(c);
+    }
+
+    public void executeAll() {
+        thread = new RuntimeThread(commandList);
+        thread.start();
+    }
+
+    public void blockExecution() {
+
+    }
+
+    public void resumeExecution() {
+
+    }
+
+    //not sure pa
+    public PseudoFunction getCurrentFunction() {
+        return null;
+        
+    }
+
+    public boolean isInFunctionExecution() {
+        return true;
+
+    }
 }

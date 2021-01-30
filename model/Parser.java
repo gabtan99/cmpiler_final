@@ -31,7 +31,6 @@ public class Parser {
     }
 
     public void parse() {
-        ScopeManager.getInstance().reset();
         Lexer lexer = new PSCLexer(this.input);
 
         PSCSyntaxChecker syntaxListener = new PSCSyntaxChecker();
@@ -59,7 +58,7 @@ public class Parser {
        
        ParseTree tree = parser.program();
 
-       // Tree inspector
+        // Tree inspector
         TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()),tree);
         viewer.open();
    }

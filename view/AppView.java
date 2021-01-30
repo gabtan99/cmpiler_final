@@ -112,7 +112,6 @@ public class AppView {
             controller.execute();
         });
 
-
         // Keyboard Shortcut for Parse
         KeyCombination kc = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
         Runnable rn = ()-> {
@@ -155,7 +154,7 @@ public class AppView {
         stage.show();
 
         //for dev purposes
-        File file = new File("resources/testcase.psc"); 
+        File file = new File("resources/decl.psc"); 
         codeArea.appendText(readFile(file));
     }
 
@@ -169,12 +168,11 @@ public class AppView {
         return td.getEditor().getText(); 
     }
 
-    
     public void updateLogs(List<String> output) {
         StringBuilder logs = new StringBuilder(""); 
 
         if (output.isEmpty()) {
-            logs.append("Parsing Complete. No errors found.");
+            logs.append("Parsing complete ✓\n\n");
         }
 
         output.forEach((li) -> {
@@ -182,6 +180,11 @@ public class AppView {
         });
 
         textArea.setText(logs.toString());
+    }
+
+    public void printToConsole(String msg) {
+        String all = textArea.getText();
+        textArea.setText(all + msg + "\n");
     }
 
     private String readFile(File file){

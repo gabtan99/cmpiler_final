@@ -17,11 +17,11 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 
 import java.util.*;
 
-import model.Console;
-import model.ScopeManager;
+
 import model.objects.*;
 import model.semcheck.*;
-import model.Scope;
+import model.commands.*;
+import model.*;
 
 public class StatementVisitor {
 
@@ -46,23 +46,10 @@ public class StatementVisitor {
                 PrintStmtContext printCtx = stmtCtx.printStmt();
 
                 if (printCtx.printParams() != null) {
-                    List<PrintParamsSelectorContext> paramsList = printCtx.printParams().printParamsSelector();
-
-                    for (PrintParamsSelectorContext param : paramsList) {
-                        if (param.IDENTIFIER() != null) {
-                            PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(param.IDENTIFIER().getText());
-                            if(pseudoValue == null) {
-                                Console.log("UndeclaredVariable Error at print statement", stmtCtx.getStart().getLine());
-                            }
-                        } else if (param.call() != null) {
-                            PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(param.call().IDENTIFIER().getText());
-
-                            if (pseudoFunction == null) {
-                                Console.log("UndeclaredFunction error at print statement",  stmtCtx.getStart().getLine());
-                            }
-                        }
-                    }
+                    PrintCommand printCommand = new PrintCommand(printCtx.printParams());
+                    RuntimeManager.getInstance().addCommand(printCommand);
                 }
+
             } else if (stmtCtx.selectionStmt() != null) {
                 SelectionStmtContext ifCtx = stmtCtx.selectionStmt();
                 analyzeSelection(ifCtx);

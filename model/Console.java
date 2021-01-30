@@ -9,11 +9,11 @@ public class Console {
     
     public static void startInstance() {
         if (instance == null) {
+            System.out.println("Console initialized");
             instance = new Console();
         }
         errorList = new ArrayList<>();
 
-        System.out.println("Console initialized");
     }
 
     public static void reset() {
@@ -21,7 +21,6 @@ public class Console {
             errorList.clear();
         }
     }
-
 
     public static void log(String msg, int line) {
         ConsoleItem item = new ConsoleItem(msg, line);

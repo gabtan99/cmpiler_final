@@ -20,9 +20,10 @@ public class AppController {
     }
 
     public void parse(String input) {
-        Console.reset();
-
         System.out.println("----------- PARSING ----------");
+
+        ScopeManager.getInstance().reset();
+        Console.reset();
 
         CharStream stream = CharStreams.fromString(input);
         parser.setInput(stream);
@@ -35,14 +36,14 @@ public class AppController {
         System.out.println("----------- EXECUTING ----------");
         
         // execute all in execution manager
-
-        // after, cleanup and reset
+        RuntimeManager.getInstance().executeAll();
     }
 
     private void init() {
         System.out.println("----------- INITIALIZING ----------");
         Console.startInstance(); 
-        ScopeManager.getInstance();
+        Printer.getInstance();
+        Printer.getInstance().addView(this.view);
         RuntimeManager.getInstance();
     }
 
