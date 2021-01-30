@@ -6,7 +6,6 @@ import model.Console;
 
 public class Scope {
 
-    
     private Scope parent;
     private HashMap<String, PseudoValue> localVars = null;
 
@@ -48,6 +47,25 @@ public class Scope {
         } else {
             return null;
         }
+    }
+
+    public PseudoValue getVariableAllScope(String id) {
+        
+        Scope current = this;
+        PseudoValue pseudoValue = null;
+
+        while (current != null) {
+            pseudoValue = current.getVariable(id);
+
+            if (pseudoValue != null) {
+                return pseudoValue;
+            } 
+
+            current = current.getParent();
+        }
+        
+        return pseudoValue;
+
     }
 
 

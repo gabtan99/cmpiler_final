@@ -40,8 +40,18 @@ public class StatementVisitor {
 
                     if(pseudoValue == null) {
                         Console.log("UndeclaredVariable Error at scan statement", stmtCtx.getStart().getLine());
+                    } else {
+
+                        if (pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY) {
+                            Console.log("Cannot scan to array", stmtCtx.getStart().getLine());
+                        } else {
+                            ScanCommand scanCommand = new ScanCommand(scanCtx.StringLiteral().getText() , scanCtx.IDENTIFIER().getText());
+                            RuntimeManager.getInstance().addCommand(scanCommand);
+                        }
                     }
                 }
+
+                
             } else if (stmtCtx.printStmt() != null) {
                 PrintStmtContext printCtx = stmtCtx.printStmt();
 

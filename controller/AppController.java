@@ -23,6 +23,7 @@ public class AppController {
         System.out.println("----------- PARSING ----------");
 
         ScopeManager.getInstance().reset();
+        RuntimeManager.getInstance().reset();
         Console.reset();
 
         CharStream stream = CharStreams.fromString(input);
@@ -36,7 +37,9 @@ public class AppController {
         System.out.println("----------- EXECUTING ----------");
         
         // execute all in execution manager
-        RuntimeManager.getInstance().executeAll();
+        if (Console.getErrorList().size() == 0) {
+            RuntimeManager.getInstance().executeAll();
+        }
     }
 
     private void init() {
@@ -44,6 +47,8 @@ public class AppController {
         Console.startInstance(); 
         Printer.getInstance();
         Printer.getInstance().addView(this.view);
+        IDEScanner.getInstance();
+        IDEScanner.getInstance().addView(this.view);
         RuntimeManager.getInstance();
     }
 

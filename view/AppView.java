@@ -161,7 +161,10 @@ public class AppView {
     // returns the value that the user enters
     public String getInput(String prompt) {
          // create a text input dialog 
+        
         TextInputDialog td = new TextInputDialog(); 
+        td.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
+        td.getDialogPane().lookupButton(ButtonType.CANCEL).setManaged(false);
         td.setHeaderText(prompt);
         td.showAndWait(); 
     
@@ -172,7 +175,7 @@ public class AppView {
         StringBuilder logs = new StringBuilder(""); 
 
         if (output.isEmpty()) {
-            logs.append("Parsing complete ✓\n\n");
+            logs.append("Parsing complete.\n\n");
         }
 
         output.forEach((li) -> {

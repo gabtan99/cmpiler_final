@@ -10,14 +10,17 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.PSCParser.PrintParamsContext;
 import parser.PSCParser.PrintParamsSelectorContext;
 import model.*;
+import model.objects.*;
 
 public class PrintCommand implements Command, ParseTreeListener {
 
     private PrintParamsContext paramsCtx;
     private String msg = "";
+    private Scope scope; 
     
     public PrintCommand(PrintParamsContext paramsCtx) {
         this.paramsCtx = paramsCtx;
+        this.scope = ScopeManager.getInstance().getScope();
 
         // List<PrintParamsSelectorContext> paramsList = paramsCtx.printParamsSelector();
 
@@ -54,8 +57,17 @@ public class PrintCommand implements Command, ParseTreeListener {
 
             if (printParamsCtx.StringLiteral()!= null) {
                 this.msg += printParamsCtx.StringLiteral().getText().replaceAll("^\"+|\"+$", "");
+            } else if (printParamsCtx.IDENTIFIER() != null) {
+                PseudoValue pseudoValue = scope.getVariableAllScope(printParamsCtx.IDENTIFIER().getText());
+
+                if(pseudoValue == null) {
+                    Console.log("UndeclaredVariable Error at print statement", ctx.getStart().getLine());
+                } else {
+                    this.msg += pseudoValue.getValue().toString();
+                }
+
             }
-        }
+        } 
     }
 
     @Override

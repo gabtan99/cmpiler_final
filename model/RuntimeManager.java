@@ -26,7 +26,7 @@ public class RuntimeManager {
         commandList = new ArrayList<Command>();
     }
 
-    public void cleanup() {
+    public void reset() {
         if (commandList != null) {
             commandList.clear();
         }
@@ -44,12 +44,12 @@ public class RuntimeManager {
         thread.start();
     }
 
-    public void blockExecution() {
-
+    public void pauseExecution() {
+        this.thread.setExecFlag(false);
     }
 
     public void resumeExecution() {
-
+        this.thread.setExecFlag(true);
     }
 
     //not sure pa

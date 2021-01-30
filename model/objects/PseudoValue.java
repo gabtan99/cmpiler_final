@@ -1,5 +1,6 @@
 package model.objects;
 import model.Console;
+import java.lang.NumberFormatException;
 
 public class PseudoValue {
 
@@ -42,6 +43,10 @@ public class PseudoValue {
     public Object getValue() {
 		return this.value;
 	}
+
+	public void setValue(Object value) {
+		this.value = value;
+	}
 	
 	
 	public static boolean checkValueType(Object value, PrimitiveType primitiveType) {
@@ -61,6 +66,7 @@ public class PseudoValue {
 				return false;
 		}
 	}
+
 	
 	public static PrimitiveType resolve_type(String primitiveTypeString) {
 		
