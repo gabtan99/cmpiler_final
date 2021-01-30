@@ -26,12 +26,14 @@ public class ProgramVisitor implements ParseTreeListener {
 
     @Override
 	public void enterEveryRule(ParserRuleContext ctx) {
-		if(ctx instanceof FunctionDeclarationContext) {
+
+        
+		if(ctx instanceof FunctionDeclarationContext) { // function dec checker
             FunctionDeclarationContext funcCtx = (FunctionDeclarationContext) ctx;
 
 			FuncDeclaratorVisitor visitor = new FuncDeclaratorVisitor();
             visitor.visit(funcCtx);
-		} else if (ctx instanceof MainProgramContext) {
+		} else if (ctx instanceof MainProgramContext) { // main program checker (just a compound statement)
             MainProgramContext mainCtx = (MainProgramContext) ctx;
 
             CompoundStmtContext compoundCtx = mainCtx.compoundStmt();

@@ -28,6 +28,7 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
         
         ScopeManager sm = ScopeManager.getInstance();
         
+        // check for multiple function same name
         MultipleFuncSemCheck checker = new MultipleFuncSemCheck(ctx);
         checker.check();
 
@@ -69,7 +70,7 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
     @Override
 	public void enterEveryRule(ParserRuleContext ctx) {
 
-        if (ctx instanceof ParamsContext) {
+        if (ctx instanceof ParamsContext) { // check the params
             ParamsContext paramsCtx = (ParamsContext) ctx;
 
             func.getLocalScope().setParent(ScopeManager.getInstance().getScope());
@@ -81,7 +82,7 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
             } 
 
 
-        } else if (ctx instanceof CompoundStmtContext && !openedScope) {
+        } else if (ctx instanceof CompoundStmtContext && !openedScope) { // check the content of function
             openedScope = true;
 
             CompoundStmtContext compoundCtx = (CompoundStmtContext) ctx;

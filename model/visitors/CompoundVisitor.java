@@ -17,12 +17,12 @@ public class CompoundVisitor  {
         
 		for (CompoundStmtBodyContext stmt : stmtList) {
 
-			if (stmt.scopedVariableDeclaration() != null) {
+			if (stmt.scopedVariableDeclaration() != null) { // checks var dec sem check
 				
 				System.out.println("Found local dec");
 				VarDeclaratorVisitor visitor = new VarDeclaratorVisitor();
 				visitor.visit(stmt.scopedVariableDeclaration());
-			} else if (stmt.statement() != null) {
+			} else if (stmt.statement() != null) { // checks statements
 				
 				System.out.println("Found statement !");
 				StatementVisitor visitor = new StatementVisitor();

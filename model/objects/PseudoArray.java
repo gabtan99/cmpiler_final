@@ -54,9 +54,6 @@ public class PseudoArray {
 		}
 	}
 	
-	/*
-	 * Utility function that returns an arary of specified primitive type.
-	 */
 	public static PseudoArray createArray(String primitiveTypeString, String arrayIdentifier) {
         
 		PrimitiveType primitiveType = PrimitiveType.NOT_YET_IDENTIFIED;

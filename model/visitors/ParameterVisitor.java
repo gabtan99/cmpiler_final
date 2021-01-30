@@ -38,7 +38,7 @@ public class ParameterVisitor implements ParseTreeListener {
     @Override
 	public void enterEveryRule(ParserRuleContext ctx) {
 
-        if (ctx instanceof ParameterContext) {
+        if (ctx instanceof ParameterContext) { // responsible for checking between parameters of function
             ParameterContext parameterCtx = (ParameterContext) ctx;
             TypeSpecifierSelectorContext typeSpecifierSelectorContext= parameterCtx.typeSpecifierSelector();
 
