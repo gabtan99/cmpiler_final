@@ -1,3 +1,7 @@
+func void test() {
+    
+}
+
 main() {
     int x;
     print("Hello");

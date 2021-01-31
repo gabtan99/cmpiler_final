@@ -2,11 +2,12 @@ package model.objects;
 
 import java.util.*;
 import model.*;
+import model.commands.*;
 
 public class PseudoFunction {
 
     private String name;
-    // list of commands command sequences
+    private List<Command> commandList;
 
     private Scope localScope;
 
@@ -14,10 +15,14 @@ public class PseudoFunction {
 
     private PseudoValue returnValue;
     private FunctionType returnType;
+    private boolean hasReturn;
+
 
     public PseudoFunction() {
         this.parameters = new LinkedHashMap<>();
+        this.commandList = new ArrayList<>();
         this.returnType = FunctionType.VOID;
+        this.hasReturn = false;
         this.localScope = new Scope();
     }
 

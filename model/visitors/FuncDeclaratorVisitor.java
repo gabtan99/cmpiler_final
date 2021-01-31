@@ -12,8 +12,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 
-import model.ScopeManager;
-import model.Scope;
+import model.*;
 import model.semcheck.MultipleFuncSemCheck;
 import model.objects.*;
 
@@ -85,19 +84,25 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
         } else if (ctx instanceof CompoundStmtContext && !openedScope) { // check the content of function
             openedScope = true;
 
+            FunctionDeclarationTracker.getInstance().setCurFunction(func);
+
             CompoundStmtContext compoundCtx = (CompoundStmtContext) ctx;
 		    System.out.println("Opened function scope");
 
             CompoundVisitor visitor = new CompoundVisitor();
 			visitor.visit(compoundCtx);
-        
+
+            if (!FunctionDeclarationTracker.getInstance().hasReturn() && func.getReturnType() != FunctionType.VOID) {
+                Console.log("Missing return statement for non-void type function.", ctx.getStart().getLine());
+            }
+
+            FunctionDeclarationTracker.getInstance().reset();
         }
 		
 	}
 
     @Override
 	public void exitEveryRule(ParserRuleContext ctx) {
-		// TODO Auto-generated method stub
 		
 	}
 

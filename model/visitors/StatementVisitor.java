@@ -77,6 +77,17 @@ public class StatementVisitor {
                     callSemCheck.check();
                 }
             } else if (stmtCtx.returnStmt() != null) {
+
+                if (FunctionDeclarationTracker.getInstance().getCurFunction() != null) {
+                    FunctionDeclarationTracker.getInstance().setHasReturn(true);
+
+                    if (FunctionDeclarationTracker.getInstance().getCurFunction().getReturnType() == FunctionType.VOID) {
+                        Console.log("Encountered a return statement in void-type function.", ctx.getStart().getLine());
+                    }
+                }   
+
+           
+
                 UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(stmtCtx.returnStmt().simpleExpression());
                 undeclaredSemCheck.check();
             }
