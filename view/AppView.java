@@ -34,6 +34,8 @@ import org.fxmisc.richtext.*;
 import controller.AppController;
 
 public class AppView {
+    private static final String dev_file = "decl.psc";
+
     private AppController controller;
     private TextArea textArea;
     private Stage stage;
@@ -153,9 +155,13 @@ public class AppView {
         stage.setTitle("Pseudocode IDE by Tan & Ty");
         stage.show();
 
-        //for dev purposes
-        File file = new File("resources/decl.psc"); 
-        codeArea.appendText(readFile(file));
+
+        if (dev_file != "") {
+            //for dev purposes
+            File file = new File("resources/" + dev_file); 
+            codeArea.appendText(readFile(file));
+        }
+        
     }
 
     // returns the value that the user enters

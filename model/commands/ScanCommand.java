@@ -17,8 +17,6 @@ public class ScanCommand implements Command {
         this.id = id;
 
         this.scope = ScopeManager.getInstance().getScope();
-
-      
     }
 
     @Override
@@ -43,6 +41,7 @@ public class ScanCommand implements Command {
 
                 } catch (NumberFormatException e) {
                     Printer.getInstance().print("Program Terminated. Scan value mismatch.");
+                    RuntimeManager.getInstance().killExecution();
                 }
                 
             }

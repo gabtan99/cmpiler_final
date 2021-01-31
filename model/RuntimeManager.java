@@ -52,6 +52,10 @@ public class RuntimeManager {
         this.thread.setExecFlag(true);
     }
 
+    public void killExecution() {
+        this.thread.kill();
+    }
+
     //not sure pa
     public PseudoFunction getCurrentFunction() {
         return null;
