@@ -81,12 +81,16 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 				if (arrVarDecInitCtx.IDENTIFIER() != null) {
 					if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Int() != null) {
 						pseudoArray = PseudoArray.createArray("int", arrVarDecInitCtx.IDENTIFIER().getText());
+						pseudoArray.setPrimitiveType(PrimitiveType.INT);
 					} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null) {
 						pseudoArray = PseudoArray.createArray("bool", arrVarDecInitCtx.IDENTIFIER().getText());
+						pseudoArray.setPrimitiveType(PrimitiveType.BOOLEAN);
 					} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().String() != null) {
 						pseudoArray = PseudoArray.createArray("String", arrVarDecInitCtx.IDENTIFIER().getText());
+						pseudoArray.setPrimitiveType(PrimitiveType.STRING);
 					} else if (arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Float() != null) {
 						pseudoArray = PseudoArray.createArray("float", arrVarDecInitCtx.IDENTIFIER().getText());
+						pseudoArray.setPrimitiveType(PrimitiveType.FLOAT);
 					}
 				}
 
@@ -105,12 +109,14 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 						Console.log("UndeclaredVariable error", arrVarDecInitCtx.getStart().getLine());
 					} else {
 						String errorTemplate = "TypeMismatch Error: ";
+						
 						if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
 							String msg = "Expected array";
 							Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
 						} else {
 							PseudoArray pa = (PseudoArray) pseudoValue.getValue();
 							PseudoArray pa1 = (PseudoArray) pv.getValue();
+
 							if(pa.getPrimitiveType() == PrimitiveType.BOOLEAN && pa1.getPrimitiveType() != PrimitiveType.BOOLEAN) {
 								String msg = "Expected boolean array";
 								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
@@ -153,6 +159,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					RuntimeManager.getInstance().addCommand(createArrCommand);
 					
 				}
+				
 
 				if (arrVarDecInitCtx.IDENTIFIER() != null) {
 					Scope scope = ScopeManager.getInstance().getScope();

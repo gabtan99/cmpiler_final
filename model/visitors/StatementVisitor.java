@@ -70,9 +70,9 @@ public class StatementVisitor {
                 iterationVisitor.visit(iterStmtCtx);
             } else if (stmtCtx.expressionStmt() != null) { // assignment standalone or function call
 
-                if (stmtCtx.expressionStmt().assignmentStandaloneExpression() != null) {
+                if (stmtCtx.expressionStmt().assignmentStandaloneExpression() != null) { // assignment
                     analyzeExpressionStmt(stmtCtx.expressionStmt().assignmentStandaloneExpression());
-                } else if (stmtCtx.expressionStmt().call() != null) {
+                } else if (stmtCtx.expressionStmt().call() != null) { // call
                     FunctionCallSemCheck callSemCheck = new FunctionCallSemCheck(stmtCtx.expressionStmt().call());
                     callSemCheck.check();
                 }
@@ -132,19 +132,20 @@ public class StatementVisitor {
     private void analyzeExpressionStmt(AssignmentStandaloneExpressionContext ctx) {
         MutableContext mutableCtx = ctx.mutable();
 
-        // ConstantSemCheck constSemCheck = new ConstantSemCheck(mutableCtx);
-        // constSemCheck.check();
+        ConstantSemCheck constSemCheck = new ConstantSemCheck(mutableCtx.IDENTIFIER());
+        constSemCheck.check();
 
         PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 
         if (ctx.simpleExpression() != null) {
             if (pv != null) {
-                TypeMismatchSemCheck typeSemCheck = new TypeMismatchSemCheck(pv, ctx.simpleExpression());
-                typeSemCheck.check();
+
+                AssignCommand assignCommand = new AssignCommand(mutableCtx, ctx.simpleExpression());
+                RuntimeManager.getInstance().addCommand(assignCommand);
+
             } else {
                 Console.log("UndeclaredVariable error", ctx.getStart().getLine());
             }
-        
             
         } else if (ctx.createArrayExpression() != null) { //  x= create int[]
 
@@ -160,7 +161,14 @@ public class StatementVisitor {
                     (pa.getPrimitiveType() == PrimitiveType.BOOLEAN && typeSpecifier.Bool() == null) ||
                     (pa.getPrimitiveType() == PrimitiveType.FLOAT && typeSpecifier.Float() == null) ) {
                     Console.log("TypeMismatch Error", ctx.getStart().getLine() );
-                }	 
+                }
+
+                // if size is int int[size] <--
+                TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, "int"), ctx.createArrayExpression().simpleExpression());
+                typeMMSemCheck.check();
+
+                CreateArrayCommand createArrCommand = new CreateArrayCommand(ctx.createArrayExpression().simpleExpression(), pa);
+                RuntimeManager.getInstance().addCommand(createArrCommand);	
             }
         }
     }
