@@ -31,25 +31,33 @@ public class PseudoArray {
     public int getSize() {
 		return this.pseudoValueArray.length;
 	}
+
+	public boolean isInitialized() {
+		return pseudoValueArray != null;
+	}
 	
 	public void initSize(int size) {
 		this.pseudoValueArray = new PseudoValue[size];
+
+		for (int i = 0; i < size; i++) {
+			PseudoValue pv = new PseudoValue(null, this.arrayPrimitiveType);
+			this.pseudoValueArray[i] = pv;
+		}
+
 	}
 	
-	public void updateValueAt(PseudoValue PseudoValue, int index) {
+	public boolean updateValueAt(PseudoValue pseudoValue, int index) {
 		if(index >= this.pseudoValueArray.length) {
-			// Console.log(LogType.ERROR, String.format(ErrorRepository.getErrorMessage(ErrorRepository.RUNTIME_ARRAY_OUT_OF_BOUNDS), this.arrayIdentifier));
-			return;
+			return false;
 		}
-		this.pseudoValueArray[index] = PseudoValue;
+		this.pseudoValueArray[index] = pseudoValue;
+		return true;
 	}
 	
 	public PseudoValue getValueAt(int index) {
 		if(index >= this.pseudoValueArray.length) {
-			// Console.log(LogType.ERROR, String.format(ErrorRepository.getErrorMessage(ErrorRepository.RUNTIME_ARRAY_OUT_OF_BOUNDS), this.arrayIdentifier));
-			return this.pseudoValueArray[this.pseudoValueArray.length - 1];
-		}
-		else {
+			return null;
+		} else {
 			return this.pseudoValueArray[index];
 		}
 	}

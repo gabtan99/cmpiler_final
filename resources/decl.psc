@@ -1,7 +1,13 @@
 
 main() {
-    int[] arr = create int[20];
-    float[] arr2;
+	int[] x = create int[3];
+    x[0] = 1;
+    x[1] = 2;
+    x[2] = x[x[0]];
+	
+int y = x[2];
 
-	arr2 = arr;
+print(y);
+
+    
 }

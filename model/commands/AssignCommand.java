@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.math.BigDecimal;
 import parser.PSCParser.SimpleExpressionContext;
 import parser.PSCParser.MutableContext;
 import model.*;
@@ -48,9 +49,38 @@ public class AssignCommand implements Command {
     public void execute() {
         
         if (mutableCtx.LeftBracket() != null) { // if an array
+            evalCommand.execute();  // rhs
+            EvaluateCommand arrEvalCommand = new EvaluateCommand(mutableCtx.simpleExpression(), this.scope);
+            arrEvalCommand.execute(); // lhs
 
+            int arrIndex = arrEvalCommand.getEvaluated().intValue();
+
+            PseudoValue pseudoValue = scope.getVariableAllScope(id.getText());
+            PseudoArray pseudoArray = (PseudoArray) pseudoValue.getValue();
+
+            BigDecimal result = evalCommand.getEvaluated();
+
+            if (pseudoArray.isInitialized()) {
+                PseudoValue curValue = pseudoArray.getValueAt(arrIndex);
+            
+                if (curValue != null) {
+                    Util.assignValue(curValue, result);
+                    pseudoArray.updateValueAt(curValue, arrIndex);
+                } else {
+                    Printer.getInstance().print("Array Index is out of bounds.", mutableCtx.getStart().getLine());
+                    RuntimeManager.getInstance().killExecution();
+                }
+                
+            } else {
+                Printer.getInstance().print("Array is not initialized", mutableCtx.getStart().getLine());
+                RuntimeManager.getInstance().killExecution();
+            }
+            
+            
+            
 
         } else { // if normal variable
+            evalCommand.execute();
             PseudoValue pseudoValue = scope.getVariableAllScope(id.getText());
 		    Util.assignValue(pseudoValue, evalCommand.getEvaluated());
         }

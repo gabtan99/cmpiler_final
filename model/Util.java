@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class Util {
 
     public static void assignValue(PseudoValue value, BigDecimal evaluated) {
+
         if(value.getPrimitiveType() == PrimitiveType.INT) {
 			value.setValue(Integer.toString(evaluated.intValue()));
 		}

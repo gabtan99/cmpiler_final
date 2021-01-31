@@ -7,6 +7,11 @@ public class PseudoValue {
 	private Object value;
 	private PrimitiveType primitiveType = PrimitiveType.NOT_YET_IDENTIFIED;
 	private boolean constFlag = false;
+
+	public PseudoValue(Object value, PrimitiveType primitiveType) {
+		this.primitiveType = primitiveType;
+		this.value = null;
+	}
 	
 	public PseudoValue(Object value, String primitiveType) {
 
@@ -89,5 +94,4 @@ public class PseudoValue {
 	
 		return primitiveType;
 	}
-	
 }

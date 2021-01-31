@@ -26,4 +26,8 @@ public class Printer {
         view.printToConsole(msg);
     }
 
+    public void print(String msg, int line) {
+        view.printToConsole("Runtime Error: [Line " + line + "] " + msg);
+    }
+
 }

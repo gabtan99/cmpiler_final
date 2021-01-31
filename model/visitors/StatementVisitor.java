@@ -137,9 +137,20 @@ public class StatementVisitor {
 
         PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 
-        if (ctx.simpleExpression() != null) {
-            if (pv != null) {
 
+        // if (mutableCtx.LeftBracket() != null ) { // x[2] = 2
+
+        //     if (pv != null) {
+                
+        //     }
+
+        //     AssignCommand assignCommand = new AssignCommand(mutableCtx, ctx.simpleExpression());
+        //     RuntimeManager.getInstance().addCommand(assignCommand);
+
+
+        // } else 
+        if (ctx.simpleExpression() != null) { // x = 2 + 2
+            if (pv != null) {
                 AssignCommand assignCommand = new AssignCommand(mutableCtx, ctx.simpleExpression());
                 RuntimeManager.getInstance().addCommand(assignCommand);
 
@@ -170,7 +181,7 @@ public class StatementVisitor {
                 CreateArrayCommand createArrCommand = new CreateArrayCommand(ctx.createArrayExpression().simpleExpression(), pa);
                 RuntimeManager.getInstance().addCommand(createArrCommand);	
             }
-        }
+        } 
     }
 
 }
