@@ -1,0 +1,83 @@
+package model.commands;
+
+import java.util.*;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
+import java.math.BigDecimal;
+import parser.PSCParser.SimpleExpressionContext;
+import parser.PSCParser.MutableContext;
+import parser.PSCParser.ConstantContext;
+import model.*;
+import model.objects.*;
+
+public class EvaluateCommand implements Command, ParseTreeListener {
+
+    private SimpleExpressionContext simpleCtx;
+    private String strExp;
+    private Scope scope; 
+    private BigDecimal evaluated;
+    
+    public EvaluateCommand(SimpleExpressionContext simpleCtx) {
+        this.simpleCtx = simpleCtx;
+        this.scope = ScopeManager.getInstance().getScope();
+        this.strExp = simpleCtx.getText();
+    }
+
+    @Override
+    public void execute() {
+        ParseTreeWalker treeWalker = new ParseTreeWalker();
+        treeWalker.walk(this, this.simpleCtx);
+
+        if (strExp.contains("T")) {
+            this.evaluated = new BigDecimal(1);
+        } else if (strExp.contains("F")) {
+            this.evaluated = new BigDecimal(0);
+        } else {
+            Expression evalEx = new Expression(this.strExp);
+            this.evaluated = evalEx.eval();
+        }
+    }
+
+
+    @Override
+    public void enterEveryRule(ParserRuleContext ctx) {
+        if (ctx instanceof MutableContext) {
+            MutableContext mutableCtx  = (MutableContext) ctx;
+
+            // non-array variable
+            if (mutableCtx.IDENTIFIER() != null && mutableCtx.LeftBracket() == null) {
+                PseudoValue pseudoValue = scope.getVariableAllScope(mutableCtx.IDENTIFIER().getText());
+                this.strExp =  this.strExp.replaceFirst(mutableCtx.IDENTIFIER().getText(), pseudoValue.getValue().toString());
+            } 
+
+            // access array here
+        } 
+    }
+
+    @Override
+	public void exitEveryRule(ParserRuleContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+    @Override
+	public void visitTerminal(TerminalNode node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visitErrorNode(ErrorNode node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+    public BigDecimal getEvaluated() {
+        return this.evaluated;
+    }
+
+}

@@ -13,57 +13,32 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 
 import model.*;
 
-public class ConstantSemCheck implements SemCheck, ParseTreeListener {
+public class ConstantSemCheck implements SemCheck {
 
-	private MutableContext mutableCtx;
+	private TerminalNode id;
 	private int line;
 
-	public ConstantSemCheck(MutableContext mutableCtx) {
-		this.mutableCtx = mutableCtx;
+	public ConstantSemCheck(TerminalNode id) {
+		this.id = id;
 
-		Token first = this.mutableCtx.getStart();
+		Token first = this.id.getSymbol();
 		this.line = first.getLine();
 	}
 
 
     @Override
 	public void check() {
-		ParseTreeWalker treeWalker = new ParseTreeWalker();
-		treeWalker.walk(this, this.mutableCtx);
-	}
 
+		String stringId = id.getText();
+		PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(stringId);
 
-	@Override
-	public void enterEveryRule(ParserRuleContext ctx) {
-
-		if(ctx instanceof MutableContext) {
-			MutableContext mutableCtx = (MutableContext) ctx;
-			if(mutableCtx.LeftBracket() == null) { 
-				PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
-
-				if (pseudoValue != null && pseudoValue.isConst()) {
-					Console.log("ConstantReassignment Error ", this.line);
-				}
-			}
+		if (pseudoValue != null && pseudoValue.isConst()) {
+			Console.log("ConstantReassignment Error ", this.line);
 		}
-	}
-
-	@Override
-	public void exitEveryRule(ParserRuleContext ctx) {
-		// TODO Auto-generated method stub
 		
 	}
 
-    @Override
-	public void visitTerminal(TerminalNode node) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void visitErrorNode(ErrorNode node) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 } 

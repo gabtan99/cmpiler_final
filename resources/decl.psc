@@ -1,17 +1,11 @@
-func int test() {
-    if (T) then {
-        return 2;
-    }
-
-    
-}
 
 main() {
-    int x;
-    print("Hello");
+    int w = 1;
+    int e = 2;
+	int y = w + e;
 
-    if (T) then {
-        scan("YO! What is your name?", x);
-    }
-    print(x + x);
+	print(y);
+
+
+    int x;
 }

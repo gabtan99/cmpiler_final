@@ -132,10 +132,8 @@ public class StatementVisitor {
     private void analyzeExpressionStmt(AssignmentStandaloneExpressionContext ctx) {
         MutableContext mutableCtx = ctx.mutable();
 
-        
-
-        ConstantSemCheck constSemCheck = new ConstantSemCheck(mutableCtx);
-        constSemCheck.check();
+        // ConstantSemCheck constSemCheck = new ConstantSemCheck(mutableCtx);
+        // constSemCheck.check();
 
         PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 

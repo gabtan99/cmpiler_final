@@ -12,11 +12,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 
-import model.ScopeManager;
+import model.*;
 import model.semcheck.*;
 import model.objects.*;
-import model.Scope;
-import model.Console;
+import model.commands.*;
 
 public class VarDeclaratorVisitor implements ParseTreeListener {
 
@@ -38,11 +37,11 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 			MultipleVarSemCheck mulVarSemCheck = new MultipleVarSemCheck(scopedVarDecCtx);
 			mulVarSemCheck.check();
 			
-
 			if (scopedVarDecCtx.variableDeclaration() != null) {
 				VariableDeclarationContext varDecCtx = scopedVarDecCtx.variableDeclaration();
 				VariableDeclarationInitializeContext varDecInitCtx = varDecCtx.variableDeclarationInitialize();
-					
+
+				// declaring
 				if (varDecCtx.typeSpecifier().Int() != null) {
 					pseudoValue = new PseudoValue(null, "int");
 				} else if (varDecCtx.typeSpecifier().Bool() != null) {
@@ -56,20 +55,21 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 				if (pseudoValue != null && varDecCtx.ConstantKey() != null) {
 					pseudoValue.markConst();
 				} 
-				
-				if (varDecInitCtx.Assign() != null) {
-					UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(varDecInitCtx.simpleExpression() );
-					undeclaredSemCheck.check();
 
-					// may value, you need to check
+				if (varDecInitCtx.Assign() != null) { // assigning
+					// check if rhs is compatible with id type
 					TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, varDecInitCtx.simpleExpression());
 					typeMMSemCheck.check();
-				} 
+
+					InitializeCommand initializeCommand = new InitializeCommand(varDecInitCtx.IDENTIFIER(), varDecInitCtx.simpleExpression());
+					RuntimeManager.getInstance().addCommand(initializeCommand);
+				}  
 
 				Scope scope = ScopeManager.getInstance().getScope();
 				scope.addVariable(varDecInitCtx.IDENTIFIER().getText(), pseudoValue);
+
+				
 			
-				System.out.println("lmao found a normie declaration");
 
 			} else if (scopedVarDecCtx.arrayVariableDeclaration() != null) {
 
