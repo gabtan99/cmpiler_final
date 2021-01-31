@@ -22,23 +22,25 @@ public class PrintCommand implements Command, ParseTreeListener {
         this.paramsCtx = paramsCtx;
         this.scope = ScopeManager.getInstance().getScope();
 
-        // List<PrintParamsSelectorContext> paramsList = paramsCtx.printParamsSelector();
 
-        // for (PrintParamsSelectorContext param : paramsList) {
+
+        List<PrintParamsSelectorContext> paramsList = paramsCtx.printParamsSelector();
+
+        for (PrintParamsSelectorContext param : paramsList) {
             
-        //     if (param.IDENTIFIER() != null) {
-        //         PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(param.IDENTIFIER().getText());
-        //         if(pseudoValue == null) {
-        //             Console.log("UndeclaredVariable Error at print statement", stmtCtx.getStart().getLine());
-        //         }
-        //     } else if (param.call() != null) {
-        //         PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(param.call().IDENTIFIER().getText());
+            if (param.IDENTIFIER() != null) {
+                PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(param.IDENTIFIER().getText());
+                if(pseudoValue == null) {
+                    Console.log("UndeclaredVariable Error at print statement", paramsCtx.getStart().getLine());
+                }
+            } else if (param.call() != null) {
+                PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(param.call().IDENTIFIER().getText());
 
-        //         if (pseudoFunction == null) {
-        //             Console.log("UndeclaredFunction error at print statement",  stmtCtx.getStart().getLine());
-        //         }
-        //     }
-        // }
+                if (pseudoFunction == null) {
+                    Console.log("UndeclaredFunction error at print statement",  paramsCtx.getStart().getLine());
+                }
+            }
+        }
     }
 
     @Override
@@ -60,13 +62,8 @@ public class PrintCommand implements Command, ParseTreeListener {
             } else if (printParamsCtx.IDENTIFIER() != null) {
                 PseudoValue pseudoValue = scope.getVariableAllScope(printParamsCtx.IDENTIFIER().getText());
 
-                if(pseudoValue == null) {
-                    Console.log("UndeclaredVariable Error at print statement", ctx.getStart().getLine());
-                } else {
-                    this.msg += pseudoValue.getValue().toString();
-                }
-
-            }
+                this.msg += pseudoValue.getValue().toString();
+            } // else if function call
         } 
     }
 
