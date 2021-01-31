@@ -38,6 +38,11 @@ public class PseudoFunction {
         return this.returnValue;
     }
 
+
+    public void setReturnValue(PseudoValue returnValue) {
+        this.returnValue = returnValue;
+    }
+
     public void setReturnType(FunctionType functionType) {
 		this.returnType = functionType;
 		

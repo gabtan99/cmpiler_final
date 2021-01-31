@@ -32,7 +32,7 @@ public class PseudoArray {
 		return this.pseudoValueArray.length;
 	}
 	
-	public void initializeSize(int size) {
+	public void initSize(int size) {
 		this.pseudoValueArray = new PseudoValue[size];
 	}
 	

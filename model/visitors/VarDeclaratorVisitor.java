@@ -115,6 +115,10 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					// if size is int int[size] <--
 					TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, "int"), arrVarDecInitCtx.createArrayExpression().simpleExpression());
 					typeMMSemCheck.check();
+
+					CreateArrayCommand createArrCommand = new CreateArrayCommand(arrVarDecInitCtx.createArrayExpression().simpleExpression(), pseudoArray);
+					RuntimeManager.getInstance().addCommand(createArrCommand);
+					
 				}
 
 				if (arrVarDecInitCtx.IDENTIFIER() != null) {
