@@ -96,15 +96,48 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					pseudoValue.markConst();
 				} 
 
-				if (arrVarDecInitCtx.simpleExpression() != null) {
-					TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, arrVarDecInitCtx.simpleExpression());
-					typeMMSemCheck.check();
+				// assigning array to array
+				if (arrVarDecInitCtx.mutable() != null) {
+
+					PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(arrVarDecInitCtx.mutable().IDENTIFIER().getText());
+
+					if (pv == null) {
+						Console.log("UndeclaredVariable error", arrVarDecInitCtx.getStart().getLine());
+					} else {
+						String errorTemplate = "TypeMismatch Error: ";
+						if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
+							String msg = "Expected array";
+							Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
+						} else {
+							PseudoArray pa = (PseudoArray) pseudoValue.getValue();
+							PseudoArray pa1 = (PseudoArray) pv.getValue();
+							if(pa.getPrimitiveType() == PrimitiveType.BOOLEAN && pa1.getPrimitiveType() != PrimitiveType.BOOLEAN) {
+								String msg = "Expected boolean array";
+								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
+							}
+							else if(pa.getPrimitiveType() == PrimitiveType.INT && pa1.getPrimitiveType() != PrimitiveType.INT) {
+								String msg = "Expected integer array";
+								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
+							}
+							else if(pa.getPrimitiveType() == PrimitiveType.FLOAT && pa1.getPrimitiveType() != PrimitiveType.FLOAT) {
+								String msg = "Expected float array";
+								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
+							}
+							else if(pa.getPrimitiveType() == PrimitiveType.STRING && pa1.getPrimitiveType() != PrimitiveType.STRING) {
+								String msg = "Expected String array";
+								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
+							}
+						}
+						InitializeArrCommand initializeArrCommand = new InitializeArrCommand(arrVarDecInitCtx.IDENTIFIER(), arrVarDecInitCtx.mutable());
+						RuntimeManager.getInstance().addCommand(initializeArrCommand);
+					}
+
+				// array initialize
 				} else if (arrVarDecInitCtx.createArrayExpression() != null) {
 
 					TypeSpecifierContext typeSpecifier = arrVarDecInitCtx.createArrayExpression().typeSpecifier();
 					
 					// if there is create type[]
-					
 					if ((arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Int() != null && typeSpecifier.Int() == null) || 
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Float() != null && typeSpecifier.Float() == null) || 
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().String() != null && typeSpecifier.String() == null) ||
@@ -126,7 +159,6 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					scope.addVariable(arrVarDecInitCtx.IDENTIFIER().getText(), pseudoValue);
 				}
 				
-				System.out.println("lmao found a array declaration");
 			}
 		}
 

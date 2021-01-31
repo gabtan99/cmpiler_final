@@ -579,8 +579,8 @@ public class PSCParser extends Parser {
 		public CreateArrayExpressionContext createArrayExpression() {
 			return getRuleContext(CreateArrayExpressionContext.class,0);
 		}
-		public SimpleExpressionContext simpleExpression() {
-			return getRuleContext(SimpleExpressionContext.class,0);
+		public MutableContext mutable() {
+			return getRuleContext(MutableContext.class,0);
 		}
 		public ArrayVariableDeclarationInitializeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -629,7 +629,7 @@ public class PSCParser extends Parser {
 				setState(145);
 				match(Assign);
 				setState(146);
-				simpleExpression(0);
+				mutable();
 				}
 				break;
 			}
@@ -3476,7 +3476,7 @@ public class PSCParser extends Parser {
 		"\2\u0088\u0089\3\2\2\2\u0089\u008a\3\2\2\2\u008a\u008b\5\16\b\2\u008b"+
 		"\u008c\5\22\n\2\u008c\u008d\7(\2\2\u008d\21\3\2\2\2\u008e\u0096\79\2\2"+
 		"\u008f\u0090\79\2\2\u0090\u0091\7+\2\2\u0091\u0096\5> \2\u0092\u0093\7"+
-		"9\2\2\u0093\u0094\7+\2\2\u0094\u0096\5@!\2\u0095\u008e\3\2\2\2\u0095\u008f"+
+		"9\2\2\u0093\u0094\7+\2\2\u0094\u0096\5X-\2\u0095\u008e\3\2\2\2\u0095\u008f"+
 		"\3\2\2\2\u0095\u0092\3\2\2\2\u0096\23\3\2\2\2\u0097\u009a\5\f\7\2\u0098"+
 		"\u009a\5\16\b\2\u0099\u0097\3\2\2\2\u0099\u0098\3\2\2\2\u009a\25\3\2\2"+
 		"\2\u009b\u009f\7\21\2\2\u009c\u00a0\5\f\7\2\u009d\u00a0\5\16\b\2\u009e"+

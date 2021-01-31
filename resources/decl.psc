@@ -1,11 +1,5 @@
 
 main() {
-    int w = 1;
-    int e = 2;
-	int y = w + e;
-
-	print(y);
-
-
-    int x;
+    int[] arr = create int[20];
+    int[] arr2 = arr;
 }
