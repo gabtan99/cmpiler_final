@@ -78,7 +78,9 @@ public class StatementVisitor {
                 }
             } else if (stmtCtx.returnStmt() != null) {
 
-                if (FunctionDeclarationTracker.getInstance().getCurFunction() != null) {
+                 
+
+                if (FunctionDeclarationTracker.getInstance().getCurFunction() != null && ScopeManager.getInstance().getScope().getParent() == null) {
                     FunctionDeclarationTracker.getInstance().setHasReturn(true);
 
                     if (FunctionDeclarationTracker.getInstance().getCurFunction().getReturnType() == FunctionType.VOID) {

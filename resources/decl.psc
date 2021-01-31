@@ -1,4 +1,8 @@
-func void test() {
+func int test() {
+    if (T) then {
+        return 2;
+    }
+
     
 }
 
