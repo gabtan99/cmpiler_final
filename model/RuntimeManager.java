@@ -10,6 +10,8 @@ public class RuntimeManager {
     private static RuntimeManager instance = null;
     private static List<Command> commandList;
     private RuntimeThread thread;
+    private PseudoFunction funcDecl;
+    private boolean inFunctionDeclaration;
 
     public static RuntimeManager getInstance() {
         if (instance == null) {
@@ -35,8 +37,14 @@ public class RuntimeManager {
     }
 
     public void addCommand(Command c) {
-        System.out.println("Added " + c.getClass() + " to command list");
-        commandList.add(c);
+
+        if (inFunctionDeclaration) {
+            System.out.println("Added " + c.getClass() + " to " + funcDecl.getName());
+            funcDecl.addCommand(c);
+        } else {
+            System.out.println("Added " + c.getClass() + " to command list");
+            commandList.add(c);
+        }
     }
 
     public void executeAll() {
@@ -56,14 +64,19 @@ public class RuntimeManager {
         this.thread.kill();
     }
 
-    //not sure pa
-    public PseudoFunction getCurrentFunction() {
-        return null;
-        
+    public void openFunctionDeclaration(PseudoFunction funcDecl) {
+        this.funcDecl = funcDecl;
+        this.inFunctionDeclaration = true;
     }
 
-    public boolean isInFunctionExecution() {
-        return true;
+    public void closeFunctionDeclaration() {
+        this.funcDecl = null;
+        this.inFunctionDeclaration = false;
+    }
 
+    //not sure pa
+    public PseudoFunction getCurrentFunction() {
+        return this.funcDecl;
+        
     }
 }

@@ -62,6 +62,7 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
 
         sm.addFunction(id, func);
 
+
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(this, ctx);
     }
@@ -83,8 +84,9 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
 
         } else if (ctx instanceof CompoundStmtContext && !openedScope) { // check the content of function
             openedScope = true;
-
-            FunctionDeclarationTracker.getInstance().setCurFunction(func);
+            
+            RuntimeManager.getInstance().openFunctionDeclaration(func);
+            FunctionReturnTracker.getInstance().setCurFunction(func);
 
             CompoundStmtContext compoundCtx = (CompoundStmtContext) ctx;
 		    System.out.println("Opened function scope");
@@ -92,11 +94,12 @@ public class FuncDeclaratorVisitor implements ParseTreeListener {
             CompoundVisitor visitor = new CompoundVisitor();
 			visitor.visit(compoundCtx);
 
-            if (!FunctionDeclarationTracker.getInstance().hasReturn() && func.getReturnType() != FunctionType.VOID) {
+            if (!FunctionReturnTracker.getInstance().hasReturn() && func.getReturnType() != FunctionType.VOID) {
                 Console.log("Missing return statement for non-void type function.", ctx.getStart().getLine());
             }
-
-            FunctionDeclarationTracker.getInstance().reset();
+            
+            RuntimeManager.getInstance().closeFunctionDeclaration();
+            FunctionReturnTracker.getInstance().reset();
         }
 		
 	}

@@ -80,10 +80,10 @@ public class StatementVisitor {
 
                  
 
-                if (FunctionDeclarationTracker.getInstance().getCurFunction() != null && ScopeManager.getInstance().getScope().getParent() == null) {
-                    FunctionDeclarationTracker.getInstance().setHasReturn(true);
+                if (FunctionReturnTracker.getInstance().getCurFunction() != null && ScopeManager.getInstance().getScope().getParent() == null) {
+                    FunctionReturnTracker.getInstance().setHasReturn(true);
 
-                    if (FunctionDeclarationTracker.getInstance().getCurFunction().getReturnType() == FunctionType.VOID) {
+                    if (FunctionReturnTracker.getInstance().getCurFunction().getReturnType() == FunctionType.VOID) {
                         Console.log("Encountered a return statement in void-type function.", ctx.getStart().getLine());
                     }
                 }   

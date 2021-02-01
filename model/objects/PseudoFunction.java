@@ -38,6 +38,10 @@ public class PseudoFunction {
         return this.returnValue;
     }
 
+    public void addCommand(Command c) {
+        commandList.add(c);
+    }
+
 
     public void setReturnValue(PseudoValue returnValue) {
         this.returnValue = returnValue;

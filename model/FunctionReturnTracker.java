@@ -3,20 +3,20 @@ package model;
 import model.objects.*;
 
 
-public class FunctionDeclarationTracker {
+public class FunctionReturnTracker {
 
-    private static FunctionDeclarationTracker instance = null;
+    private static FunctionReturnTracker instance = null;
     private PseudoFunction curFunction;
     private boolean hasReturn;
 
-    public FunctionDeclarationTracker() {
+    public FunctionReturnTracker() {
         curFunction = null;
         hasReturn = false;
     }
 
-    public static FunctionDeclarationTracker getInstance() {
+    public static FunctionReturnTracker getInstance() {
         if (instance == null) {
-            instance = new FunctionDeclarationTracker();
+            instance = new FunctionReturnTracker();
             System.out.println("Function Declaration Tracker initialized");
         }
         

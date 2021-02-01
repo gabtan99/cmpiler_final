@@ -1,3 +1,13 @@
+func void hello() {
+
+    print("test");
+}
+
+func int test(int x) {
+    int y = x;
+    return y;
+}
+
 
 main() {
 	int[] x = create int[3];
@@ -5,9 +15,9 @@ main() {
     x[1] = 2;
     x[2] = x[x[0]];
 	
-int y = x[2];
+    int y = x[2];
 
-print(y);
+    print(y);
 
     
 }

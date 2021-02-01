@@ -49,7 +49,7 @@ public class AppController {
         Printer.getInstance().addView(this.view);
         IDEScanner.getInstance();
         IDEScanner.getInstance().addView(this.view);
-        FunctionDeclarationTracker.getInstance();
+        FunctionReturnTracker.getInstance();
         RuntimeManager.getInstance();
     }
 
