@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import parser.PSCParser.SimpleExpressionContext;
+import parser.PSCParser.VariableDeclarationContext;
 import model.*;
 import model.objects.*;
 import model.semcheck.*;
@@ -16,27 +17,35 @@ import model.semcheck.*;
 public class InitializeCommand implements Command {
 
     private Scope scope; 
-    private TerminalNode id;
+    private VariableDeclarationContext varDecCtx;
     private SimpleExpressionContext rhsCtx;
     private EvaluateCommand evalCommand;
     
-    public InitializeCommand(TerminalNode id, SimpleExpressionContext rhsCtx) {
+    public InitializeCommand(VariableDeclarationContext varDecCtx, SimpleExpressionContext rhsCtx) {
         this.rhsCtx = rhsCtx;
-        this.id = id;
+        this.varDecCtx = varDecCtx;
         this.scope = ScopeManager.getInstance().getScope();
 
         UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(rhsCtx);
         undeclaredSemCheck.check();
+
+
         
         evalCommand = new EvaluateCommand(this.rhsCtx);
     }
 
     @Override
     public void execute() {
-        evalCommand.execute();
+        if (varDecCtx.typeSpecifier().getText().contains("String")){
+            PseudoValue pseudoValue = scope.getVariableAllScope(varDecCtx.variableDeclarationInitialize().IDENTIFIER().getText());
+            pseudoValue.setValue(varDecCtx.variableDeclarationInitialize().simpleExpression().getText().replaceAll("^\"+|\"+$", ""));
+        } else {
+            evalCommand.execute();
 		
-		PseudoValue pseudoValue = scope.getVariableAllScope(id.getText());
-		Util.assignValue(pseudoValue, evalCommand.getEvaluated());
+            PseudoValue pseudoValue = scope.getVariableAllScope(varDecCtx.variableDeclarationInitialize().IDENTIFIER().getText());
+            Util.assignValue(pseudoValue, evalCommand.getEvaluated());
+        }
+        
     }
 
 

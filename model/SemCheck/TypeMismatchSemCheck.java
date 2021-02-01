@@ -103,7 +103,15 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 			CallContext callCtx = (CallContext) ctx;
 
 			String id = callCtx.IDENTIFIER().getText();
-       		PseudoFunction pf = ScopeManager.getInstance().getFunction(id);
+			PseudoFunction pf = ScopeManager.getInstance().getFunction(id);
+			PseudoValue pv = pf.getReturnValue();
+
+			if (pf.getReturnType() == FunctionType.VOID){
+				String msg = "Function has void return type ";
+				Console.log(errorTemplate + msg, this.line);
+			} else if( pv != null) {
+				analyzeType(pv);
+			}
 
 			FunctionCallSemCheck callSemCheck = new FunctionCallSemCheck(callCtx);
 			callSemCheck.check();

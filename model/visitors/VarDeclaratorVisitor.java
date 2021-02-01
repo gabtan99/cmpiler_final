@@ -61,7 +61,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, varDecInitCtx.simpleExpression());
 					typeMMSemCheck.check();
 
-					InitializeCommand initializeCommand = new InitializeCommand(varDecInitCtx.IDENTIFIER(), varDecInitCtx.simpleExpression());
+					InitializeCommand initializeCommand = new InitializeCommand(varDecCtx, varDecInitCtx.simpleExpression());
 					RuntimeManager.getInstance().addCommand(initializeCommand);
 				}  
 
