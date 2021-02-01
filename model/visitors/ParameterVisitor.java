@@ -65,7 +65,6 @@ public class ParameterVisitor implements ParseTreeListener {
                     }
 
 
-                    System.out.println("PARAM VISITOR " + pseudoValue);
 
                                 
                 } else if (typeSpecifierSelectorContext.arrayTypeSpecifier() != null ) {

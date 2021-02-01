@@ -34,18 +34,17 @@ public class AppController {
     }
 
     public void execute() {
-        System.out.println("----------- EXECUTING ----------");
-        
         // execute all in execution manager
         if (Console.getErrorList().size() == 0) {
+            System.out.println("----------- EXECUTING ----------");
             RuntimeManager.getInstance().executeAll();
         }
     }
 
     public void terminate() {
-        System.out.println("----------- FORCE TERMINATING ----------");
 
         if (Console.getErrorList().size() == 0) {
+            System.out.println("----------- FORCE TERMINATING ----------");
             RuntimeManager.getInstance().forceKillExecution();
         }
     }

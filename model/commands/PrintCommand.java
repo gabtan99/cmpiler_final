@@ -6,6 +6,8 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import javafx.application.Platform;
+
 
 import parser.PSCParser.PrintParamsContext;
 import parser.PSCParser.PrintParamsSelectorContext;
@@ -48,7 +50,14 @@ public class PrintCommand implements Command, ParseTreeListener {
         ParseTreeWalker treeWalker = new ParseTreeWalker();
         treeWalker.walk(this, this.paramsCtx);
 
-        Printer.getInstance().print(this.msg);
+        final String printMsg = this.msg;
+
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                Printer.getInstance().print(printMsg);
+            }
+        });
+
         this.msg = ""; 
     }
 

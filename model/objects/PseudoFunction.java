@@ -30,18 +30,15 @@ public class PseudoFunction implements Command {
     @Override 
     public void execute() {
 
-        System.out.println("HELLO" + FunctionControlTracker.getInstance());
         FunctionControlTracker.getInstance().enterFunction(this);
 
         int index = 0;
         while (index < commandList.size() ) {
             if (RuntimeManager.getInstance().canExec()) {
-                System.out.println("Executing " + commandList.get(index).getClass());
                 commandList.get(index).execute();
                 index ++;
             } 
         }
-        System.out.println("WORLD");
         FunctionControlTracker.getInstance().exitFunction();
     }
 
@@ -113,11 +110,7 @@ public class PseudoFunction implements Command {
     public void addParameter(String id, PseudoValue pseudoValue) {
         this.parameters.put(id, pseudoValue);
 
-        System.out.println("PSEUDOFUNCTION  " + id);
-        System.out.println(pseudoValue);
-        System.out.println(this.parameters.get(id));
         this.localScope.addVariable(id ,this.parameters.get(id));
-        System.out.println(this.localScope.getVariable(id));
 
     }
 

@@ -76,7 +76,6 @@ public class CallCommand implements Command {
     @Override
     public void execute() {
         this.mapParameters();
-        System.out.println("EXECUTING A FUNCTION CALL");   
         this.func.execute();
     }
 

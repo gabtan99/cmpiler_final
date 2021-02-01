@@ -26,6 +26,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CharStream;
@@ -135,6 +139,7 @@ public class AppView {
 
         runMenuItem3.addEventHandler(ActionEvent.ACTION,event -> { 
             controller.terminate();
+            showTerminateAlert();
         });
 
         fileMenuItem1.addEventHandler(ActionEvent.ACTION,event ->{ 
@@ -154,8 +159,17 @@ public class AppView {
         // CONSOLE
         textArea = new TextArea("Output");
         textArea.setEditable(false);
-        textArea.setMinHeight(230);
+        textArea.setMinHeight(205);
         textArea.setWrapText(true);
+
+        textArea.textProperty().addListener(new ChangeListener<Object>() {
+            @Override
+            public void changed(ObservableValue<?> observable, Object oldValue,
+                    Object newValue) {
+                textArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+                //use Double.MIN_VALUE to scroll to the top
+            }
+        });
 
         VBox vBox = new VBox(menuBar,codeArea, textArea);
         Scene scene = new Scene(vBox, 800, 600);
@@ -176,6 +190,14 @@ public class AppView {
         
     }
 
+    public void showTerminateAlert() {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Program Terminated");
+        alert.setHeaderText("Program Terminated");
+        alert.setContentText("The program was force terminated during runtime.");
+
+        alert.showAndWait();
+    }
 
     // returns the value that the user enters
     public String getInput(String prompt) {
@@ -195,7 +217,7 @@ public class AppView {
         StringBuilder logs = new StringBuilder(""); 
 
         if (output.isEmpty()) {
-            logs.append("Parsing complete.\n\n");
+            logs.append("Parsing complete.\n");
         }
 
         output.forEach((li) -> {
@@ -203,11 +225,13 @@ public class AppView {
         });
 
         textArea.setText(logs.toString());
+        textArea.appendText(""); 
     }
 
     public void printToConsole(String msg) {
         String all = textArea.getText();
         textArea.setText(all + msg + "\n");
+        textArea.appendText(""); 
     }
 
     private String readFile(File file){
