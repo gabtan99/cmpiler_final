@@ -45,7 +45,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
         } else if (this.strExp.contains("F")) {
             this.evaluated = new BigDecimal(0);
         } else {
-            Expression evalEx = new Expression(this.strExp);
+            Expression evalEx = new Expression(this.strExp.replaceAll("f", ""));
             this.evaluated = evalEx.eval();
         }
         
