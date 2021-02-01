@@ -9,7 +9,7 @@ public class RuntimeManager {
 
     private static RuntimeManager instance = null;
     private static List<Command> commandList;
-    private RuntimeThread thread;
+    private RuntimeThread thread = null;
     private PseudoFunction funcDecl;
     private boolean inFunctionDeclaration;
 
@@ -62,6 +62,14 @@ public class RuntimeManager {
 
     public void killExecution() {
         this.thread.kill();
+    }
+
+    public void forceKillExecution() {
+        if (this.thread != null) { //  if thread has even started
+            if (this.thread.isExecuting()) { // if thread is executing
+                this.thread.kill();
+            }
+        }
     }
 
     public void openFunctionDeclaration(PseudoFunction funcDecl) {

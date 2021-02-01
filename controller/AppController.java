@@ -42,6 +42,14 @@ public class AppController {
         }
     }
 
+    public void terminate() {
+        System.out.println("----------- FORCE TERMINATING ----------");
+
+        if (Console.getErrorList().size() == 0) {
+            RuntimeManager.getInstance().forceKillExecution();
+        }
+    }
+
     private void init() {
         System.out.println("----------- INITIALIZING ----------");
         Console.startInstance(); 

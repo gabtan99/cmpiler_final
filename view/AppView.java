@@ -82,7 +82,6 @@ public class AppView {
 
         Menu runMenu = new Menu("Run");
     
-
         // Run
         MenuItem runMenuItem1 = new MenuItem("Run");
         Image playIcon = new Image(getClass().getResourceAsStream("/assets/play.png"));
@@ -99,8 +98,17 @@ public class AppView {
         treeIconView.setFitHeight(17);
         runMenuItem2.setGraphic(treeIconView);
 
+        // Terminate (useful for infinite loops)
+        MenuItem runMenuItem3 = new MenuItem("Terminate");
+        Image terminateIcon = new Image(getClass().getResourceAsStream("/assets/cancel.png"));
+        ImageView terminateIconView = new ImageView(terminateIcon);
+        terminateIconView.setFitWidth(17);
+        terminateIconView.setFitHeight(17);
+        runMenuItem3.setGraphic(terminateIconView);
+
         runMenu.getItems().add(runMenuItem1);
         runMenu.getItems().add(runMenuItem2);
+        runMenu.getItems().add(runMenuItem3);
 
         MenuBar menuBar = new MenuBar(fileMenu, runMenu);
 
@@ -123,6 +131,10 @@ public class AppView {
 
         runMenuItem2.addEventHandler(ActionEvent.ACTION,event -> { 
             controller.showTree(codeArea.getText());
+        });
+
+        runMenuItem3.addEventHandler(ActionEvent.ACTION,event -> { 
+            controller.terminate();
         });
 
         fileMenuItem1.addEventHandler(ActionEvent.ACTION,event ->{ 
@@ -161,6 +173,10 @@ public class AppView {
             File file = new File("resources/" + dev_file); 
             codeArea.appendText(readFile(file));
         }
+        
+    }
+
+    public void setTerminateDisable(boolean b) {
         
     }
 
