@@ -97,7 +97,8 @@ public class StatementVisitor {
                     }
                 }   
 
-           
+                ReturnCommand callCommand = new ReturnCommand(stmtCtx.returnStmt().simpleExpression(), FunctionReturnTracker.getInstance().getCurFunction());
+                RuntimeManager.getInstance().addCommand(callCommand);
 
                 UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(stmtCtx.returnStmt().simpleExpression());
                 undeclaredSemCheck.check();

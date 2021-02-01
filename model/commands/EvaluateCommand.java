@@ -11,8 +11,10 @@ import java.math.BigDecimal;
 import parser.PSCParser.SimpleExpressionContext;
 import parser.PSCParser.MutableContext;
 import parser.PSCParser.ConstantContext;
+import parser.PSCParser.CallContext;
 import model.*;
 import model.objects.*;
+import model.semcheck.*;
 
 public class EvaluateCommand implements Command, ParseTreeListener {
 
@@ -20,7 +22,6 @@ public class EvaluateCommand implements Command, ParseTreeListener {
     private String strExp;
     private Scope scope; 
     private BigDecimal evaluated;
-    private Scope altScope;
     
     public EvaluateCommand(SimpleExpressionContext simpleCtx) {
         this.simpleCtx = simpleCtx;
@@ -85,7 +86,41 @@ public class EvaluateCommand implements Command, ParseTreeListener {
                 }
             }
             
-        } 
+        } else if (ctx instanceof CallContext) {
+            CallContext callCtx  = (CallContext) ctx;
+            String functionName = callCtx.IDENTIFIER().getText();
+            PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(functionName);
+
+            ParameterCountSemCheck paramCountSemCheck = new ParameterCountSemCheck(pseudoFunction, callCtx.arguments());
+            paramCountSemCheck.check();
+
+            if (callCtx.arguments().simpleExpression().size() != 0) {
+                List<SimpleExpressionContext> arguments = callCtx.arguments().simpleExpression();
+
+                for(int i = 0; i < arguments.size(); i++) {
+                    SimpleExpressionContext simpleExpr = arguments.get(i);
+                    EvaluateCommand eCommand = new EvaluateCommand(simpleExpr, this.scope);
+                    eCommand.execute();
+
+                    if (pseudoFunction.getParamAt(i).getPrimitiveType() == PrimitiveType.ARRAY) {
+                        String id = simpleExpr.getText();
+                        pseudoFunction.mapArrayParameter(id, this.scope.getVariableAllScope(id), i);
+                    } else { // evaluate non-array variable right away
+                        
+                        EvaluateCommand evalCommand = new EvaluateCommand(simpleExpr, this.scope);
+                        evalCommand.execute();
+                        
+                        if (i < pseudoFunction.getParameterCount()) {
+                           PseudoValue paramValue = pseudoFunction.getParamAt(i);
+                           paramValue.setValue(evalCommand.getEvaluated().toEngineeringString());
+                        }
+                    }  
+                }
+            }
+
+            pseudoFunction.execute();
+            this.strExp = this.strExp.replaceFirst(callCtx.getText(), pseudoFunction.getReturnValue().getValue().toString());
+        }
     }
 
     @Override

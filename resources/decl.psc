@@ -1,9 +1,10 @@
-func void hello(int x) {
-	print(x);
-	hello(x);
+func int hello(int x) {
+	return x + 1;
 }
 main() {
-    hello(4);
+    int x = 0;
+	x= hello(10);
+	print(x);
 
     
-}   
+}    
