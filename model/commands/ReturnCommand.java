@@ -22,6 +22,10 @@ public class ReturnCommand implements Command {
         UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(exprCtx);
         undeclaredSemCheck.check();
 
+        PseudoValue psuedoValue = this.func.getReturnValue();
+        TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(psuedoValue, this.exprCtx);
+        typeMMSemCheck.check();
+
         evalCommand = new EvaluateCommand(this.exprCtx);
     }
 
@@ -29,7 +33,7 @@ public class ReturnCommand implements Command {
     public void execute() {
         evalCommand.execute();
 
-        PseudoValue pseudoValue = func.getReturnValue();
+        PseudoValue pseudoValue = this.func.getReturnValue();
 		Util.assignValue(pseudoValue, evalCommand.getEvaluated()); 
     }
 
