@@ -63,9 +63,6 @@ public class ParameterVisitor implements ParseTreeListener {
                         pseudoValue = new PseudoValue(null, "String");
                         this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
                     }
-
-                    //Declare the pseudo value insert sa list ng parameters
-                    ScopeManager.getInstance().getScope().addVariable(parameterCtx.IDENTIFIER().getText(), pseudoValue);
                 
                 
                 } else if (typeSpecifierSelectorContext.arrayTypeSpecifier() != null ) {
@@ -84,8 +81,6 @@ public class ParameterVisitor implements ParseTreeListener {
                     pseudoValue = new PseudoValue(pseudoArray, "array");
                     this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
 
-                    //Declare the pseudo value insert sa list ng parameters
-                    ScopeManager.getInstance().getScope().addVariable(parameterCtx.IDENTIFIER().getText(), pseudoValue);
                 } 
             }
 

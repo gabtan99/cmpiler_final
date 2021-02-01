@@ -73,13 +73,22 @@ public class StatementVisitor {
                 if (stmtCtx.expressionStmt().assignmentStandaloneExpression() != null) { // assignment
                     analyzeExpressionStmt(stmtCtx.expressionStmt().assignmentStandaloneExpression());
                 } else if (stmtCtx.expressionStmt().call() != null) { // call
-                    FunctionCallSemCheck callSemCheck = new FunctionCallSemCheck(stmtCtx.expressionStmt().call());
-                    callSemCheck.check();
+
+                    String id = stmtCtx.expressionStmt().call().IDENTIFIER().getText();
+                    PseudoFunction pf = ScopeManager.getInstance().getFunction(id);
+
+                    if (pf != null) {
+                        FunctionCallSemCheck callSemCheck = new FunctionCallSemCheck(stmtCtx.expressionStmt().call());
+                        callSemCheck.check();
+
+                        CallCommand callCommand = new CallCommand(pf, stmtCtx.expressionStmt().call().arguments());
+                        RuntimeManager.getInstance().addCommand(callCommand);
+                    } else {
+                        Console.log("UndeclaredFunction error. Try rearranging your functions.", ctx.getStart().getLine());
+                    }
+                    
                 }
             } else if (stmtCtx.returnStmt() != null) {
-
-                 
-
                 if (FunctionReturnTracker.getInstance().getCurFunction() != null && ScopeManager.getInstance().getScope().getParent() == null) {
                     FunctionReturnTracker.getInstance().setHasReturn(true);
 

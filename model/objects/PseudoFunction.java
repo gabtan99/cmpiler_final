@@ -4,7 +4,8 @@ import java.util.*;
 import model.*;
 import model.commands.*;
 
-public class PseudoFunction {
+
+public class PseudoFunction implements Command {
 
     private String name;
     private List<Command> commandList;
@@ -24,6 +25,22 @@ public class PseudoFunction {
         this.returnType = FunctionType.VOID;
         this.hasReturn = false;
         this.localScope = new Scope();
+    }
+
+    @Override 
+    public void execute() {
+        FunctionControlTracker.getInstance().enterFunction(this);
+
+        int index = 0;
+        while (index < commandList.size() ) {
+            if (RuntimeManager.getInstance().canExec()) {
+                System.out.println("Executing " + commandList.get(index).getClass());
+                commandList.get(index).execute();
+                index ++;
+            } 
+        }
+
+        FunctionControlTracker.getInstance().exitFunction();
     }
 
     public void setLocalScope(Scope localScope) {
@@ -93,6 +110,8 @@ public class PseudoFunction {
 
     public void addParameter(String id, PseudoValue pseudoValue) {
         this.parameters.put(id, pseudoValue);
+
+        this.localScope.addVariable(id ,this.parameters.get(getParameterCount()-1));
     }
 
     public int getParameterCount() {
@@ -102,5 +121,44 @@ public class PseudoFunction {
     public boolean searchParameter(String id) {
         return parameters.containsKey(id);
     }
+
+    public PseudoValue getParameter(int index) {
+        return parameters.get(index);
+    }
+
+    public void mapArrayParameter(String id, PseudoValue pseudoValue, int index) {
+        if (index >= this.getParameterCount()) {
+            return;
+        }
+
+        PseudoArray passedArray = (PseudoArray) pseudoValue.getValue();
+
+        PseudoArray copyArray = new PseudoArray(passedArray.getPrimitiveType(), id);
+        PseudoValue copyValue = new PseudoValue(copyArray, PrimitiveType.ARRAY);
+        copyArray.initSize(passedArray.getSize());
+        
+        for (int i = 0; i<copyArray.getSize(); i++) {
+            copyArray.updateValueAt(passedArray.getValueAt(i), i);
+        }
+
+        String origId = this.getParamIdAt(index);
+        this.parameters.put(origId, copyValue);
+    }
+
+    public String getParamIdAt(int index) {
+        int x = 0;
+
+        for (String id : this.parameters.keySet()) {
+            if (index == x) {
+                return id;
+            }
+            x++;
+        }
+
+        return null;
+    }
+
+
+
 
 }

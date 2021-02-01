@@ -176,9 +176,6 @@ public class AppView {
         
     }
 
-    public void setTerminateDisable(boolean b) {
-        
-    }
 
     // returns the value that the user enters
     public String getInput(String prompt) {
@@ -187,6 +184,7 @@ public class AppView {
         TextInputDialog td = new TextInputDialog(); 
         td.getDialogPane().lookupButton(ButtonType.CANCEL).setVisible(false);
         td.getDialogPane().lookupButton(ButtonType.CANCEL).setManaged(false);
+        td.setTitle("Scan Input");
         td.setHeaderText(prompt);
         td.showAndWait(); 
     

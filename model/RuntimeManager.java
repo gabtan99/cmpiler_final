@@ -72,6 +72,10 @@ public class RuntimeManager {
         }
     }
 
+    public boolean canExec() {
+        return this.thread.canExec();
+    }
+
     public void openFunctionDeclaration(PseudoFunction funcDecl) {
         this.funcDecl = funcDecl;
         this.inFunctionDeclaration = true;

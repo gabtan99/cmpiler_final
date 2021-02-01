@@ -33,6 +33,10 @@ public class RuntimeThread extends Thread {
         RuntimeManager.getInstance().reset();
     }
 
+    public boolean canExec() {
+        return  this.canExec;
+    }
+
     public void setExecFlag(boolean canExec) { // set it to false if you want to pause other commands
         this.canExec = canExec;
     }
@@ -44,6 +48,4 @@ public class RuntimeThread extends Thread {
     public void kill() {  // make index go over size to skip all other commands
         this.index = commandList.size(); 
     }
-
-
 }
