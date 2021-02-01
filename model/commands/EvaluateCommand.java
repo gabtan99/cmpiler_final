@@ -24,22 +24,19 @@ public class EvaluateCommand implements Command, ParseTreeListener {
     private BigDecimal evaluated;
     
     public EvaluateCommand(SimpleExpressionContext simpleCtx) {
-        System.out.println("in a new eval");
         this.simpleCtx = simpleCtx;
         this.scope = ScopeManager.getInstance().getScope();
-             
-        this.strExp = simpleCtx.getText();
     }
 
     public EvaluateCommand(SimpleExpressionContext simpleCtx, Scope scope) {
         this.simpleCtx = simpleCtx;
-        this.scope =scope;
-        this.strExp = simpleCtx.getText();
+        this.scope = scope;
     }
 
     @Override
     public void execute() {
 
+        this.strExp = simpleCtx.getText();
         ParseTreeWalker treeWalker = new ParseTreeWalker();
         treeWalker.walk(this, this.simpleCtx);
 
@@ -101,7 +98,6 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
                 for(int i = 0; i < arguments.size(); i++) {
                     SimpleExpressionContext simpleExpr = arguments.get(i);
-                    System.out.println("parameter " + simpleExpr.getText());
 
                     //array
                     if (pseudoFunction.getParamAt(i).getPrimitiveType() == PrimitiveType.ARRAY) {
@@ -115,16 +111,14 @@ public class EvaluateCommand implements Command, ParseTreeListener {
                         
                         if (i < pseudoFunction.getParameterCount()) {
                            PseudoValue paramValue = pseudoFunction.getParamAt(i);
-                           paramValue.setValue(evalCommand.getEvaluated().toEngineeringString());
-                           
+                           paramValue.setValue(evalCommand.getEvaluated().toPlainString());
                         }
                     }  
                 }
             }
+
             pseudoFunction.execute();
-            System.out.println("replacing "+ callCtx.getText() + " with " + pseudoFunction.getReturnValue().getValue().toString());
             this.strExp = this.strExp.replace(callCtx.getText().toString(), pseudoFunction.getReturnValue().getValue().toString());
-            System.out.println("string after replacing "+this.strExp);
         }
     }
 

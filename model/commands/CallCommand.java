@@ -67,7 +67,7 @@ public class CallCommand implements Command {
                 
                 if (i < this.func.getParameterCount()) {
                    PseudoValue paramValue = this.func.getParamAt(i);
-                   paramValue.setValue(evalCommand.getEvaluated().toEngineeringString());
+                   paramValue.setValue(evalCommand.getEvaluated().toPlainString());
                 }
             }          
         }
