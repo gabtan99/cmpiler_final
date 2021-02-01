@@ -25,10 +25,13 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
     private SimpleExpressionContext exprCtx;
     private int line;
 	private boolean isArgs = false;
+	private List<String> excluded;
 
     public TypeMismatchSemCheck(PseudoValue pseudoValue, SimpleExpressionContext exprCtx) {
         this.pseudoValue = pseudoValue;
         this.exprCtx = exprCtx;
+
+		excluded = new ArrayList<>();
 
         Token first = exprCtx.getStart();
         this.line = first.getLine();
@@ -51,47 +54,52 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 
 			ConstantContext constCtx = (ConstantContext) ctx;
 			String expressionString = constCtx.getText();
-			
-			if(this.pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY) {
+
+			if (!excluded.contains(expressionString)) {
+				if(this.pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY) {
 				
-			}
-			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.BOOLEAN) {
-				if(constCtx.BOOLCONSTANT() == null) {
-					String msg = "Expected boolean";
-					Console.log(errorTemplate + msg, this.line);
+				}
+				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.BOOLEAN) {
+					if(constCtx.BOOLCONSTANT() == null) {
+						String msg = "Expected boolean";
+						Console.log(errorTemplate + msg, this.line);
+					}
+				}
+				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.INT) {
+					if(constCtx.INTEGERCONSTANT() == null) {
+						String msg = "Expected int";
+						Console.log(errorTemplate + msg, this.line);
+					}
+				}
+				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT) {
+					if(constCtx.FLOATCONSTANT() == null) {
+						String msg = "Expected float";
+						Console.log(errorTemplate + msg, this.line);
+					}
+				}
+				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING) {
+					if(constCtx.StringLiteral() == null) {
+						String msg = "Expected string";
+						Console.log(errorTemplate + msg, this.line);
+					}
 				}
 			}
-			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.INT) {
-				if(constCtx.INTEGERCONSTANT() == null) {
-					String msg = "Expected int";
-					Console.log(errorTemplate + msg, this.line);
-				}
-			}
-			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT) {
-				if(constCtx.FLOATCONSTANT() == null) {
-					String msg = "Expected float";
-					Console.log(errorTemplate + msg, this.line);
-				}
-			}
-			else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING) {
-				if(constCtx.StringLiteral() == null) {
-					String msg = "Expected string";
-					Console.log(errorTemplate + msg, this.line);
-				}
-			}
+			
+			
 		} else if (ctx instanceof MutableContext) {
 			MutableContext mutCtx = (MutableContext) ctx;
-			if (mutCtx.LeftBracket() == null){
-				PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutCtx.IDENTIFIER().getText());
+			if (!excluded.contains(mutCtx.getText())) {
+				if (mutCtx.LeftBracket() == null){
+					PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutCtx.IDENTIFIER().getText());
 
-				if( pv != null) {
-					analyzeType(pv);
+					if( pv != null) {
+						analyzeType(pv);
+					}
 				}
 			}
-
+			
 		} else if (ctx instanceof CallContext) {
 			
-			// you process it first before you compare int x = awd(), dapat int x = 1;
 			CallContext callCtx = (CallContext) ctx;
 
 			String id = callCtx.IDENTIFIER().getText();
@@ -100,19 +108,12 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 			FunctionCallSemCheck callSemCheck = new FunctionCallSemCheck(callCtx);
 			callSemCheck.check();
 
-			// evaluate the function with commands
+			List<SimpleExpressionContext> arguments = callCtx.arguments().simpleExpression();
+			
+			for (SimpleExpressionContext exprCtx : arguments) { // arguments are checked differently
+				excluded.add(exprCtx.getText());
+			}
 
-			// if( pf != null) {
-				
-			// 	if (pf.getReturnType() == FunctionType.VOID) {
-			// 		String msg = "Function has void return type at " + this.line;
-			// 		Console.log(errorTemplate + msg);
-			// 	} else {
-			// 		PseudoValue pv = pf.getReturnValue();
-			// 		analyzeType(pv);
-			// 	}
-				
-			// }
 		} 
 	}
 

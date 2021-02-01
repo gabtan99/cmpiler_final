@@ -1,8 +1,7 @@
-func int hello(int x) {
-	return x + 1;
+func int hello(String x) {
+    return 1;
 }
 main() {
-    int x = 0;
-	x= hello(hello(10));
-	print(x);
-}  
+    bool s = T && F;
+print(s);
+}

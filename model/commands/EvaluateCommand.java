@@ -40,14 +40,16 @@ public class EvaluateCommand implements Command, ParseTreeListener {
         ParseTreeWalker treeWalker = new ParseTreeWalker();
         treeWalker.walk(this, this.simpleCtx);
 
-        if (strExp.contains("T")) {
+        if (this.strExp.contains("T")) {
             this.evaluated = new BigDecimal(1);
-        } else if (strExp.contains("F")) {
+        } else if (this.strExp.contains("F")) {
             this.evaluated = new BigDecimal(0);
         } else {
             Expression evalEx = new Expression(this.strExp);
             this.evaluated = evalEx.eval();
         }
+        
+        
     }
 
 
@@ -85,7 +87,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
             }
             
         } else if (ctx instanceof CallContext) {
-            System.out.println(ctx.getText());
+            
             CallContext callCtx  = (CallContext) ctx;
             String functionName = callCtx.IDENTIFIER().getText();
             PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(functionName);

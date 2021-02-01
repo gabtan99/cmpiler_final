@@ -27,7 +27,7 @@ public class InitializeCommand implements Command {
 
         UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(rhsCtx);
         undeclaredSemCheck.check();
-
+        
         evalCommand = new EvaluateCommand(this.rhsCtx);
     }
 
