@@ -105,6 +105,11 @@ public class EvaluateCommand implements Command, ParseTreeListener {
                     if (pseudoFunction.getParamAt(i).getPrimitiveType() == PrimitiveType.ARRAY) {
                         String id = simpleExpr.getText();
                         pseudoFunction.mapArrayParameter(id, this.scope.getVariableAllScope(id), i);
+                    } else if (pseudoFunction.getParamAt(i).getPrimitiveType() == PrimitiveType.STRING){
+                        String id = simpleExpr.getText().replaceAll("^\"+|\"+$", "");
+                        
+                        PseudoValue paramValue = pseudoFunction.getParamAt(i);
+                        paramValue.setValue(id);
                     } else { // evaluate non-array variable right away
                         
                         EvaluateCommand evalCommand = new EvaluateCommand(simpleExpr, this.scope);
