@@ -20,10 +20,12 @@ public class EvaluateCommand implements Command, ParseTreeListener {
     private String strExp;
     private Scope scope; 
     private BigDecimal evaluated;
+    private Scope altScope;
     
     public EvaluateCommand(SimpleExpressionContext simpleCtx) {
         this.simpleCtx = simpleCtx;
         this.scope = ScopeManager.getInstance().getScope();
+             
         this.strExp = simpleCtx.getText();
     }
 
@@ -35,6 +37,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
     @Override
     public void execute() {
+
         ParseTreeWalker treeWalker = new ParseTreeWalker();
         treeWalker.walk(this, this.simpleCtx);
 
@@ -56,7 +59,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
             // non-array variable
             if (mutableCtx.IDENTIFIER() != null && mutableCtx.LeftBracket() == null) {
-                PseudoValue pseudoValue = scope.getVariableAllScope(mutableCtx.IDENTIFIER().getText());
+                PseudoValue pseudoValue = this.scope.getVariableAllScope(mutableCtx.IDENTIFIER().getText());
                 this.strExp =  this.strExp.replaceFirst(mutableCtx.IDENTIFIER().getText(), pseudoValue.getValue().toString());
             } else { // access array
 

@@ -29,6 +29,8 @@ public class PseudoFunction implements Command {
 
     @Override 
     public void execute() {
+
+        System.out.println("HELLO" + FunctionControlTracker.getInstance());
         FunctionControlTracker.getInstance().enterFunction(this);
 
         int index = 0;
@@ -39,7 +41,7 @@ public class PseudoFunction implements Command {
                 index ++;
             } 
         }
-
+        System.out.println("WORLD");
         FunctionControlTracker.getInstance().exitFunction();
     }
 
@@ -111,7 +113,12 @@ public class PseudoFunction implements Command {
     public void addParameter(String id, PseudoValue pseudoValue) {
         this.parameters.put(id, pseudoValue);
 
-        this.localScope.addVariable(id ,this.parameters.get(getParameterCount()-1));
+        System.out.println("PSEUDOFUNCTION  " + id);
+        System.out.println(pseudoValue);
+        System.out.println(this.parameters.get(id));
+        this.localScope.addVariable(id ,this.parameters.get(id));
+        System.out.println(this.localScope.getVariable(id));
+
     }
 
     public int getParameterCount() {
@@ -122,8 +129,19 @@ public class PseudoFunction implements Command {
         return parameters.containsKey(id);
     }
 
-    public PseudoValue getParameter(int index) {
-        return parameters.get(index);
+    public PseudoValue getParamAt(int index) {
+        int i = 0;
+
+        for(PseudoValue pv : this.parameters.values()) {
+            if(i == index) {
+                return pv;
+            }
+
+            i++;
+        }
+
+        return null;
+
     }
 
     public void mapArrayParameter(String id, PseudoValue pseudoValue, int index) {

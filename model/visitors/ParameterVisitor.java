@@ -63,8 +63,11 @@ public class ParameterVisitor implements ParseTreeListener {
                         pseudoValue = new PseudoValue(null, "String");
                         this.func.addParameter(parameterCtx.IDENTIFIER().getText(), pseudoValue);
                     }
-                
-                
+
+
+                    System.out.println("PARAM VISITOR " + pseudoValue);
+
+                                
                 } else if (typeSpecifierSelectorContext.arrayTypeSpecifier() != null ) {
                     TypeSpecifierContext typeSpecifierContext= typeSpecifierSelectorContext.arrayTypeSpecifier().typeSpecifier();
                     PseudoArray pseudoArray = null;

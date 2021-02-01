@@ -40,7 +40,7 @@ public class CallCommand implements Command {
             SimpleExpressionContext simpleCtx = args.get(i);
 
             if (i < this.func.getParameterCount()) {
-                TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(this.func.getParameter(i), simpleCtx);
+                TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(this.func.getParamAt(i), simpleCtx);
                 typeMMSemCheck.check();
             }             
         }
@@ -56,17 +56,17 @@ public class CallCommand implements Command {
         for (int i = 0; i < args.size(); i++) {
             SimpleExpressionContext simpleCtx = args.get(i);
 
-            // mapping array
-            if (this.func.getParameter(i).getPrimitiveType() == PrimitiveType.ARRAY) {
+
+            if (this.func.getParamAt(i).getPrimitiveType() == PrimitiveType.ARRAY) {
                 String id = simpleCtx.getText();
                 this.func.mapArrayParameter(id, this.scope.getVariableAllScope(id), i);
             } else { // evaluate non-array variable right away
                 
-                EvaluateCommand evalCommand = new EvaluateCommand(simpleCtx);
+                EvaluateCommand evalCommand = new EvaluateCommand(simpleCtx, this.scope);
                 evalCommand.execute();
                 
                 if (i < this.func.getParameterCount()) {
-                   PseudoValue paramValue = this.func.getParameter(i);
+                   PseudoValue paramValue = this.func.getParamAt(i);
                    paramValue.setValue(evalCommand.getEvaluated().toEngineeringString());
                 }
             }          
@@ -76,14 +76,9 @@ public class CallCommand implements Command {
     @Override
     public void execute() {
         this.mapParameters();
+        System.out.println("EXECUTING A FUNCTION CALL");   
         this.func.execute();
     }
-
-
-
-
-
-
 
 
     

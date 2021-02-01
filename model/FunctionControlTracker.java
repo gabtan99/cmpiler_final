@@ -26,10 +26,12 @@ public class FunctionControlTracker {
     } 
 
     public void enterFunction(PseudoFunction pseudoFunction) {
+        System.out.println(" OPENED " + pseudoFunction.getName());
         this.stack.push(pseudoFunction);
     }
 
     public void exitFunction() {
+        System.out.println(" CLOSED ");
         this.stack.pop();
     }
 
@@ -38,6 +40,8 @@ public class FunctionControlTracker {
     }
 
     public PseudoFunction getCurFunction() {
+        System.out.println(" GETTING CUR FUNCTION IN CONTROL ");
+
         return this.stack.peek();
     }
 
