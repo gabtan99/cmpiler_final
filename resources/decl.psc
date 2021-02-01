@@ -3,8 +3,6 @@ func int hello(int x) {
 }
 main() {
     int x = 0;
-	x= hello(10);
+	x= hello(hello(10));
 	print(x);
-
-    
-}    
+}  

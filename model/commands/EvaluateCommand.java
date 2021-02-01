@@ -24,6 +24,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
     private BigDecimal evaluated;
     
     public EvaluateCommand(SimpleExpressionContext simpleCtx) {
+        System.out.println("in a new eval");
         this.simpleCtx = simpleCtx;
         this.scope = ScopeManager.getInstance().getScope();
              
@@ -87,6 +88,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
             }
             
         } else if (ctx instanceof CallContext) {
+            System.out.println(ctx.getText());
             CallContext callCtx  = (CallContext) ctx;
             String functionName = callCtx.IDENTIFIER().getText();
             PseudoFunction pseudoFunction = ScopeManager.getInstance().getFunction(functionName);
@@ -99,9 +101,9 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
                 for(int i = 0; i < arguments.size(); i++) {
                     SimpleExpressionContext simpleExpr = arguments.get(i);
-                    EvaluateCommand eCommand = new EvaluateCommand(simpleExpr, this.scope);
-                    eCommand.execute();
+                    System.out.println("parameter " + simpleExpr.getText());
 
+                    //array
                     if (pseudoFunction.getParamAt(i).getPrimitiveType() == PrimitiveType.ARRAY) {
                         String id = simpleExpr.getText();
                         pseudoFunction.mapArrayParameter(id, this.scope.getVariableAllScope(id), i);
@@ -109,17 +111,20 @@ public class EvaluateCommand implements Command, ParseTreeListener {
                         
                         EvaluateCommand evalCommand = new EvaluateCommand(simpleExpr, this.scope);
                         evalCommand.execute();
+
                         
                         if (i < pseudoFunction.getParameterCount()) {
                            PseudoValue paramValue = pseudoFunction.getParamAt(i);
                            paramValue.setValue(evalCommand.getEvaluated().toEngineeringString());
+                           
                         }
                     }  
                 }
             }
-
             pseudoFunction.execute();
-            this.strExp = this.strExp.replaceFirst(callCtx.getText(), pseudoFunction.getReturnValue().getValue().toString());
+            System.out.println("replacing "+ callCtx.getText() + " with " + pseudoFunction.getReturnValue().getValue().toString());
+            this.strExp = this.strExp.replace(callCtx.getText().toString(), pseudoFunction.getReturnValue().getValue().toString());
+            System.out.println("string after replacing "+this.strExp);
         }
     }
 

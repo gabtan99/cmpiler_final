@@ -29,6 +29,7 @@ public class PseudoFunction implements Command {
 
     @Override 
     public void execute() {
+        System.out.println(this.name + " executed");
 
         FunctionControlTracker.getInstance().enterFunction(this);
 
