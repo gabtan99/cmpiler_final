@@ -51,6 +51,7 @@ public class PseudoFunction implements Command {
     }
 
     public PseudoValue getReturnValue() {
+        System.out.println("return val" + this.returnValue);
         return this.returnValue;
     }
 
