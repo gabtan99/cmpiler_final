@@ -1,7 +1,9 @@
 func int hello(String x) {
+	print(x);
     return 1;
 }
 main() {
-    String x = "frick";
-	print(x);
+    String x = "hellp" + "hi";
+    int z = hello("help");
+	print(x + " " + z);
 }

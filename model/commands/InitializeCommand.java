@@ -37,8 +37,15 @@ public class InitializeCommand implements Command {
     @Override
     public void execute() {
         if (varDecCtx.typeSpecifier().getText().contains("String")){
-            PseudoValue pseudoValue = scope.getVariableAllScope(varDecCtx.variableDeclarationInitialize().IDENTIFIER().getText());
-            pseudoValue.setValue(varDecCtx.variableDeclarationInitialize().simpleExpression().getText().replaceAll("^\"+|\"+$", ""));
+            System.out.println(varDecCtx.variableDeclarationInitialize().simpleExpression().getText().replaceAll("\".+?\"", ""));
+            if(varDecCtx.variableDeclarationInitialize().simpleExpression().getText().replaceAll("\".+?\"", "").contains("+")) {
+                Printer.getInstance().print("String concatenation not supported.", varDecCtx.getStart().getLine());
+                RuntimeManager.getInstance().killExecution();
+            } else {
+                PseudoValue pseudoValue = scope.getVariableAllScope(varDecCtx.variableDeclarationInitialize().IDENTIFIER().getText());
+                pseudoValue.setValue(varDecCtx.variableDeclarationInitialize().simpleExpression().getText().replaceAll("^\"+|\"+$", ""));
+            }
+            
         } else {
             evalCommand.execute();
 		
