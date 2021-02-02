@@ -22,47 +22,79 @@ public class WhileCommand implements ControlledCommand {
     private int counter = 0;
     private String iteratorIdentifier ;
     private String strExpression = "";
+    private boolean isLessThan = false;
 
     public WhileCommand(WhileStatementContext whileStatementContext) {
-        // RuntimeManager.getInstance().addCommand(this);
-        // RuntimeManager.getInstance().openControlledCommand(this);
-
+        System.out.println("I MADE IT");
         this.commandList = new ArrayList<>();
         this.iteratorIdentifier = whileStatementContext.IDENTIFIER().getText();
+        System.out.println(iteratorIdentifier);
         this.iterationToStatementCtx = whileStatementContext.iterationToStatement();
         this.simpleExpressionCtx = whileStatementContext.simpleExpression();
         this.scope = ScopeManager.getInstance().getScope();
         
         this.pseudoValue = scope.getVariableAllScope(iteratorIdentifier);
-        this.counter = (int)pseudoValue.getValue();
-        // i > x + 3
-        this.strExpression = this.strExpression + this.iteratorIdentifier;
+
+
         if (iterationToStatementCtx.getText().contains("up")){
-            this.strExpression = this.strExpression + " < ";
+            this.isLessThan = true;
         } else {
-            this.strExpression = this.strExpression + " > ";
-        }
-        this.strExpression = this.strExpression + this.simpleExpressionCtx.getText();
-        
+            this.isLessThan = false;
+        } 
     }
 
     @Override
     public void execute() {
-        int index = 0;
-        while (index < commandList.size() ) {
-            if (RuntimeManager.getInstance().canExec()) {
-                commandList.get(index).execute();
-                index ++;
-            } 
+
+        this.counter = (int) pseudoValue.getValue();
+
+        EvaluateCommand evalCommand = new EvaluateCommand(this.simpleExpressionCtx, this.scope);
+        evalCommand.execute();
+
+        if (this.isLessThan) {
+            System.out.println(this.counter);
+            while (this.counter < evalCommand.getEvaluated().intValue()) {
+                int index = 0;
+                while (index < commandList.size() ) {
+                    if (RuntimeManager.getInstance().canExec()) {
+                        commandList.get(index).execute();
+                        index ++;
+                    } 
+                }
+                System.out.println(this.counter);
+                evalCommand = new EvaluateCommand(this.simpleExpressionCtx, this.scope);
+                evalCommand.execute();
+                this.updateCounter();
+            }
+
+        } else {
+                System.out.println(this.counter);
+
+            while (this.counter > evalCommand.getEvaluated().intValue()) {
+                int index = 0;
+                while (index < commandList.size() ) {
+                    if (RuntimeManager.getInstance().canExec()) {
+                        commandList.get(index).execute();
+                        index ++;
+                    } 
+                }
+                System.out.println(this.counter);
+                evalCommand = new EvaluateCommand(this.simpleExpressionCtx, this.scope);
+                evalCommand.execute();
+                this.updateCounter();
+            }
+
         }
+        
     }
+
     @Override   
     public void addCommand(Command c) {
         this.commandList.add(c);
     }
 
     private void updateCounter() {
-        this.counter = (int)pseudoValue.getValue();
+        this.counter = (int) pseudoValue.getValue();
         this.counter++;
         this.pseudoValue.setValue(this.counter);
     }

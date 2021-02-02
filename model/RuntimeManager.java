@@ -12,8 +12,6 @@ public class RuntimeManager {
     private RuntimeThread thread = null;
     private PseudoFunction funcDecl;
     private boolean inFunctionDeclaration;
-    private Command controlledCommand;
-    private boolean inControlledCommand;
     
 
     public static RuntimeManager getInstance() {
@@ -41,18 +39,14 @@ public class RuntimeManager {
 
     public void addCommand(Command c) {
 
-        if (inControlledCommand) {
-            System.out.println("Added " + c.getClass() + " to " + controlledCommand.getClass());
-            controlledCommand.addCommand(c);
-        } else if (inFunctionDeclaration) {
+        if (inFunctionDeclaration) {
             System.out.println("Added " + c.getClass() + " to " + funcDecl.getName());
             funcDecl.addCommand(c);
         } else {
-            System.out.println("Added " + c.getClass() + " to command list");
+            System.out.println("Added " + c.getClass() + " to execution command list");
             commandList.add(c);
         }
     }
-
     public boolean hasCommands() {
         return this.commandList.size() > 0;
     }
@@ -101,15 +95,4 @@ public class RuntimeManager {
     public PseudoFunction getCurrentFunction() {
         return this.funcDecl;        
     }
-
-    public void openControlledCommand(Command controlledCommand) { 
-        this.controlledCommand = controlledCommand;
-        this.inIterationCommand = true;
-    }
-
-    public void closeControlledCommand() {
-        this.controlledCommand = null;
-        this.inIterationCommand = false;
-    }
-
 }

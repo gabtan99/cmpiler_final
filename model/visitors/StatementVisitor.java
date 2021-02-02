@@ -28,7 +28,10 @@ import model.*;
 
 public class StatementVisitor {
 
-    public StatementVisitor() {}
+    private StatementControlTracker stmtCtrlTracker;
+    public StatementVisitor() {
+        stmtCtrlTracker = StatementControlTracker.getInstance();
+    }
 
 	public void visit(ParserRuleContext ctx) {
 
@@ -60,7 +63,25 @@ public class StatementVisitor {
 
                 if (printCtx.printParams() != null) {
                     PrintCommand printCommand = new PrintCommand(printCtx.printParams());
-                    RuntimeManager.getInstance().addCommand(printCommand);
+
+
+                    if (stmtCtrlTracker.isConditionalCommand()) {
+                        ConditionalCommand ifCommand = (ConditionalCommand) stmtCtrlTracker.getCurCommand();
+
+                        if (stmtCtrlTracker.inIf()) {
+                            ifCommand.addIfCommand(printCommand);
+                        } else {
+                            ifCommand.addElseCommand(printCommand);
+                        } 
+
+                    } else if (stmtCtrlTracker.isControlledCommand()) {
+                        ControlledCommand controlledCommand = (ControlledCommand) stmtCtrlTracker.getCurCommand();
+                        controlledCommand.addCommand(printCommand);
+                    }  else {
+                        RuntimeManager.getInstance().addCommand(printCommand);
+                    }
+
+                    
                 }
 
             } else if (stmtCtx.selectionStmt() != null) {
@@ -71,6 +92,10 @@ public class StatementVisitor {
 
                 IterationVisitor iterationVisitor = new IterationVisitor();
                 iterationVisitor.visit(iterStmtCtx);
+
+                System.out.println("ENTER ITERATIONS TATEMENT");
+
+                analyzeIteration(iterStmtCtx);
             } else if (stmtCtx.expressionStmt() != null) { // assignment standalone or function call
 
                 if (stmtCtx.expressionStmt().assignmentStandaloneExpression() != null) { // assignment
@@ -105,21 +130,18 @@ public class StatementVisitor {
 
                 UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(stmtCtx.returnStmt().simpleExpression());
                 undeclaredSemCheck.check();
-            }
+            } 
         } else if (ctx instanceof SelectionStmtContext) {
             SelectionStmtContext ifCtx = (SelectionStmtContext) ctx;
             analyzeSelection(ifCtx);
-        } else if (ctx instanceof IterationStmtContext) {
-            IterationStmtContext iterationCtx = (IterationStmtContext) ctx;
-            analyzeIteration(iterationCtx);
         } 
-	
     }
     
     private void analyzeIteration(IterationStmtContext iterationCtx) {
         if (iterationCtx.whileStatement() != null) {
+            System.out.println("ENTER WHILE");
             WhileStatementContext whileCtx = iterationCtx.whileStatement();
-            // while i up to simplExpre
+            // while i up to simplExpression
             String id = whileCtx.IDENTIFIER().getText();
             PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(id);
 
@@ -137,9 +159,15 @@ public class StatementVisitor {
 
             Scope scope = new Scope(ScopeManager.getInstance().getScope());
             ScopeManager.getInstance().setScope(scope);
-            WhileCommand whileCommand = new WhileCommand(whileCtx);
 
-           
+            WhileCommand whileCommand = new WhileCommand(whileCtx);
+            StatementControlTracker.getInstance().enterControlledCommand(whileCommand);
+
+            CompoundVisitor whileCompoundVisitor = new CompoundVisitor();
+            whileCompoundVisitor.visit(whileCtx.compoundStmt());
+
+            StatementControlTracker.getInstance().exitControlledCommand();
+
         } else if (iterationCtx.forStatement() != null ) {
             ForStatementContext forCtx = iterationCtx.forStatement();
         }

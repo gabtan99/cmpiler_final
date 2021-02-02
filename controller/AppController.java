@@ -65,6 +65,7 @@ public class AppController {
         IDEScanner.getInstance().addView(this.view);
         FunctionReturnTracker.getInstance();
         FunctionControlTracker.getInstance();
+        StatementControlTracker.getInstance();
         RuntimeManager.getInstance();
     }
 
