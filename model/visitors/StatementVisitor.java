@@ -11,6 +11,9 @@ import parser.PSCParser.SelectionStmtContext;
 import parser.PSCParser.MutableContext;
 import parser.PSCParser.TypeSpecifierContext;
 import parser.PSCParser.AssignmentStandaloneExpressionContext;
+import parser.PSCParser.ForStatementContext;
+import parser.PSCParser.WhileStatementContext;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -106,9 +109,41 @@ public class StatementVisitor {
         } else if (ctx instanceof SelectionStmtContext) {
             SelectionStmtContext ifCtx = (SelectionStmtContext) ctx;
             analyzeSelection(ifCtx);
+        } else if (ctx instanceof IterationStmtContext) {
+            IterationStmtContext iterationCtx = (IterationStmtContext) ctx;
+            analyzeIteration(iterationCtx);
         } 
 	
-	}
+    }
+    
+    private void analyzeIteration(IterationStmtContext iterationCtx) {
+        if (iterationCtx.whileStatement() != null) {
+            WhileStatementContext whileCtx = iterationCtx.whileStatement();
+            // while i up to simplExpre
+            String id = whileCtx.IDENTIFIER().getText();
+            PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(id);
+
+            // i exists
+            if (pv == null) {
+                Console.log("UndeclaredVariable Error", whileCtx.getStart().getLine());
+            } 
+            // i is int
+            else if (pv.getPrimitiveType() != PrimitiveType.INT) {
+                Console.log("Expected int for iterator", whileCtx.getStart().getLine());
+            }
+            // check simple expr if int
+            TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, "int"), whileCtx.simpleExpression());
+            typeMMSemCheck.check();
+
+            Scope scope = new Scope(ScopeManager.getInstance().getScope());
+            ScopeManager.getInstance().setScope(scope);
+            WhileCommand whileCommand = new WhileCommand(whileCtx);
+
+           
+        } else if (iterationCtx.forStatement() != null ) {
+            ForStatementContext forCtx = iterationCtx.forStatement();
+        }
+    }
 
     private void analyzeSelection(SelectionStmtContext ifCtx) {
         UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(ifCtx.simpleExpression());
