@@ -88,14 +88,12 @@ public class StatementVisitor {
                 SelectionStmtContext ifCtx = stmtCtx.selectionStmt();
                 analyzeSelection(ifCtx);
             } else if (stmtCtx.iterationStmt() != null) {
+                System.out.println("ENTER ITERATIONS TATEMENT");
                 IterationStmtContext iterStmtCtx = stmtCtx.iterationStmt();
 
                 IterationVisitor iterationVisitor = new IterationVisitor();
                 iterationVisitor.visit(iterStmtCtx);
 
-                System.out.println("ENTER ITERATIONS TATEMENT");
-
-                analyzeIteration(iterStmtCtx);
             } else if (stmtCtx.expressionStmt() != null) { // assignment standalone or function call
 
                 if (stmtCtx.expressionStmt().assignmentStandaloneExpression() != null) { // assignment
@@ -135,42 +133,6 @@ public class StatementVisitor {
             SelectionStmtContext ifCtx = (SelectionStmtContext) ctx;
             analyzeSelection(ifCtx);
         } 
-    }
-    
-    private void analyzeIteration(IterationStmtContext iterationCtx) {
-        if (iterationCtx.whileStatement() != null) {
-            System.out.println("ENTER WHILE");
-            WhileStatementContext whileCtx = iterationCtx.whileStatement();
-            // while i up to simplExpression
-            String id = whileCtx.IDENTIFIER().getText();
-            PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(id);
-
-            // i exists
-            if (pv == null) {
-                Console.log("UndeclaredVariable Error", whileCtx.getStart().getLine());
-            } 
-            // i is int
-            else if (pv.getPrimitiveType() != PrimitiveType.INT) {
-                Console.log("Expected int for iterator", whileCtx.getStart().getLine());
-            }
-            // check simple expr if int
-            TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, "int"), whileCtx.simpleExpression());
-            typeMMSemCheck.check();
-
-            Scope scope = new Scope(ScopeManager.getInstance().getScope());
-            ScopeManager.getInstance().setScope(scope);
-
-            WhileCommand whileCommand = new WhileCommand(whileCtx);
-            StatementControlTracker.getInstance().enterControlledCommand(whileCommand);
-
-            CompoundVisitor whileCompoundVisitor = new CompoundVisitor();
-            whileCompoundVisitor.visit(whileCtx.compoundStmt());
-
-            StatementControlTracker.getInstance().exitControlledCommand();
-
-        } else if (iterationCtx.forStatement() != null ) {
-            ForStatementContext forCtx = iterationCtx.forStatement();
-        }
     }
 
     private void analyzeSelection(SelectionStmtContext ifCtx) {

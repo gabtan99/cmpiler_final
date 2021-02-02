@@ -1,7 +1,11 @@
 main() {
   int x = 0;
-  int g = 5;
-  while x up to g + 3 {
-    print ("x " + "=" + x); 
+  int g = 8;
+  int y = 5;
+  while x up to g {
+    print ("x" + " = " + x);
+    while y down to 0 {
+      print ("y" + " = " + y);
+    }
   }
 }

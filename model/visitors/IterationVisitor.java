@@ -17,6 +17,8 @@ import model.semcheck.*;
 import model.Console;
 import model.objects.*;
 import model.Scope;
+import model.commands.*;
+import model.*;
 
 public class IterationVisitor {
 
@@ -47,7 +49,16 @@ public class IterationVisitor {
             typeMMSemCheck.check();
 
             // to check content { }
-            analyzeContent(whileCtx.compoundStmt());   
+            Scope scope = new Scope(ScopeManager.getInstance().getScope());
+            ScopeManager.getInstance().setScope(scope);
+
+            WhileCommand whileCommand = new WhileCommand(whileCtx);
+            StatementControlTracker.getInstance().enterControlledCommand(whileCommand);
+
+            CompoundVisitor whileCompoundVisitor = new CompoundVisitor();
+            whileCompoundVisitor.visit(whileCtx.compoundStmt());
+
+            StatementControlTracker.getInstance().exitControlledCommand();
 
         } else if (ctx.forStatement() != null) {
             ForStatementContext forCtx = ctx.forStatement();

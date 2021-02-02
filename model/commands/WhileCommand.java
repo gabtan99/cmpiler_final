@@ -45,8 +45,7 @@ public class WhileCommand implements ControlledCommand {
 
     @Override
     public void execute() {
-
-        this.counter = (int) pseudoValue.getValue();
+        this.counter = Integer.parseInt(pseudoValue.getValue().toString());
 
         EvaluateCommand evalCommand = new EvaluateCommand(this.simpleExpressionCtx, this.scope);
         evalCommand.execute();
@@ -94,9 +93,16 @@ public class WhileCommand implements ControlledCommand {
     }
 
     private void updateCounter() {
-        this.counter = (int) pseudoValue.getValue();
-        this.counter++;
-        this.pseudoValue.setValue(this.counter);
+        if (this.isLessThan) {
+            this.counter = Integer.parseInt(pseudoValue.getValue().toString());
+            this.counter++;
+            this.pseudoValue.setValue(this.counter);
+        } else {
+            this.counter = Integer.parseInt(pseudoValue.getValue().toString());
+            this.counter--;
+            this.pseudoValue.setValue(this.counter);
+        }
+        
     }
 
 
