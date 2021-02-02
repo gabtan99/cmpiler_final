@@ -69,15 +69,32 @@ public class IterationVisitor {
             if (loopDecCtx.Int() != null) { // to check if declared new var
 
                 if (ScopeManager.getInstance().searchMyScopeVariable(loopDecCtx.IDENTIFIER().getText()) != null) {
-				    Console.log("MultipleVarDeclaration Error at while statement", ctx.getStart().getLine());
+				    Console.log("MultipleVarDeclaration Error at for statement", ctx.getStart().getLine());
 			    }  else {
                     ScopeManager.getInstance().getScope().addVariable(loopDecCtx.IDENTIFIER().getText(), new PseudoValue(null, "int"));
                 }
 
                 // i = 2
                 if (loopDecCtx.Assign() != null ) {
-                    TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, "int"), loopDecCtx.simpleExpression());
-                    typeMMSemCheck.check(); 
+                    IteratorAssignCommand iteratorAssignCommand = new IteratorAssignCommand(loopDecCtx.IDENTIFIER(), loopDecCtx.simpleExpression());
+
+                    StatementControlTracker stmtCtrlTracker = StatementControlTracker.getInstance();
+
+                    if (stmtCtrlTracker.isConditionalCommand()) {
+                        ConditionalCommand ifCommand = (ConditionalCommand) stmtCtrlTracker.getCurCommand();
+
+                        if (stmtCtrlTracker.inIf()) {
+                            ifCommand.addIfCommand(iteratorAssignCommand);
+                        } else {
+                            ifCommand.addElseCommand(iteratorAssignCommand);
+                        } 
+
+                    } else if (stmtCtrlTracker.isControlledCommand()) {
+                        ControlledCommand controlledCommand = (ControlledCommand) stmtCtrlTracker.getCurCommand();
+                        controlledCommand.addCommand(iteratorAssignCommand);
+                    }  else {
+                        RuntimeManager.getInstance().addCommand(iteratorAssignCommand);
+                    }
                 }
 
             // i, i = 2
@@ -95,8 +112,25 @@ public class IterationVisitor {
 
                 // i = 2
                 if (loopDecCtx.Assign() != null ) {
-                    TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, "int"), loopDecCtx.simpleExpression());
-                    typeMMSemCheck.check(); 
+                    IteratorAssignCommand iteratorAssignCommand = new IteratorAssignCommand(loopDecCtx.IDENTIFIER(), loopDecCtx.simpleExpression());
+
+                    StatementControlTracker stmtCtrlTracker = StatementControlTracker.getInstance();
+
+                    if (stmtCtrlTracker.isConditionalCommand()) {
+                        ConditionalCommand ifCommand = (ConditionalCommand) stmtCtrlTracker.getCurCommand();
+
+                        if (stmtCtrlTracker.inIf()) {
+                            ifCommand.addIfCommand(iteratorAssignCommand);
+                        } else {
+                            ifCommand.addElseCommand(iteratorAssignCommand);
+                        } 
+
+                    } else if (stmtCtrlTracker.isControlledCommand()) {
+                        ControlledCommand controlledCommand = (ControlledCommand) stmtCtrlTracker.getCurCommand();
+                        controlledCommand.addCommand(iteratorAssignCommand);
+                    }  else {
+                        RuntimeManager.getInstance().addCommand(iteratorAssignCommand);
+                    }
                 }
             }
 
@@ -108,21 +142,19 @@ public class IterationVisitor {
             TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, "int"), forCtx.simpleExpression());
             typeMMSemCheck.check();
 
-            analyzeContent(forCtx.compoundStmt());   
+            // to check content { }
+            Scope scope = new Scope(ScopeManager.getInstance().getScope());
+            ScopeManager.getInstance().setScope(scope);
+
+            ForCommand forCommand = new ForCommand(forCtx);
+            StatementControlTracker.getInstance().enterControlledCommand(forCommand);
+
+            CompoundVisitor forCompoundVisitor = new CompoundVisitor();
+            forCompoundVisitor.visit(forCtx.compoundStmt());
+
+            StatementControlTracker.getInstance().exitControlledCommand();   
         }
 
     }
-
-    private void analyzeContent(CompoundStmtContext compoundCtx) {
-        Scope scope = new Scope(ScopeManager.getInstance().getScope());
-        ScopeManager.getInstance().setScope(scope);
-        System.out.println("Opened iteration scope");
-
-        // if and else if
-        CompoundVisitor ifCompoundVisitor = new CompoundVisitor();
-        ifCompoundVisitor.visit(compoundCtx);
-    }
-
-
 
 }
