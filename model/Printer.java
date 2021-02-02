@@ -30,4 +30,8 @@ public class Printer {
         view.printToConsole("Runtime Error: [Line " + line + "] " + msg);
     }
 
+    public void setStatus(String msg, String iconType) {
+        view.setStatus(msg, iconType);
+    }
+
 }

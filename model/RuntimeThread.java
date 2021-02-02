@@ -29,7 +29,8 @@ public class RuntimeThread extends Thread {
                 index ++;
             } 
         }
-
+        
+        Printer.getInstance().setStatus("Program executed successfully", "success");
         RuntimeManager.getInstance().reset();
     }
 

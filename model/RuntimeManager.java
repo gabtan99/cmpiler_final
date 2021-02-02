@@ -48,7 +48,7 @@ public class RuntimeManager {
     }
 
     public void executeAll() {
-        Printer.getInstance().print("Program is executing ...\n\n");
+        Printer.getInstance().setStatus("Program is executing ...", "executing");
         thread = new RuntimeThread(commandList);
         thread.start();
     }

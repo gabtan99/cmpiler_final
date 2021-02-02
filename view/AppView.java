@@ -12,8 +12,11 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.Node;
@@ -30,6 +33,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CharStream;
@@ -44,9 +48,33 @@ public class AppView {
     private TextArea textArea;
     private Stage stage;
     private CodeArea codeArea;
+    private TextFlow status;
+    private Text textStatus;
+    
+    private ImageView statusImageView;
+    private InputStream readyFileStream;
+    private InputStream executingFileStream;
+    private InputStream failFileStream;
+    private InputStream successFileStream;
 
     public AppView (Stage stage) {
         this.stage = stage;
+
+        try {
+            File readyFile = new File("assets/ready.png");
+            readyFileStream = (InputStream) new FileInputStream(readyFile);
+            File executingFile = new File("assets/executing.png");
+            executingFileStream = (InputStream) new FileInputStream(executingFile);
+            File failFile = new File("assets/fail.png");
+            failFileStream = (InputStream) new FileInputStream(failFile);
+            File successFile = new File("assets/success.png");
+            successFileStream = (InputStream) new FileInputStream(successFile);  
+        }
+        catch (FileNotFoundException e) {
+            System.out.println(e);
+        }
+        
+
         // MENU GUI
         Menu fileMenu = new Menu("File");
 
@@ -139,7 +167,6 @@ public class AppView {
 
         runMenuItem3.addEventHandler(ActionEvent.ACTION,event -> { 
             controller.terminate();
-            showTerminateAlert();
         });
 
         fileMenuItem1.addEventHandler(ActionEvent.ACTION,event ->{ 
@@ -156,11 +183,26 @@ public class AppView {
             
         });
 
+
+        status = new TextFlow();
+        status.setMinHeight(27);
+        status.setStyle("margin-bottom: 0.5px; -fx-background-color: linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border), linear-gradient(from 0px 0px to 0px 0px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background)");
+
+        statusImageView = new ImageView();
+        statusImageView.setFitWidth(19);
+        statusImageView.setFitHeight(19);
+        
+        textStatus = new Text();
+        status.getChildren().addAll(textStatus, statusImageView);
+        status.setPadding(new Insets(0,0,0,10));
+        setStatus("Ready for execution", "ready");
+
         // CONSOLE
-        textArea = new TextArea("Output");
+        textArea = new TextArea();
         textArea.setEditable(false);
-        textArea.setMinHeight(205);
+        textArea.setMinHeight(178);
         textArea.setWrapText(true);
+        textArea.setStyle("-fx-background-color: linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border), linear-gradient(from 0px 0px to 0px 0px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background)");
 
         textArea.textProperty().addListener(new ChangeListener<Object>() {
             @Override
@@ -171,7 +213,7 @@ public class AppView {
             }
         });
 
-        VBox vBox = new VBox(menuBar,codeArea, textArea);
+        VBox vBox = new VBox(menuBar,codeArea, status, textArea);
         Scene scene = new Scene(vBox, 800, 600);
         scene.getAccelerators().put(kc, rn);
 
@@ -187,17 +229,8 @@ public class AppView {
             File file = new File("resources/" + dev_file); 
             codeArea.appendText(readFile(file));
         }
-        
     }
 
-    public void showTerminateAlert() {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Program Terminated");
-        alert.setHeaderText("Program Terminated");
-        alert.setContentText("The program was force terminated during runtime.");
-
-        alert.showAndWait();
-    }
 
     // returns the value that the user enters
     public String getInput(String prompt) {
@@ -216,8 +249,8 @@ public class AppView {
     public void updateLogs(List<String> output) {
         StringBuilder logs = new StringBuilder(""); 
 
-        if (output.isEmpty()) {
-            logs.append("Parsing complete.\n");
+        if (!output.isEmpty()) {
+            setStatus("Program compiled with errors!", "fail");
         }
 
         output.forEach((li) -> {
@@ -232,6 +265,18 @@ public class AppView {
         String all = textArea.getText();
         textArea.setText(all + msg + "\n");
         textArea.appendText(""); 
+    }
+
+    public void setStatus(String msg, String iconType) {
+
+        switch (iconType) {
+            case "ready": textStatus.setText("STATUS: " + msg + " "); statusImageView.setImage(new Image(readyFileStream)); break;
+            case "executing": textStatus.setText("STATUS: " + msg + " "); statusImageView.setImage(new Image(executingFileStream));   break;
+            case "fail": textStatus.setText("STATUS: " + msg + " ");  statusImageView.setImage(new Image(failFileStream));break;
+            case "success": textStatus.setText("STATUS: " + msg + " "); statusImageView.setImage(new Image(successFileStream)); break;
+            default: textStatus.setText("STATUS: Compiler is idle."); statusImageView.setImage(null); break;
+        }
+
     }
 
     private String readFile(File file){
@@ -281,4 +326,5 @@ public class AppView {
     public void setController(AppController controller) {
         this.controller = controller;
     }
+
 }

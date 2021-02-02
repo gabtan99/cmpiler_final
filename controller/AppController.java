@@ -45,8 +45,9 @@ public class AppController {
 
         if (Console.getErrorList().size() == 0) {
             System.out.println("----------- FORCE TERMINATING ----------");
+            Printer.getInstance().setStatus("Program has been force terminated!", "fail");
             RuntimeManager.getInstance().forceKillExecution();
-        }
+        } 
     }
 
     private void init() {
