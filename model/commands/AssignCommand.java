@@ -33,6 +33,10 @@ public class AssignCommand implements Command {
 
         PseudoValue pseudoValue = scope.getVariableAllScope(id.getText());
 
+        if (mutableCtx.LeftBracket() != null && pseudoValue.getPrimitiveType() != PrimitiveType.ARRAY) {
+            Console.log("Variable is not an array.", mutableCtx.getStart().getLine());
+        }
+
         if (pseudoValue.getPrimitiveType() != PrimitiveType.ARRAY) {
             ConstantSemCheck constSemCheck = new ConstantSemCheck(this.id);
             constSemCheck.check();

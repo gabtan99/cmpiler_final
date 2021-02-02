@@ -11,10 +11,12 @@ public class RuntimeThread extends Thread {
     private List<Command> commandList;
     private volatile boolean canExec;
     private volatile int index;
+    private boolean noErrors;
     
     public RuntimeThread(List<Command> commandList) {
         this.commandList = commandList;
         this.canExec = true;
+        this.noErrors = true;
     }
 
     @Override
@@ -28,6 +30,10 @@ public class RuntimeThread extends Thread {
                 commandList.get(index).execute();
                 index ++;
             } 
+        }
+
+        if (noErrors) {
+            Printer.getInstance().setStatus("Program has executed successfully", "success");
         }
         
         RuntimeManager.getInstance().reset();
@@ -46,6 +52,7 @@ public class RuntimeThread extends Thread {
     }
 
     public void kill() {  // make index go over size to skip all other commands
+        this.noErrors = false;
         this.index = commandList.size(); 
     }
 }

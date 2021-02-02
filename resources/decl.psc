@@ -1,9 +1,8 @@
-func int hello(String x) {
+func int  hello(int x) {
 	print(x);
-    return 1;
+	hello(x);
+	
 }
 main() {
-    String x = "hellp" + "hi";
-    int z = hello("help");
-	print(x + " " + z);
+    hello(4);
 }

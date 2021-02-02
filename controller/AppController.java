@@ -43,7 +43,7 @@ public class AppController {
         // execute all in execution manager
         if (Console.getErrorList().size() == 0) {
             System.out.println("----------- EXECUTING ----------");
-            Printer.getInstance().setStatus("Program has executed successfully", "success");
+            Printer.getInstance().setStatus("Program is executing...", "executing");
             RuntimeManager.getInstance().executeAll();
         }
     }

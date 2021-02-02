@@ -148,17 +148,6 @@ public class StatementVisitor {
         PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 
 
-        // if (mutableCtx.LeftBracket() != null ) { // x[2] = 2
-
-        //     if (pv != null) {
-                
-        //     }
-
-        //     AssignCommand assignCommand = new AssignCommand(mutableCtx, ctx.simpleExpression());
-        //     RuntimeManager.getInstance().addCommand(assignCommand);
-
-
-        // } else 
         if (ctx.simpleExpression() != null) { // x = 2 + 2
             if (pv != null) {
                 AssignCommand assignCommand = new AssignCommand(mutableCtx, ctx.simpleExpression());

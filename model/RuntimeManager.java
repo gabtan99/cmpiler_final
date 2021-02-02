@@ -52,12 +52,7 @@ public class RuntimeManager {
     }
 
     public void executeAll() {
-        if (commandList.isEmpty()) {
-            Printer.getInstance().setStatus("Program has executed", "success");
-            return;
-        }
 
-        Printer.getInstance().setStatus("Program is executing...", "executing");
         thread = new RuntimeThread(commandList);
         thread.start();
     }
