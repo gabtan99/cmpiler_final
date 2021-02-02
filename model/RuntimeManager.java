@@ -47,8 +47,17 @@ public class RuntimeManager {
         }
     }
 
+    public boolean hasCommands() {
+        return this.commandList.size() > 0;
+    }
+
     public void executeAll() {
-        Printer.getInstance().setStatus("Program is executing ...", "executing");
+        if (commandList.isEmpty()) {
+            Printer.getInstance().setStatus("Program has executed", "success");
+            return;
+        }
+
+        Printer.getInstance().setStatus("Program is executing...", "executing");
         thread = new RuntimeThread(commandList);
         thread.start();
     }
@@ -62,12 +71,14 @@ public class RuntimeManager {
     }
 
     public void killExecution() {
+        Printer.getInstance().setStatus("Program has been terminated.", "fail" );
         this.thread.kill();
     }
 
     public void forceKillExecution() {
         if (this.thread != null) { //  if thread has even started
             if (this.thread.isExecuting()) { // if thread is executing
+                Printer.getInstance().setStatus("Program has been force terminated.", "fail" );
                 this.thread.kill();
             }
         }

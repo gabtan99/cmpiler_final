@@ -34,6 +34,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.scene.text.TextAlignment;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CharStream;
@@ -49,31 +50,12 @@ public class AppView {
     private Stage stage;
     private CodeArea codeArea;
     private TextFlow status;
-    private Text textStatus;
-    
+    private Text textStatus;    
     private ImageView statusImageView;
-    private InputStream readyFileStream;
-    private InputStream executingFileStream;
-    private InputStream failFileStream;
-    private InputStream successFileStream;
+
 
     public AppView (Stage stage) {
         this.stage = stage;
-
-        try {
-            File readyFile = new File("assets/ready.png");
-            readyFileStream = (InputStream) new FileInputStream(readyFile);
-            File executingFile = new File("assets/executing.png");
-            executingFileStream = (InputStream) new FileInputStream(executingFile);
-            File failFile = new File("assets/fail.png");
-            failFileStream = (InputStream) new FileInputStream(failFile);
-            File successFile = new File("assets/success.png");
-            successFileStream = (InputStream) new FileInputStream(successFile);  
-        }
-        catch (FileNotFoundException e) {
-            System.out.println(e);
-        }
-        
 
         // MENU GUI
         Menu fileMenu = new Menu("File");
@@ -180,7 +162,6 @@ public class AppView {
                     codeArea.clear();
                 }
             });
-            
         });
 
 
@@ -191,11 +172,16 @@ public class AppView {
         statusImageView = new ImageView();
         statusImageView.setFitWidth(19);
         statusImageView.setFitHeight(19);
-        
+
+    
         textStatus = new Text();
-        status.getChildren().addAll(textStatus, statusImageView);
-        status.setPadding(new Insets(0,0,0,10));
-        setStatus("Ready for execution", "ready");
+        textStatus.setTextAlignment(TextAlignment.CENTER);
+
+        HBox statusContainer = new HBox(textStatus, statusImageView);
+        statusContainer.setPadding(new Insets(5,0,0,10));
+
+        status.getChildren().addAll(statusContainer);
+        setStatus("Ready to compile / execute", "ready");
 
         // CONSOLE
         textArea = new TextArea();
@@ -247,11 +233,14 @@ public class AppView {
     }
 
     public void updateLogs(List<String> output) {
-        StringBuilder logs = new StringBuilder(""); 
 
-        if (!output.isEmpty()) {
-            setStatus("Program compiled with errors!", "fail");
+        if (output == null) {
+            textArea.setText("");
+            textArea.appendText(""); 
+            return;
         }
+
+        StringBuilder logs = new StringBuilder(""); 
 
         output.forEach((li) -> {
             logs.append(li + "\n");
@@ -270,10 +259,10 @@ public class AppView {
     public void setStatus(String msg, String iconType) {
 
         switch (iconType) {
-            case "ready": textStatus.setText("STATUS: " + msg + " "); statusImageView.setImage(new Image(readyFileStream)); break;
-            case "executing": textStatus.setText("STATUS: " + msg + " "); statusImageView.setImage(new Image(executingFileStream));   break;
-            case "fail": textStatus.setText("STATUS: " + msg + " ");  statusImageView.setImage(new Image(failFileStream));break;
-            case "success": textStatus.setText("STATUS: " + msg + " "); statusImageView.setImage(new Image(successFileStream)); break;
+            case "ready": textStatus.setText("STATUS: " + msg + "  "); statusImageView.setImage(new Image(getClass().getResourceAsStream("/assets/ready.png"))); break;
+            case "executing": textStatus.setText("STATUS: " + msg + "  "); statusImageView.setImage(new Image(getClass().getResourceAsStream("/assets/executing.png"))); break;
+            case "fail": textStatus.setText("STATUS: " + msg + "  ");  statusImageView.setImage(new Image(getClass().getResourceAsStream("/assets/fail.png")));break;
+            case "success": textStatus.setText("STATUS: " + msg + "  "); statusImageView.setImage(new Image(getClass().getResourceAsStream("/assets/success.png"))); break;
             default: textStatus.setText("STATUS: Compiler is idle."); statusImageView.setImage(null); break;
         }
 

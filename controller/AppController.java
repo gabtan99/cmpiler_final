@@ -30,13 +30,20 @@ public class AppController {
         parser.setInput(stream);
         parser.parse();
 
-        view.updateLogs(Console.getErrorList());
+        if (!Console.getErrorList().isEmpty()) {
+            Printer.getInstance().setStatus("Program has compiled with errors", "fail");
+            view.updateLogs(Console.getErrorList());
+        } else {
+            view.updateLogs(null);
+        }
     }
 
     public void execute() {
+
         // execute all in execution manager
         if (Console.getErrorList().size() == 0) {
             System.out.println("----------- EXECUTING ----------");
+            Printer.getInstance().setStatus("Program has executed successfully", "success");
             RuntimeManager.getInstance().executeAll();
         }
     }
@@ -45,7 +52,6 @@ public class AppController {
 
         if (Console.getErrorList().size() == 0) {
             System.out.println("----------- FORCE TERMINATING ----------");
-            Printer.getInstance().setStatus("Program has been force terminated!", "fail");
             RuntimeManager.getInstance().forceKillExecution();
         } 
     }
