@@ -116,6 +116,7 @@ public class StatementVisitor {
     }
 
     private void analyzeSelection(SelectionStmtContext ifCtx) {
+
         UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(ifCtx.simpleExpression());
         undeclaredSemCheck.check();
 
@@ -123,9 +124,14 @@ public class StatementVisitor {
         ScopeManager.getInstance().setScope(scope);
         System.out.println("Opened if/elseif scope");
 
+        IfCommand ifCommand = new IfCommand(ifCtx);
+        StatementControlTracker.getInstance().enterConditionalCommand(ifCommand);
+
         // if and else if
         CompoundVisitor ifCompoundVisitor = new CompoundVisitor();
         ifCompoundVisitor.visit(ifCtx.compoundStmt());
+
+        StatementControlTracker.getInstance().exitIfCommand();
     
         // else
         if (ifCtx.elseSelector() != null) {
@@ -141,6 +147,8 @@ public class StatementVisitor {
                 stmtVisitor.visit(ifCtx.elseSelector().selectionStmt());
             }
         }
+
+        StatementControlTracker.getInstance().exitControlledCommand();
     }   
 
 

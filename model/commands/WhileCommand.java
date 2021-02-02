@@ -25,10 +25,8 @@ public class WhileCommand implements ControlledCommand {
     private boolean isLessThan = false;
 
     public WhileCommand(WhileStatementContext whileStatementContext) {
-        System.out.println("I MADE IT");
         this.commandList = new ArrayList<>();
         this.iteratorIdentifier = whileStatementContext.IDENTIFIER().getText();
-        System.out.println(iteratorIdentifier);
         this.iterationToStatementCtx = whileStatementContext.iterationToStatement();
         this.simpleExpressionCtx = whileStatementContext.simpleExpression();
         this.scope = ScopeManager.getInstance().getScope();
@@ -51,7 +49,6 @@ public class WhileCommand implements ControlledCommand {
         evalCommand.execute();
 
         if (this.isLessThan) {
-            System.out.println(this.counter);
             while (this.counter < evalCommand.getEvaluated().intValue()) {
                 int index = 0;
                 while (index < commandList.size() ) {
@@ -60,14 +57,12 @@ public class WhileCommand implements ControlledCommand {
                         index ++;
                     } 
                 }
-                System.out.println(this.counter);
                 evalCommand = new EvaluateCommand(this.simpleExpressionCtx, this.scope);
                 evalCommand.execute();
                 this.updateCounter();
             }
 
         } else {
-                System.out.println(this.counter);
 
             while (this.counter > evalCommand.getEvaluated().intValue()) {
                 int index = 0;
@@ -77,7 +72,6 @@ public class WhileCommand implements ControlledCommand {
                         index ++;
                     } 
                 }
-                System.out.println(this.counter);
                 evalCommand = new EvaluateCommand(this.simpleExpressionCtx, this.scope);
                 evalCommand.execute();
                 this.updateCounter();

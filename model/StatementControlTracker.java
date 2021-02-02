@@ -68,16 +68,11 @@ public class StatementControlTracker {
     }
 
     public void enterControlledCommand(ControlledCommand command) {
-        System.out.println("ENTER CONTROLLED");
         this.stack.push(command);
         this.curCommand = command;
     }
 
     public void exitControlledCommand() {
-
-        System.out.println("I LEFT CONTROLLED");
-
-
         if (this.stack.size() == 1) {
             RuntimeManager.getInstance().addCommand(this.stack.pop());
             this.curCommand = null;
@@ -94,7 +89,6 @@ public class StatementControlTracker {
     }
 
     public boolean isControlledCommand() {
-        System.out.println("IM HERE LOL");
         System.out.println((this.curCommand != null && this.curCommand instanceof ControlledCommand ));
         return (this.curCommand != null && this.curCommand instanceof ControlledCommand );
     }
