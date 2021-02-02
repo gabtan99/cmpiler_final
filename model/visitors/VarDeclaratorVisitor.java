@@ -62,7 +62,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					typeMMSemCheck.check();
 
 					InitializeCommand initializeCommand = new InitializeCommand(varDecCtx, varDecInitCtx.simpleExpression());
-					RuntimeManager.getInstance().addCommand(initializeCommand);
+					addCommand(initializeCommand);
 				}  
 
 				Scope scope = ScopeManager.getInstance().getScope();
@@ -135,7 +135,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 							}
 						}
 						InitializeArrCommand initializeArrCommand = new InitializeArrCommand(arrVarDecInitCtx.IDENTIFIER(), arrVarDecInitCtx.mutable());
-						RuntimeManager.getInstance().addCommand(initializeArrCommand);
+						addCommand(initializeArrCommand);
 					}
 
 				// array initialize
@@ -156,8 +156,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					typeMMSemCheck.check();
 
 					CreateArrayCommand createArrCommand = new CreateArrayCommand(arrVarDecInitCtx.createArrayExpression().simpleExpression(), pseudoArray);
-					RuntimeManager.getInstance().addCommand(createArrCommand);
-					
+					addCommand(createArrCommand);
 				}
 				
 
@@ -170,6 +169,27 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 		}
 
 	}
+
+	private void addCommand(Command c) {
+
+        StatementControlTracker stmtCtrlTracker = StatementControlTracker.getInstance();
+
+        if (stmtCtrlTracker.isConditionalCommand()) {
+            ConditionalCommand ifCommand = (ConditionalCommand) stmtCtrlTracker.getCurCommand();
+
+            if (stmtCtrlTracker.inIf()) {
+                ifCommand.addIfCommand(c);
+            } else {
+                ifCommand.addElseCommand(c);
+            } 
+
+        } else if (stmtCtrlTracker.isControlledCommand()) {
+            ControlledCommand controlledCommand = (ControlledCommand) stmtCtrlTracker.getCurCommand();
+            controlledCommand.addCommand(c);
+        }  else {
+            RuntimeManager.getInstance().addCommand(c);
+        }
+    }
 
     @Override
 	public void exitEveryRule(ParserRuleContext ctx) {

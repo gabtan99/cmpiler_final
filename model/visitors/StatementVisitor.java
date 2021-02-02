@@ -28,10 +28,8 @@ import model.*;
 
 public class StatementVisitor {
 
-    private StatementControlTracker stmtCtrlTracker;
-    public StatementVisitor() {
-        stmtCtrlTracker = StatementControlTracker.getInstance();
-    }
+    
+    public StatementVisitor() { }
 
 	public void visit(ParserRuleContext ctx) {
 
@@ -52,7 +50,7 @@ public class StatementVisitor {
                             Console.log("Cannot scan to array", stmtCtx.getStart().getLine());
                         } else {
                             ScanCommand scanCommand = new ScanCommand(scanCtx.StringLiteral().getText() , scanCtx.IDENTIFIER().getText());
-                            RuntimeManager.getInstance().addCommand(scanCommand);
+                            addCommand(scanCommand);
                         }
                     }
                 }
@@ -63,25 +61,7 @@ public class StatementVisitor {
 
                 if (printCtx.printParams() != null) {
                     PrintCommand printCommand = new PrintCommand(printCtx.printParams());
-
-
-                    if (stmtCtrlTracker.isConditionalCommand()) {
-                        ConditionalCommand ifCommand = (ConditionalCommand) stmtCtrlTracker.getCurCommand();
-
-                        if (stmtCtrlTracker.inIf()) {
-                            ifCommand.addIfCommand(printCommand);
-                        } else {
-                            ifCommand.addElseCommand(printCommand);
-                        } 
-
-                    } else if (stmtCtrlTracker.isControlledCommand()) {
-                        ControlledCommand controlledCommand = (ControlledCommand) stmtCtrlTracker.getCurCommand();
-                        controlledCommand.addCommand(printCommand);
-                    }  else {
-                        RuntimeManager.getInstance().addCommand(printCommand);
-                    }
-
-                    
+                    addCommand(printCommand);
                 }
 
             } else if (stmtCtx.selectionStmt() != null) {
@@ -108,7 +88,7 @@ public class StatementVisitor {
                         callSemCheck.check();
 
                         CallCommand callCommand = new CallCommand(pf, stmtCtx.expressionStmt().call().arguments());
-                        RuntimeManager.getInstance().addCommand(callCommand);
+                        addCommand(callCommand);
                     } else {
                         Console.log("UndeclaredFunction error. Try rearranging your functions.", ctx.getStart().getLine());
                     }
@@ -124,7 +104,7 @@ public class StatementVisitor {
                 }   
 
                 ReturnCommand callCommand = new ReturnCommand(stmtCtx.returnStmt().simpleExpression(), FunctionReturnTracker.getInstance().getCurFunction());
-                RuntimeManager.getInstance().addCommand(callCommand);
+                addCommand(callCommand);
 
                 UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(stmtCtx.returnStmt().simpleExpression());
                 undeclaredSemCheck.check();
@@ -172,12 +152,10 @@ public class StatementVisitor {
 
         PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutableCtx.IDENTIFIER().getText());
 
-
         if (ctx.simpleExpression() != null) { // x = 2 + 2
             if (pv != null) {
                 AssignCommand assignCommand = new AssignCommand(mutableCtx, ctx.simpleExpression());
-                RuntimeManager.getInstance().addCommand(assignCommand);
-
+                addCommand(assignCommand);
             } else {
                 Console.log("UndeclaredVariable error", ctx.getStart().getLine());
             }
@@ -203,9 +181,30 @@ public class StatementVisitor {
                 typeMMSemCheck.check();
 
                 CreateArrayCommand createArrCommand = new CreateArrayCommand(ctx.createArrayExpression().simpleExpression(), pa);
-                RuntimeManager.getInstance().addCommand(createArrCommand);	
+                addCommand(createArrCommand);
             }
         } 
+    }
+
+    private void addCommand(Command c) {
+
+        StatementControlTracker stmtCtrlTracker = StatementControlTracker.getInstance();
+
+        if (stmtCtrlTracker.isConditionalCommand()) {
+            ConditionalCommand ifCommand = (ConditionalCommand) stmtCtrlTracker.getCurCommand();
+
+            if (stmtCtrlTracker.inIf()) {
+                ifCommand.addIfCommand(c);
+            } else {
+                ifCommand.addElseCommand(c);
+            } 
+
+        } else if (stmtCtrlTracker.isControlledCommand()) {
+            ControlledCommand controlledCommand = (ControlledCommand) stmtCtrlTracker.getCurCommand();
+            controlledCommand.addCommand(c);
+        }  else {
+            RuntimeManager.getInstance().addCommand(c);
+        }
     }
 
 }
