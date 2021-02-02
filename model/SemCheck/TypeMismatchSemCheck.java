@@ -55,7 +55,7 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 			ConstantContext constCtx = (ConstantContext) ctx;
 			String expressionString = constCtx.getText();
 
-			if (!excluded.contains(expressionString)) {
+			if (!isInExcluded(expressionString)) {
 				if(this.pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY) {
 				
 				}
@@ -88,7 +88,7 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 			
 		} else if (ctx instanceof MutableContext) {
 			MutableContext mutCtx = (MutableContext) ctx;
-			if (!excluded.contains(mutCtx.getText())) {
+			if (!isInExcluded(mutCtx.getText())) {
 				if (mutCtx.LeftBracket() == null){
 					PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(mutCtx.IDENTIFIER().getText());
 
@@ -186,6 +186,16 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 	public void visitErrorNode(ErrorNode node) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	private boolean isInExcluded(String s) {
+		boolean found = false;
+		for (String ex: excluded){
+			if (ex.contains(s)) {
+				return true;
+			}
+		}
+		return found;
 	}
 
 }

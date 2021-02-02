@@ -44,7 +44,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
             this.evaluated = new BigDecimal(1);
         } else if (this.strExp.contains("F")) {
             this.evaluated = new BigDecimal(0);
-        } else {
+        } else{
             Expression evalEx = new Expression(this.strExp.replaceAll("f", ""));
             this.evaluated = evalEx.eval();
         }
@@ -106,10 +106,23 @@ public class EvaluateCommand implements Command, ParseTreeListener {
                         String id = simpleExpr.getText();
                         pseudoFunction.mapArrayParameter(id, this.scope.getVariableAllScope(id), i);
                     } else if (pseudoFunction.getParamAt(i).getPrimitiveType() == PrimitiveType.STRING){
-                        String id = simpleExpr.getText().replaceAll("^\"+|\"+$", "");
                         
-                        PseudoValue paramValue = pseudoFunction.getParamAt(i);
-                        paramValue.setValue(id);
+                        if(simpleExpr.getText().replaceAll("\".+?\"", "").contains("+")) {
+                            Printer.getInstance().print("String concatenation not supported.", ctx.getStart().getLine());
+                            RuntimeManager.getInstance().killExecution();
+                        }else if (simpleExpr.getText().contains("\"")) {
+                            String id = simpleExpr.getText().replaceAll("^\"+|\"+$", "");
+                        
+                            PseudoValue paramValue = pseudoFunction.getParamAt(i);
+                            paramValue.setValue(id);
+                        } else {
+                            String id = simpleExpr.getText();
+
+                            PseudoValue paramValue = pseudoFunction.getParamAt(i);
+                            paramValue.setValue(scope.getVariableAllScope(id).getValue());
+                            
+                        }
+                        
                     } else { // evaluate non-array variable right away
                         
                         EvaluateCommand evalCommand = new EvaluateCommand(simpleExpr, this.scope);
