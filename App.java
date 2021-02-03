@@ -14,6 +14,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+         
         Parser parser = new Parser();
         AppView view = new AppView(stage);
         AppController controller = new AppController(parser, view);
