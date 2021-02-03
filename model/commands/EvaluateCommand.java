@@ -38,8 +38,6 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
         this.strExp = simpleCtx.getText();
 
-        
-
         if (this.strExp.contains("T")) {
             this.evaluated = new BigDecimal(1);
         } else if (this.strExp.contains("F")) {
@@ -48,7 +46,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
             ParseTreeWalker treeWalker = new ParseTreeWalker();
             treeWalker.walk(this, this.simpleCtx);
 
-            Expression evalEx = new Expression(this.strExp.replaceAll("f", ""));
+            Expression evalEx = new Expression(this.strExp);
             this.evaluated = evalEx.eval();
         }
         
