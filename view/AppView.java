@@ -43,7 +43,7 @@ import org.fxmisc.richtext.*;
 import controller.AppController;
 
 public class AppView {
-    private static final String dev_file = "insertion.psc";
+    private static final String dev_file = "testcase.psc";
 
     private AppController controller;
     private TextArea textArea;

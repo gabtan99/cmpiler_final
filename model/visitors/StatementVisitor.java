@@ -97,10 +97,6 @@ public class StatementVisitor {
             } else if (stmtCtx.returnStmt() != null) {
                 if (FunctionReturnTracker.getInstance().getCurFunction() != null && ScopeManager.getInstance().getScope().getParent() == null) {
                     FunctionReturnTracker.getInstance().setHasReturn(true);
-
-                    if (FunctionReturnTracker.getInstance().getCurFunction().getReturnType() == FunctionType.VOID) {
-                        Console.log("Encountered a return statement in void-type function.", ctx.getStart().getLine());
-                    }
                 } 
                 
                 ReturnCommand callCommand = new ReturnCommand(stmtCtx.returnStmt().simpleExpression(), FunctionReturnTracker.getInstance().getCurFunction());

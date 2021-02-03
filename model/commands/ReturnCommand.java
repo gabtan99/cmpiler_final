@@ -24,8 +24,14 @@ public class ReturnCommand implements Command {
         undeclaredSemCheck.check();
 
         PseudoValue pseudoValue = this.func.getReturnValue();
-        TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, this.exprCtx);
-        typeMMSemCheck.check();
+
+        if (this.func.getReturnType() != FunctionType.VOID) {
+            TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, this.exprCtx);
+            typeMMSemCheck.check();
+        } else {
+            Console.log("Encountered a return statement in void-type function.", exprCtx.getStart().getLine());
+        }
+        
     }
 
     @Override

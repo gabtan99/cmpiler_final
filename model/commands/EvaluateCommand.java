@@ -62,11 +62,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
             this.evaluateCall(callCtx);
         } else if (ctx instanceof MutableContext) {
             MutableContext mutableCtx  = (MutableContext) ctx;
-
-            if (!isParameter(mutableCtx)) {
-                this.evaluateVar(mutableCtx);
-            }
-
+            this.evaluateVar(mutableCtx);
         }
         
     }
@@ -188,14 +184,5 @@ public class EvaluateCommand implements Command, ParseTreeListener {
     public BigDecimal getEvaluated() {
         return this.evaluated;
     }
-
-    private boolean isParameter(MutableContext ctx) {
-        ParserRuleContext pContext = ctx.getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
-        if (pContext != null  && pContext instanceof ArgumentsContext) {
-            return true;
-        }
-        return false;
-    }
-
 
 }
