@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.math.BigDecimal;
 import parser.PSCParser.SimpleExpressionContext;
+import parser.PSCParser.ArgumentsContext;
 import parser.PSCParser.MutableContext;
 import parser.PSCParser.ConstantContext;
 import parser.PSCParser.CallContext;
@@ -61,7 +62,11 @@ public class EvaluateCommand implements Command, ParseTreeListener {
             this.evaluateCall(callCtx);
         } else if (ctx instanceof MutableContext) {
             MutableContext mutableCtx  = (MutableContext) ctx;
-            this.evaluateVar(mutableCtx);
+
+            if (!isParameter(mutableCtx)) {
+                this.evaluateVar(mutableCtx);
+            }
+
         }
         
     }
@@ -131,7 +136,6 @@ public class EvaluateCommand implements Command, ParseTreeListener {
     
         // non-array variable
         if (mutableCtx.IDENTIFIER() != null && mutableCtx.LeftBracket() == null) {
-
             PseudoValue pseudoValue = this.scope.getVariableAllScope(mutableCtx.IDENTIFIER().getText());
             this.strExp =  this.strExp.replaceFirst(mutableCtx.IDENTIFIER().getText(), pseudoValue.getValue().toString());
 
@@ -149,7 +153,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
             if (pseudoArray.getValueAt(arrIndex) != null) { 
                 if (pseudoArray.getValueAt(arrIndex).getValue() != null) {
-                    this.strExp = this.strExp.replaceFirst("\\[.*\\]", pseudoArray.getValueAt(arrIndex).getValue().toString());
+                    this.strExp = this.strExp.replaceFirst("\\[.+?\\]", pseudoArray.getValueAt(arrIndex).getValue().toString());
                 } else {  // Value at index is not initialized
                     Printer.getInstance().print("Value at index is null. Might be uninitialized.", mutableCtx.getStart().getLine());
                     RuntimeManager.getInstance().killExecution();
@@ -158,6 +162,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
                 Printer.getInstance().print("Index is out of bounds.", mutableCtx.getStart().getLine());
                 RuntimeManager.getInstance().killExecution();
             }
+
         }
     
     }
@@ -182,6 +187,14 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
     public BigDecimal getEvaluated() {
         return this.evaluated;
+    }
+
+    private boolean isParameter(MutableContext ctx) {
+        ParserRuleContext pContext = ctx.getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+        if (pContext != null  && pContext instanceof ArgumentsContext) {
+            return true;
+        }
+        return false;
     }
 
 

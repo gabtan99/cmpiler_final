@@ -101,13 +101,14 @@ public class StatementVisitor {
                     if (FunctionReturnTracker.getInstance().getCurFunction().getReturnType() == FunctionType.VOID) {
                         Console.log("Encountered a return statement in void-type function.", ctx.getStart().getLine());
                     }
-                }  else {
-                    ReturnCommand callCommand = new ReturnCommand(stmtCtx.returnStmt().simpleExpression(), FunctionReturnTracker.getInstance().getCurFunction());
-                    addCommand(callCommand);
+                } 
+                
+                ReturnCommand callCommand = new ReturnCommand(stmtCtx.returnStmt().simpleExpression(), FunctionReturnTracker.getInstance().getCurFunction());
+                addCommand(callCommand);
 
-                    UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(stmtCtx.returnStmt().simpleExpression());
-                    undeclaredSemCheck.check();
-                }
+                UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(stmtCtx.returnStmt().simpleExpression());
+                undeclaredSemCheck.check();
+                
             } 
         } else if (ctx instanceof SelectionStmtContext) {
             SelectionStmtContext ifCtx = (SelectionStmtContext) ctx;

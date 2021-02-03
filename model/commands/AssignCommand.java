@@ -41,10 +41,20 @@ public class AssignCommand implements Command {
             ConstantSemCheck constSemCheck = new ConstantSemCheck(this.id);
             constSemCheck.check();
         }
+
+        if(mutableCtx.LeftBracket() != null && pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY ) {
+
+            PseudoArray pa = (PseudoArray) pseudoValue.getValue();
+            
+            TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(new PseudoValue(null, pa.getPrimitiveType()), rhsCtx);
+            typeMMSemCheck.check();
+        } else {
+            // check if rhs is compatible with id type
+            TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, rhsCtx);
+            typeMMSemCheck.check();
+        }
        
-        // check if rhs is compatible with id type
-        TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, rhsCtx);
-        typeMMSemCheck.check();
+        
 
         evalCommand = new EvaluateCommand(rhsCtx);
     }
