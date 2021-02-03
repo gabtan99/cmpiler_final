@@ -19,7 +19,7 @@ public class CallCommand implements Command {
     private String funcName;
     private PseudoFunction func;
     private ArgumentsContext argsCtx;
-
+    private PseudoValue returnValue;
 
     public CallCommand(PseudoFunction func, ArgumentsContext argsCtx) {
         this.func = func;
@@ -78,7 +78,5 @@ public class CallCommand implements Command {
         this.mapParameters();
         this.func.execute();
     }
-
-
     
 }

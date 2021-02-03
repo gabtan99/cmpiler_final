@@ -6,40 +6,40 @@ import model.*;
 import model.objects.*;
 import model.semcheck.*;
 
+import java.util.*;
+
 public class ReturnCommand implements Command {
 
     private SimpleExpressionContext exprCtx;
     private PseudoFunction func;
     private Scope scope;
-    private EvaluateCommand evalCommand;
 
     public ReturnCommand(SimpleExpressionContext exprCtx, PseudoFunction func) {
         this.exprCtx = exprCtx;
         this.func = func;
         this.scope = ScopeManager.getInstance().getScope();
 
-
         UndeclaredSemCheck undeclaredSemCheck = new UndeclaredSemCheck(exprCtx);
         undeclaredSemCheck.check();
 
-        PseudoValue psuedoValue = this.func.getReturnValue();
-        TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(psuedoValue, this.exprCtx);
+        PseudoValue pseudoValue = this.func.getReturnValue();
+        TypeMismatchSemCheck typeMMSemCheck = new TypeMismatchSemCheck(pseudoValue, this.exprCtx);
         typeMMSemCheck.check();
-
-        evalCommand = new EvaluateCommand(this.exprCtx);
     }
 
     @Override
     public void execute() {
+        EvaluateCommand evalCommand = new EvaluateCommand(this.exprCtx, FunctionControlTracker.getInstance().getCurFunction().getLocalScope());
         evalCommand.execute();
 
-        PseudoValue pseudoValue = this.func.getReturnValue();
-		Util.assignValue(pseudoValue, evalCommand.getEvaluated()); 
+        System.out.println(evalCommand + " is eval instance");
+        PseudoValue returnValue = FunctionControlTracker.getInstance().getCurFunction().getReturnValue();
+        Util.assignValue(returnValue, evalCommand.getEvaluated());
+        System.out.println( returnValue + "'s  value is now " + evalCommand.getEvaluated());
     }
 
-
-
-
-
+    public int getLine() {
+        return this.exprCtx.getStart().getLine();
+    }
     
-}
+} 

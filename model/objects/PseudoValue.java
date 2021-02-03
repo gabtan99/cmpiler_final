@@ -23,6 +23,16 @@ public class PseudoValue {
 		}
 
 	}
+
+	private PseudoValue(Object value, PrimitiveType primitiveType, boolean constFlag) {
+		this.value = value;
+		this.primitiveType = primitiveType;
+		constFlag = constFlag;
+	}
+
+	public PseudoValue(PseudoValue v) {
+		this(v.value, v.primitiveType, v.constFlag);
+	}
 	
 	public void setPrimitiveType(String primitiveType) {
 		PrimitiveType type = resolve_type(primitiveType);

@@ -1,18 +1,13 @@
-main() {
-  int x = 2;
-  int y = 1;
-
-  if (x == y) then {
-      print("In if");
-  } else if (x == y + 1) then {
-	
-	if (T) then {
-		print("inner if");
-	} else then {
-		print("inner else");
+func int hello(int x) {
+	if (x <= 1) then {
+		return 1;
 	}
 
-  } else then {
-      print("In else");
-  }
+	return x * hello(x-1);
+
+}
+
+main() {
+	int t = hello(3);
+	print(t);
 }

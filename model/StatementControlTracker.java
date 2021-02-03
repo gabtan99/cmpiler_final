@@ -89,7 +89,6 @@ public class StatementControlTracker {
     }
 
     public boolean isControlledCommand() {
-        System.out.println((this.curCommand != null && this.curCommand instanceof ControlledCommand ));
         return (this.curCommand != null && this.curCommand instanceof ControlledCommand );
     }
 

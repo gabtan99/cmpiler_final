@@ -37,7 +37,6 @@ public class InitializeCommand implements Command {
     @Override
     public void execute() {
         if (varDecCtx.typeSpecifier().getText().contains("String")){
-            System.out.println(varDecCtx.variableDeclarationInitialize().simpleExpression().getText().replaceAll("\".+?\"", ""));
             if(varDecCtx.variableDeclarationInitialize().simpleExpression().getText().replaceAll("\".+?\"", "").contains("+")) {
                 Printer.getInstance().print("String concatenation not supported.", varDecCtx.getStart().getLine());
                 RuntimeManager.getInstance().killExecution();

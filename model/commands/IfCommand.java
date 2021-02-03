@@ -34,7 +34,7 @@ public class IfCommand implements ConditionalCommand {
             int index = 0;
             while (index < ifCommands.size() ) {
                 if (RuntimeManager.getInstance().canExec()) {
-                 ifCommands.get(index).execute();
+                    ifCommands.get(index).execute();
                     index ++;
                 } 
             }

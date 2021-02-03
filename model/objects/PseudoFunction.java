@@ -16,30 +16,48 @@ public class PseudoFunction implements Command {
 
     private PseudoValue returnValue;
     private FunctionType returnType;
-    private boolean hasReturn;
 
+    private PseudoFunction funcInstance = null;
 
     public PseudoFunction() {
         this.parameters = new LinkedHashMap<>();
         this.commandList = new ArrayList<>();
         this.returnType = FunctionType.VOID;
-        this.hasReturn = false;
         this.localScope = new Scope();
+    }
+
+    private PseudoFunction(String name, PseudoValue returnValue, LinkedHashMap<String, PseudoValue> parameters, List<Command> commandList, FunctionType returnType, Scope localScope) {
+        this.parameters = new LinkedHashMap<>(parameters); 
+        this.commandList = new ArrayList<>(commandList);
+        this.returnValue = new PseudoValue(returnValue);
+        this.name = name;
+        this.returnType = returnType;
+        this.localScope = localScope;
+    }
+
+    public PseudoFunction(PseudoFunction copy) {
+        this(copy.name, copy.returnValue, copy.parameters, copy.commandList, copy.returnType, copy.localScope);
     }
 
     @Override 
     public void execute() {
 
-        FunctionControlTracker.getInstance().enterFunction(this);
 
         int index = 0;
-        while (index < commandList.size() ) {
+        while (index < this.commandList.size() ) {
             if (RuntimeManager.getInstance().canExec()) {
-                commandList.get(index).execute();
-                index ++;
+
+                if (this.getReturnValue().getValue() != null)  {
+                    System.out.println("theres a return value already, im leaving this function");
+                    index = this.commandList.size();
+                } else {
+                    this.commandList.get(index).execute();
+                    index ++;
+                }
+
             } 
         }
-        FunctionControlTracker.getInstance().exitFunction();
+
     }
 
     public void setLocalScope(Scope localScope) {
@@ -58,7 +76,6 @@ public class PseudoFunction implements Command {
         commandList.add(c);
     }
 
-
     public void setReturnValue(PseudoValue returnValue) {
         this.returnValue = returnValue;
     }
@@ -67,10 +84,10 @@ public class PseudoFunction implements Command {
 		this.returnType = functionType;
 		
 		switch(this.returnType) {
-			case BOOLEAN: this.returnValue = new PseudoValue(true, "bool"); break;
-			case INT: this.returnValue = new PseudoValue(0, "int"); break;
-			case FLOAT: this.returnValue = new PseudoValue(0.0f, "float"); break;
-			case STRING: this.returnValue = new PseudoValue("", "String"); break;
+			case BOOLEAN: this.returnValue = new PseudoValue(null, "bool"); break;
+			case INT: this.returnValue = new PseudoValue(null, "int"); break;
+			case FLOAT: this.returnValue = new PseudoValue(null, "float"); break;
+			case STRING: this.returnValue = new PseudoValue(null, "String"); break;
 			default:break;	
 		}
 	}

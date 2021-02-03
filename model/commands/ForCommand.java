@@ -47,8 +47,8 @@ public class ForCommand implements ControlledCommand {
         evalCommand.execute();
 
         if (this.isLessThan) {
-            System.out.println(this.counter);
             while (this.counter < evalCommand.getEvaluated().intValue()) {
+                
                 int index = 0;
                 while (index < commandList.size() ) {
                     if (RuntimeManager.getInstance().canExec()) {
@@ -56,16 +56,16 @@ public class ForCommand implements ControlledCommand {
                         index ++;
                     } 
                 }
-                System.out.println(this.counter);
+
                 evalCommand = new EvaluateCommand(this.simpleExpressionCtx, this.scope);
                 evalCommand.execute();
                 this.updateCounter();
             }
 
         } else {
-                System.out.println(this.counter);
 
             while (this.counter > evalCommand.getEvaluated().intValue()) {
+
                 int index = 0;
                 while (index < commandList.size() ) {
                     if (RuntimeManager.getInstance().canExec()) {
@@ -73,7 +73,7 @@ public class ForCommand implements ControlledCommand {
                         index ++;
                     } 
                 }
-                System.out.println(this.counter);
+
                 evalCommand = new EvaluateCommand(this.simpleExpressionCtx, this.scope);
                 evalCommand.execute();
                 this.updateCounter();
