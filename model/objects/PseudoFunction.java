@@ -48,7 +48,7 @@ public class PseudoFunction implements Command {
             if (RuntimeManager.getInstance().canExec()) {
 
                 if (this.getReturnType() != FunctionType.VOID && this.getReturnValue().getValue() != null)  {
-                    System.out.println("theres a return value already, im leaving this function");
+                    // System.out.println("theres a return value already, im leaving this function");
                     index = this.commandList.size();
                 } else {
                     this.commandList.get(index).execute();

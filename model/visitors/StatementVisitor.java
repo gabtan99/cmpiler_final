@@ -43,11 +43,11 @@ public class StatementVisitor {
                     PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(scanCtx.IDENTIFIER().getText());
 
                     if(pseudoValue == null) {
-                        Console.log("UndeclaredVariable Error at scan statement", stmtCtx.getStart().getLine());
+                        Console.log("UndeclaredVariable Error: '" + scanCtx.IDENTIFIER().getText() + "' cannot be found at scan statement", stmtCtx.getStart().getLine());
                     } else {
 
                         if (pseudoValue.getPrimitiveType() == PrimitiveType.ARRAY) {
-                            Console.log("Cannot scan to array", stmtCtx.getStart().getLine());
+                            Console.log("TypeMismatch Error: You cannot scan directly to an array.", stmtCtx.getStart().getLine());
                         } else {
                             ScanCommand scanCommand = new ScanCommand(scanCtx.StringLiteral().getText() , scanCtx.IDENTIFIER().getText());
                             addCommand(scanCommand);
@@ -68,7 +68,7 @@ public class StatementVisitor {
                 SelectionStmtContext ifCtx = stmtCtx.selectionStmt();
                 analyzeSelection(ifCtx);
             } else if (stmtCtx.iterationStmt() != null) {
-                System.out.println("ENTER ITERATIONS TATEMENT");
+                // System.out.println("ENTER ITERATIONS TATEMENT");
                 IterationStmtContext iterStmtCtx = stmtCtx.iterationStmt();
 
                 IterationVisitor iterationVisitor = new IterationVisitor();
@@ -90,7 +90,7 @@ public class StatementVisitor {
                         CallCommand callCommand = new CallCommand(pf, stmtCtx.expressionStmt().call().arguments());
                         addCommand(callCommand);
                     } else {
-                        Console.log("UndeclaredFunction error. Try rearranging your functions.", ctx.getStart().getLine());
+                        Console.log("UndeclaredFunction Error: Try rearranging your functions.", ctx.getStart().getLine());
                     }
                     
                 }
@@ -162,13 +162,13 @@ public class StatementVisitor {
                 AssignCommand assignCommand = new AssignCommand(mutableCtx, ctx.simpleExpression());
                 addCommand(assignCommand);
             } else {
-                Console.log("UndeclaredVariable error", ctx.getStart().getLine());
+                Console.log("UndeclaredVariable Error: '" + mutableCtx.IDENTIFIER().getText() + "' cannot be found", ctx.getStart().getLine());
             }
             
         } else if (ctx.createArrayExpression() != null) { //  x= create int[]
 
             if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
-                Console.log("Identifier is not an array", ctx.getStart().getLine());
+                Console.log("TypeMismatch Error: '" +  mutableCtx.IDENTIFIER().getText() + "' is not an array", ctx.getStart().getLine());
             } else {
                 TypeSpecifierContext typeSpecifier = ctx.createArrayExpression().typeSpecifier();
 
@@ -178,7 +178,7 @@ public class StatementVisitor {
                     (pa.getPrimitiveType() == PrimitiveType.STRING && typeSpecifier.String() == null) || 
                     (pa.getPrimitiveType() == PrimitiveType.BOOLEAN && typeSpecifier.Bool() == null) ||
                     (pa.getPrimitiveType() == PrimitiveType.FLOAT && typeSpecifier.Float() == null) ) {
-                    Console.log("TypeMismatch Error", ctx.getStart().getLine() );
+                    Console.log("TypeMismatch Error: Initialize type is not the same as variable type.", ctx.getStart().getLine() );
                 }
 
                 // if size is int int[size] <--

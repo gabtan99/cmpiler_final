@@ -61,25 +61,25 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 				}
 				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.BOOLEAN) {
 					if(constCtx.BOOLCONSTANT() == null) {
-						String msg = "Expected boolean";
+						String msg = "Expected boolean.";
 						Console.log(errorTemplate + msg, this.line);
 					}
 				}
 				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.INT) {
 					if(constCtx.INTEGERCONSTANT() == null) {
-						String msg = "Expected int";
+						String msg = "Expected int.";
 						Console.log(errorTemplate + msg, this.line);
 					}
 				}
 				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT) {
 					if(constCtx.FLOATCONSTANT() == null) {
-						String msg = "Expected float";
+						String msg = "Expected float.";
 						Console.log(errorTemplate + msg, this.line);
 					}
 				}
 				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING) {
 					if(constCtx.StringLiteral() == null) {
-						String msg = "Expected string";
+						String msg = "Expected string.";
 						Console.log(errorTemplate + msg, this.line);
 					}
 				}
@@ -107,7 +107,7 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 			PseudoValue pv = pf.getReturnValue();
 
 			if (pf.getReturnType() == FunctionType.VOID){
-				String msg = "Function has void return type ";
+				String msg = "Function has void return type. Consider adding a return type. ";
 				Console.log(errorTemplate + msg, this.line);
 			} else if( pv != null) {
 				analyzeType(pv);

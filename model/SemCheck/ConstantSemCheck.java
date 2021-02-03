@@ -33,7 +33,7 @@ public class ConstantSemCheck implements SemCheck {
 		PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(stringId);
 
 		if (pseudoValue != null && pseudoValue.isConst()) {
-			Console.log("ConstantReassignment Error ", this.line);
+			Console.log("ConstantReassignment Error: Constant variables can only be assigned once.", this.line);
 		}
 		
 	}

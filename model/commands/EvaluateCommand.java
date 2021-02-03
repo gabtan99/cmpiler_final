@@ -59,6 +59,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
         if (ctx instanceof CallContext) {
             CallContext callCtx  = (CallContext) ctx;
+            System.out.println(callCtx.getText());
             this.evaluateCall(callCtx);
         } else if (ctx instanceof MutableContext) {
             MutableContext mutableCtx  = (MutableContext) ctx;
@@ -121,8 +122,8 @@ public class EvaluateCommand implements Command, ParseTreeListener {
         FunctionControlTracker.getInstance().enterFunction(funcInstance);
         funcInstance.execute();
 
-        System.out.println(this.strExp);
-        this.strExp = this.strExp.replace(callCtx.getText(), funcInstance.getReturnValue().getValue().toString());
+        System.out.println(callCtx.getText());
+        this.strExp = this.strExp.replaceFirst(callCtx.getText(), funcInstance.getReturnValue().getValue().toString());
         System.out.println(this.strExp);
 
         FunctionControlTracker.getInstance().exitFunction();

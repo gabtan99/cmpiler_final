@@ -103,34 +103,36 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 				// assigning array to array
 				if (arrVarDecInitCtx.mutable() != null) {
 
-					PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(arrVarDecInitCtx.mutable().IDENTIFIER().getText());
+					String id = arrVarDecInitCtx.mutable().IDENTIFIER().getText();
+					PseudoValue pv = ScopeManager.getInstance().searchMyScopeVariable(id);
+					
 
 					if (pv == null) {
-						Console.log("UndeclaredVariable error", arrVarDecInitCtx.getStart().getLine());
+						Console.log("UndeclaredVariable error: " + id + " not found." , arrVarDecInitCtx.getStart().getLine());
 					} else {
 						String errorTemplate = "TypeMismatch Error: ";
 						
 						if (pv.getPrimitiveType() != PrimitiveType.ARRAY) {
-							String msg = "Expected array";
+							String msg = "Expected array for variable '" + id + "'";
 							Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
 						} else {
 							PseudoArray pa = (PseudoArray) pseudoValue.getValue();
 							PseudoArray pa1 = (PseudoArray) pv.getValue();
 
 							if(pa.getPrimitiveType() == PrimitiveType.BOOLEAN && pa1.getPrimitiveType() != PrimitiveType.BOOLEAN) {
-								String msg = "Expected boolean array";
+								String msg = "Expected boolean array for variable '" + id + "'";
 								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
 							}
 							else if(pa.getPrimitiveType() == PrimitiveType.INT && pa1.getPrimitiveType() != PrimitiveType.INT) {
-								String msg = "Expected integer array";
+								String msg = "Expected integer array for variable '" + id + "'";
 								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
 							}
 							else if(pa.getPrimitiveType() == PrimitiveType.FLOAT && pa1.getPrimitiveType() != PrimitiveType.FLOAT) {
-								String msg = "Expected float array";
+								String msg = "Expected float array for variable '" + id + "'";
 								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
 							}
 							else if(pa.getPrimitiveType() == PrimitiveType.STRING && pa1.getPrimitiveType() != PrimitiveType.STRING) {
-								String msg = "Expected String array";
+								String msg = "Expected String array for variable '" + id + "'";
 								Console.log(errorTemplate + msg, arrVarDecInitCtx.getStart().getLine());
 							}
 						}
@@ -148,7 +150,7 @@ public class VarDeclaratorVisitor implements ParseTreeListener {
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Float() != null && typeSpecifier.Float() == null) || 
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().String() != null && typeSpecifier.String() == null) ||
 					(arrVarDecCtx.arrayTypeSpecifier().typeSpecifier().Bool() != null && typeSpecifier.Bool() == null) ) {
-						Console.log("TypeMismatch Error", arrVarDecCtx.getStart().getLine() );
+						Console.log("TypeMismatch Error: Initialize type is not the same as variable type.", arrVarDecCtx.getStart().getLine() );
 					}	 
 
 					// if size is int int[size] <--

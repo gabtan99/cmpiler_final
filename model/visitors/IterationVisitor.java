@@ -33,10 +33,10 @@ public class IterationVisitor {
             PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(whileCtx.IDENTIFIER().getText());
 
 			if(pseudoValue == null) {
-				Console.log("UndeclaredVariable Error at while statement", ctx.getStart().getLine());
+				Console.log("UndeclaredVariable Error: '" +  whileCtx.IDENTIFIER().getText() + "' cannot be found at while statement", ctx.getStart().getLine());
 			} else {
                 if (pseudoValue.getPrimitiveType() != PrimitiveType.INT) {
-                    Console.log("TypeMismatch Error at while statement", ctx.getStart().getLine());
+                    Console.log("TypeMismatch Error: Only integers can be used at while statements", ctx.getStart().getLine());
                 }
             }
 
@@ -69,7 +69,7 @@ public class IterationVisitor {
             if (loopDecCtx.Int() != null) { // to check if declared new var
 
                 if (ScopeManager.getInstance().searchMyScopeVariable(loopDecCtx.IDENTIFIER().getText()) != null) {
-				    Console.log("MultipleVarDeclaration Error at for statement", ctx.getStart().getLine());
+				    Console.log("MultipleVarDeclaration Error: '" + loopDecCtx.IDENTIFIER().getText() +"' cannot be found at for statement", ctx.getStart().getLine());
 			    }  else {
                     ScopeManager.getInstance().getScope().addVariable(loopDecCtx.IDENTIFIER().getText(), new PseudoValue(null, "int"));
                 }
@@ -103,10 +103,10 @@ public class IterationVisitor {
                 PseudoValue pseudoValue = ScopeManager.getInstance().searchMyScopeVariable(loopDecCtx.IDENTIFIER().getText());
 
                 if(pseudoValue == null) {
-                    Console.log("UndeclaredVariable Error at while statement", ctx.getStart().getLine());
+                    Console.log("UndeclaredVariable Error: '" + loopDecCtx.IDENTIFIER().getText()  + "' cannot be found at for statement", ctx.getStart().getLine());
                 } else {
                     if (pseudoValue.getPrimitiveType() != PrimitiveType.INT) {
-                        Console.log("TypeMismatch Error at while statement", ctx.getStart().getLine());
+                        Console.log("TypeMismatch Error: Only integers can be used at for statements", ctx.getStart().getLine());
                     } 
                 } 
 
