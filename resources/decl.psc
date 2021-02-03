@@ -1,13 +1,21 @@
-func int hello(int x) {
-	if (x <= 1) then {
+func int fib(int x) {
+
+    if (x == 0) then {
+        return 0;
+    } else if (x == 1) then {
+        return 1;
+    } else if (x == 2) then {
 		return 1;
 	}
 
-	return x * hello(x-1);
+	int first = fib(x-2);
+	int second = fib(x-1);
 
+    return first + second;
 }
 
 main() {
-	int t = hello(3);
-	print(t);
+  int m = fib(5);
+
+    print(m);
 }

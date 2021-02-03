@@ -1,6 +1,7 @@
 package model.commands;
 
 import java.util.*;
+import java.util.regex.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -123,7 +124,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
         funcInstance.execute();
 
         System.out.println(callCtx.getText());
-        this.strExp = this.strExp.replaceFirst(callCtx.getText(), funcInstance.getReturnValue().getValue().toString());
+        this.strExp = this.strExp.replaceFirst(Pattern.quote(callCtx.getText()), Matcher.quoteReplacement(funcInstance.getReturnValue().getValue().toString()));
         System.out.println(this.strExp);
 
         FunctionControlTracker.getInstance().exitFunction();
@@ -134,7 +135,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
         // non-array variable
         if (mutableCtx.IDENTIFIER() != null && mutableCtx.LeftBracket() == null) {
             PseudoValue pseudoValue = this.scope.getVariableAllScope(mutableCtx.IDENTIFIER().getText());
-            this.strExp =  this.strExp.replaceFirst(mutableCtx.IDENTIFIER().getText(), pseudoValue.getValue().toString());
+            this.strExp =  this.strExp.replaceFirst(Pattern.quote(mutableCtx.IDENTIFIER().getText()),Matcher.quoteReplacement(pseudoValue.getValue().toString()));
 
         } 
         else { // access array
