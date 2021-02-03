@@ -50,7 +50,7 @@ public class PrintCommand implements Command, ParseTreeListener {
         ParseTreeWalker treeWalker = new ParseTreeWalker();
         treeWalker.walk(this, this.paramsCtx);
 
-        final String printMsg = this.msg;
+        final String printMsg = this.msg.replace("\\\\", "\\");
 
         Platform.runLater(new Runnable() {
             @Override public void run() {

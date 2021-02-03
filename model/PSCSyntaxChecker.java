@@ -15,8 +15,8 @@ public class PSCSyntaxChecker extends BaseErrorListener {
 
     PSCErrorGenerator generator = new PSCErrorGenerator();
     
-    List<String> stack = ((Parser)recognizer).getRuleInvocationStack(); 
-    Collections.reverse(stack);
+    // List<String> stack = (recognizer).getRuleInvocationStack(); 
+    // Collections.reverse(stack);
                             
     Console.log(generator.generateMsg(msg), line);
   }
