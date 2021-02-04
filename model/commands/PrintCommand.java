@@ -72,7 +72,7 @@ public class PrintCommand implements Command, ParseTreeListener {
                 PseudoValue pseudoValue = scope.getVariableAllScope(printParamsCtx.IDENTIFIER().getText());
 
                 this.msg += pseudoValue.getValue().toString();
-            } // else if function call
+            } 
         } 
     }
 

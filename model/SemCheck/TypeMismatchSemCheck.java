@@ -95,6 +95,8 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 					if( pv != null) {
 						analyzeType(pv);
 					}
+				} else {
+					this.excluded.add(mutCtx.getText());
 				}
 			}
 			
