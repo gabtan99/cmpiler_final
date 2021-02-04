@@ -231,6 +231,7 @@ createArrayExpression
 simpleExpression
     : andExpression
     | simpleExpression OrOr andExpression
+    | simpleExpression simpleExpression+ {notifyErrorListeners("Missing valid operators.");}
     ;
 
 andExpression
