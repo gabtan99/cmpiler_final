@@ -40,17 +40,12 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
         this.strExp = simpleCtx.getText();
 
-        if (this.strExp.contains("T")) {
-            this.evaluated = new BigDecimal(1);
-        } else if (this.strExp.contains("F")) {
-            this.evaluated = new BigDecimal(0);
-        } else{
-            ParseTreeWalker treeWalker = new ParseTreeWalker();
-            treeWalker.walk(this, this.simpleCtx);
+        ParseTreeWalker treeWalker = new ParseTreeWalker();
+        treeWalker.walk(this, this.simpleCtx);
 
-            Expression evalEx = new Expression(this.strExp.replace("f", ""));
-            this.evaluated = evalEx.eval();
-        }
+        Expression evalEx = new Expression(this.strExp.replace("f", ""));
+        this.evaluated = evalEx.eval();
+        
         
     }
 

@@ -65,9 +65,13 @@ public class PrintCommand implements Command, ParseTreeListener {
     public void enterEveryRule(ParserRuleContext ctx) {
         if (ctx instanceof PrintParamsSelectorContext) {
             PrintParamsSelectorContext printParamsCtx = (PrintParamsSelectorContext) ctx;
-
+            
             if (printParamsCtx.StringLiteral()!= null) {
                 this.msg += printParamsCtx.StringLiteral().getText().replaceAll("^\"+|\"+$", "");
+            } else if (printParamsCtx.LeftParen() != null) {
+                EvaluateCommand evaluateCommand = new EvaluateCommand(printParamsCtx.simpleExpression(), this.scope);
+                evaluateCommand.execute();
+                this.msg += evaluateCommand.getEvaluated().toPlainString();
             } else if (printParamsCtx.IDENTIFIER() != null) {
                 PseudoValue pseudoValue = scope.getVariableAllScope(printParamsCtx.IDENTIFIER().getText());
 

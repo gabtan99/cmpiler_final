@@ -171,6 +171,7 @@ printParamsSelector
     : StringLiteral
     | call
     | IDENTIFIER
+    | LeftParen simpleExpression RightParen
     ;
 
 selectionStmt
