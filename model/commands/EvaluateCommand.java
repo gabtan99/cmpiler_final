@@ -48,7 +48,7 @@ public class EvaluateCommand implements Command, ParseTreeListener {
             ParseTreeWalker treeWalker = new ParseTreeWalker();
             treeWalker.walk(this, this.simpleCtx);
 
-            Expression evalEx = new Expression(this.strExp);
+            Expression evalEx = new Expression(this.strExp.replace("f", ""));
             this.evaluated = evalEx.eval();
         }
         

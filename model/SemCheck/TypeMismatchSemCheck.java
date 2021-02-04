@@ -73,8 +73,10 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 				}
 				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT) {
 					if(constCtx.FLOATCONSTANT() == null) {
-						String msg = "Expected float.";
-						Console.log(errorTemplate + msg, this.line);
+						if (constCtx.INTEGERCONSTANT() == null) {
+							String msg = "Expected float.";
+							Console.log(errorTemplate + msg, this.line);
+						}
 					}
 				}
 				else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING) {
@@ -162,9 +164,11 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 			String msg = "Expected integer";
 			Console.log(errorTemplate + msg, this.line);
 		}
-		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT && pv.getPrimitiveType() != PrimitiveType.FLOAT) {
-			String msg = "Expected float";
-			Console.log(errorTemplate + msg, this.line);
+		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.FLOAT && pv.getPrimitiveType() != PrimitiveType.FLOAT ) {
+			if (pv.getPrimitiveType() != PrimitiveType.INT) {
+				String msg = "Expected float";
+				Console.log(errorTemplate + msg, this.line);
+			}
 		}
 		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING && pv.getPrimitiveType() != PrimitiveType.STRING) {
 			String msg = "Expected String";
