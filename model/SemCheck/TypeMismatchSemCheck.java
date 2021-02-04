@@ -170,8 +170,8 @@ public class TypeMismatchSemCheck implements SemCheck, ParseTreeListener {
 				Console.log(errorTemplate + msg, this.line);
 			}
 		}
-		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING && pv.getPrimitiveType() != PrimitiveType.STRING) {
-			String msg = "Expected String";
+		else if(this.pseudoValue.getPrimitiveType() == PrimitiveType.STRING && pv.getPrimitiveType() == PrimitiveType.ARRAY) {
+			String msg = "Cannot assign array to string";
 			Console.log(errorTemplate + msg, this.line);
 		}
 	}
