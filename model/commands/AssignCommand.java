@@ -132,8 +132,6 @@ public class AssignCommand implements Command, ParseTreeListener{
                 Util.assignValue(pseudoValue, evalCommand.getEvaluated());
             }
         }
-
-        this.builder = "";
         
     }
 
