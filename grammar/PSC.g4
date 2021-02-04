@@ -349,10 +349,6 @@ DigitSequence
 fragment
 FloatSuffix
     : 'f'
-    ;    
-fragment
-NegativePrefix
-    : '-'
     ;
 
 fragment
@@ -408,7 +404,7 @@ StringLiteral
 
 /*tokens*/
 INTEGERCONSTANT
-    : NegativePrefix? DigitSequence
+    : DigitSequence
     ;
 
 FLOATCONSTANT
