@@ -40,12 +40,27 @@ public class EvaluateCommand implements Command, ParseTreeListener {
 
         this.strExp = simpleCtx.getText();
 
-        ParseTreeWalker treeWalker = new ParseTreeWalker();
-        treeWalker.walk(this, this.simpleCtx);
+        if (this.strExp.contains("\"")) {
+            String newComparisons = this.strExp.replaceAll("\"", "");
+            System.out.println(newComparisons);
+            String[]  compareArray = newComparisons.split("==");
 
-        Expression evalEx = new Expression(this.strExp.replace("f", ""));
-        this.evaluated = evalEx.eval();
-        
+            PseudoValue stringValue = this.scope.getVariableAllScope(compareArray[0].trim());
+            String toBeCompared = stringValue.getValue().toString();
+
+            if (toBeCompared.equals(compareArray[1].trim())){
+                this.evaluated = new BigDecimal(1);
+            } else {
+                this.evaluated = new BigDecimal(0);
+            }
+
+        } else {
+            ParseTreeWalker treeWalker = new ParseTreeWalker();
+            treeWalker.walk(this, this.simpleCtx);
+
+            Expression evalEx = new Expression(this.strExp.replace("f", ""));
+            this.evaluated = evalEx.eval();
+        }
         
     }
 
